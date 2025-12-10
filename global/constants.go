@@ -1,0 +1,11 @@
+package global
+
+const (
+	Scale        = 2
+	TileHeight   = 32
+	TileWidth    = 32
+	MapHeight    = 20
+	MapWidth     = 30
+	ScreenWidth  = MapWidth * TileWidth
+	ScreenHeight = MapHeight * TileHeight
+)
