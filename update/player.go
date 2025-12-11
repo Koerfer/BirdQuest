@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func updatePlayer(camera *rl.Camera2D, player *objects.Player, collisionObjects []*objects.Object, bloonObjects []*objects.Bloon) {
+func updatePlayer(camera *rl.Camera2D, player *objects.Player, collisionObjects []*rl.Rectangle, bloonObjects []*objects.Bloon) {
 	fps := rl.GetFPS()
 
 	if player.AttackOngoing {

@@ -7,7 +7,7 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func drawDebugInfo(camera rl.Camera2D, player *objects.Player, itemObjects, collisionObjects []*objects.Object, bloonObjects []*objects.Bloon) {
+func drawDebugInfo(camera rl.Camera2D, player *objects.Player, itemObjects []*objects.Object, collisionObjects []*rl.Rectangle, bloonObjects []*objects.Bloon) {
 	//rl.DrawFPS(int32(camera.Target.X+5), int32(camera.Target.Y+5))
 
 	for _, object := range itemObjects {
@@ -21,7 +21,7 @@ func drawDebugInfo(camera rl.Camera2D, player *objects.Player, itemObjects, coll
 		if object == nil {
 			continue
 		}
-		rl.DrawRectanglePro(object.HitBox, rl.Vector2{X: 0, Y: 0}, 0, rl.Red)
+		rl.DrawRectanglePro(*object, rl.Vector2{X: 0, Y: 0}, 0, rl.Red)
 	}
 
 	for _, bloon := range bloonObjects {

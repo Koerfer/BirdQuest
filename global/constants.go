@@ -8,4 +8,7 @@ const (
 	MapWidth     = 30
 	ScreenWidth  = MapWidth * TileWidth
 	ScreenHeight = MapHeight * TileHeight
+
+	PlayerStartX = 150
+	PlayerStartY = 250
 )

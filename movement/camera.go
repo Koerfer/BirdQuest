@@ -34,6 +34,11 @@ func CorrectForZoom(x, y float32, camera *rl.Camera2D) {
 	}
 }
 
+func InitialiseCamera(player *objects.Player, camera *rl.Camera2D, offsetX, offsetY float32) {
+	moveCameraRight(player, camera, offsetX)
+	moveCameraDown(player, camera, offsetY)
+}
+
 func moveCameraUp(player *objects.Player, camera *rl.Camera2D, offset float32) {
 	if player.Position.Y+playerMiddleOffset <= camera.Target.Y+screenHeight/(camera.Zoom*2) && camera.Target.Y > offset {
 		camera.Target.Y -= offset

@@ -3,10 +3,11 @@ package objects
 import rl "github.com/gen2brain/raylib-go/raylib"
 
 type Object struct {
-	Position  rl.Vector2
-	Texture   rl.Texture2D
-	Rectangle rl.Rectangle
-	HitBox    rl.Rectangle
+	Position         rl.Vector2
+	Texture          rl.Texture2D
+	Rectangle        rl.Rectangle
+	HitBox           rl.Rectangle
+	AlwaysRenderLast bool
 }
 
 type Sprites struct {
@@ -18,11 +19,12 @@ type Sprites struct {
 }
 
 type Property struct {
-	id           int
-	HitBoxX      int
-	HitBoxY      int
-	HitBoxWidth  int
-	HitBoxHeight int
+	id               int
+	HitBoxX          int
+	HitBoxY          int
+	HitBoxWidth      int
+	HitBoxHeight     int
+	AlwaysRenderLast bool
 }
 
 func (s *Sprites) GetSrc(id int) rl.Rectangle {

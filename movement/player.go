@@ -32,7 +32,7 @@ func Dash(player *objects.Player, camera *rl.Camera2D, fps int32) {
 	player.DashDirection = dashDirection
 }
 
-func ContinueDash(player *objects.Player, camera *rl.Camera2D, collisionObjects []*objects.Object) {
+func ContinueDash(player *objects.Player, camera *rl.Camera2D, collisionObjects []*rl.Rectangle) {
 	player.IsMoving = true
 	player.AnimationStep = 1
 	player.Rectangle = player.Animation.GetSrc(player.AnimationStep)
@@ -52,7 +52,7 @@ func ContinueDash(player *objects.Player, camera *rl.Camera2D, collisionObjects 
 	player.HitBox.Y = player.Position.Y
 }
 
-func Move(player *objects.Player, camera *rl.Camera2D, fps int32, collisionObjects []*objects.Object) {
+func Move(player *objects.Player, camera *rl.Camera2D, fps int32, collisionObjects []*rl.Rectangle) {
 	up := rl.IsKeyDown(rl.KeyW)
 	down := rl.IsKeyDown(rl.KeyS)
 	left := rl.IsKeyDown(rl.KeyA)
@@ -156,25 +156,26 @@ func Move(player *objects.Player, camera *rl.Camera2D, fps int32, collisionObjec
 
 }
 
-func moveUp(player *objects.Player, camera *rl.Camera2D, offset float32, collisionObjects []*objects.Object) {
+func moveUp(player *objects.Player, camera *rl.Camera2D, offset float32, collisionObjects []*rl.Rectangle) {
 	var collided bool
 	var collisionPoint float32
 	var lastPosition float32
-	newPlayerHitBox := &rl.Rectangle{
-		X:      player.HitBox.X,
-		Y:      player.HitBox.Y - offset,
-		Width:  player.HitBox.Width,
-		Height: player.HitBox.Height,
-	}
+
+	newPlayerHitBoxY := player.HitBox.Y - offset
 	for _, collisionObject := range collisionObjects {
-		if rl.CheckCollisionRecs(*newPlayerHitBox, collisionObject.HitBox) {
-			lastPosition = player.Position.Y
-			collisionPoint = collisionObject.HitBox.Y + collisionObject.HitBox.Height
+		if player.HitBox.X+player.HitBox.Width > collisionObject.X &&
+			player.HitBox.X < collisionObject.X+collisionObject.Width &&
+			player.HitBox.Y > collisionObject.Y &&
+			newPlayerHitBoxY < collisionObject.Y+collisionObject.Height {
+
 			collided = true
-			break
+			lastPosition = player.HitBox.Y
+
+			if collisionObject.Y+collisionObject.Height > collisionPoint {
+				collisionPoint = collisionObject.Y + collisionObject.Height
+			}
 		}
 	}
-	newPlayerHitBox = nil
 
 	if collided {
 		player.Position.Y = collisionPoint
@@ -191,25 +192,26 @@ func moveUp(player *objects.Player, camera *rl.Camera2D, offset float32, collisi
 	moveCameraUp(player, camera, offset)
 }
 
-func moveDown(player *objects.Player, camera *rl.Camera2D, offset float32, collisionObjects []*objects.Object) {
+func moveDown(player *objects.Player, camera *rl.Camera2D, offset float32, collisionObjects []*rl.Rectangle) {
 	var collided bool
-	var collisionPoint float32
+	var collisionPoint float32 = math.MaxFloat32
 	var lastPosition float32
-	newPlayerHitBox := &rl.Rectangle{
-		X:      player.HitBox.X,
-		Y:      player.HitBox.Y + offset,
-		Width:  player.HitBox.Width,
-		Height: player.HitBox.Height,
-	}
+
+	newPlayerHitBoxY := player.HitBox.Y + offset
 	for _, collisionObject := range collisionObjects {
-		if rl.CheckCollisionRecs(*newPlayerHitBox, collisionObject.HitBox) {
-			lastPosition = player.Position.Y
-			collisionPoint = collisionObject.HitBox.Y - player.HitBox.Height
+		if player.HitBox.X+player.HitBox.Width > collisionObject.X &&
+			player.HitBox.X < collisionObject.X+collisionObject.Width &&
+			player.HitBox.Y+player.HitBox.Height <= collisionObject.Y &&
+			newPlayerHitBoxY+player.HitBox.Height > collisionObject.Y {
+
 			collided = true
-			break
+			lastPosition = player.HitBox.Y
+
+			if collisionObject.Y-player.HitBox.Height < collisionPoint {
+				collisionPoint = collisionObject.Y - player.HitBox.Height
+			}
 		}
 	}
-	newPlayerHitBox = nil
 
 	if collided {
 		player.Position.Y = collisionPoint
@@ -226,25 +228,26 @@ func moveDown(player *objects.Player, camera *rl.Camera2D, offset float32, colli
 	moveCameraDown(player, camera, offset)
 }
 
-func moveRight(player *objects.Player, camera *rl.Camera2D, offset float32, collisionObjects []*objects.Object) {
+func moveRight(player *objects.Player, camera *rl.Camera2D, offset float32, collisionObjects []*rl.Rectangle) {
 	var collided bool
-	var collisionPoint float32
+	var collisionPoint float32 = math.MaxFloat32
 	var lastPosition float32
-	newPlayerHitBox := &rl.Rectangle{
-		X:      player.HitBox.X + offset,
-		Y:      player.HitBox.Y,
-		Width:  player.HitBox.Width,
-		Height: player.HitBox.Height,
-	}
+
+	newPlayerHitBoxX := player.HitBox.X + offset
 	for _, collisionObject := range collisionObjects {
-		if rl.CheckCollisionRecs(*newPlayerHitBox, collisionObject.HitBox) {
-			lastPosition = player.Position.X
-			collisionPoint = collisionObject.HitBox.X - player.HitBox.Width
+		if player.HitBox.X+player.HitBox.Width <= collisionObject.X &&
+			newPlayerHitBoxX+player.HitBox.Width > collisionObject.X &&
+			player.HitBox.Y+player.HitBox.Height > collisionObject.Y &&
+			player.HitBox.Y < collisionObject.Y+collisionObject.Height {
+
 			collided = true
-			break
+			lastPosition = player.HitBox.X
+
+			if collisionObject.X-player.HitBox.Width < collisionPoint {
+				collisionPoint = collisionObject.X - player.HitBox.Width
+			}
 		}
 	}
-	newPlayerHitBox = nil
 
 	if collided {
 		player.Position.X = collisionPoint
@@ -261,25 +264,25 @@ func moveRight(player *objects.Player, camera *rl.Camera2D, offset float32, coll
 	moveCameraRight(player, camera, offset)
 }
 
-func moveLeft(player *objects.Player, camera *rl.Camera2D, offset float32, collisionObjects []*objects.Object) {
+func moveLeft(player *objects.Player, camera *rl.Camera2D, offset float32, collisionObjects []*rl.Rectangle) {
 	var collided bool
 	var collisionPoint float32
 	var lastPosition float32
-	newPlayerHitBox := &rl.Rectangle{
-		X:      player.HitBox.X - offset,
-		Y:      player.HitBox.Y,
-		Width:  player.HitBox.Width,
-		Height: player.HitBox.Height,
-	}
+	newPlayerHitBoxX := player.HitBox.X - offset
 	for _, collisionObject := range collisionObjects {
-		if rl.CheckCollisionRecs(*newPlayerHitBox, collisionObject.HitBox) {
-			lastPosition = player.Position.X
-			collisionPoint = collisionObject.HitBox.X + collisionObject.HitBox.Width
+		if player.HitBox.X > collisionObject.X &&
+			newPlayerHitBoxX < collisionObject.X+collisionObject.Width &&
+			player.HitBox.Y+player.HitBox.Height > collisionObject.Y &&
+			player.HitBox.Y < collisionObject.Y+collisionObject.Height {
+
 			collided = true
-			break
+			lastPosition = player.HitBox.X
+
+			if collisionObject.X+collisionObject.Width > collisionPoint {
+				collisionPoint = collisionObject.X + collisionObject.Width
+			}
 		}
 	}
-	newPlayerHitBox = nil
 
 	if collided {
 		player.Position.X = collisionPoint

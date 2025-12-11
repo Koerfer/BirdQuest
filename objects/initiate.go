@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"time"
 )
 
 type JsonMap struct {
@@ -21,9 +20,18 @@ type JsonTileSet struct {
 }
 
 type JsonLayer struct {
-	Data   []int `json:"data"`
-	Width  int   `json:"width"`
-	Height int   `json:"height"`
+	Data    []int         `json:"data"`
+	Objects []*JsonObject `json:"objects"`
+	Width   int           `json:"width"`
+	Height  int           `json:"height"`
+	Name    string        `json:"name"`
+}
+
+type JsonObject struct {
+	Height float32 `json:"height"`
+	Width  float32 `json:"width"`
+	X      float32 `json:"x"`
+	Y      float32 `json:"y"`
 }
 
 type JsonSprites struct {
@@ -46,13 +54,9 @@ type JsonTiles struct {
 	Properties []*JsonProperty `json:"properties"`
 }
 
-func InitiateObjects(cwd string, collisionSpritesRaw, itemSpritesRaw, bloonsSpritesRaw, chiliAnimationsRaw rl.Texture2D) ([]*Object, []*Object, []*Bloon, *Player) {
+func InitiateObjects(cwd string, itemSpritesRaw, bloonsSpritesRaw, chiliAnimationsRaw, collisionSpritesRaw rl.Texture2D) ([]*Object, []*rl.Rectangle, []*Object, []*Bloon, *Player) {
 
 	jsonMapContents, err := os.ReadFile(filepath.Join(cwd, "sprites/map.tmj"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	jsonCollisionsContents, err := os.ReadFile(filepath.Join(cwd, "sprites/collisions.tsj"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -64,16 +68,13 @@ func InitiateObjects(cwd string, collisionSpritesRaw, itemSpritesRaw, bloonsSpri
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	var jsonMap JsonMap
-	err = json.Unmarshal(jsonMapContents, &jsonMap)
+	jsonCollisionContents, err := os.ReadFile(filepath.Join(cwd, "sprites/collisions.tsj"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var jsonCollisions JsonSprites
-	var jsonCollisionsGidStart int
-	err = json.Unmarshal(jsonCollisionsContents, &jsonCollisions)
+	var jsonMap JsonMap
+	err = json.Unmarshal(jsonMapContents, &jsonMap)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -92,20 +93,27 @@ func InitiateObjects(cwd string, collisionSpritesRaw, itemSpritesRaw, bloonsSpri
 		log.Fatal(err)
 	}
 
+	var jsonCollisions JsonSprites
+	var jsonCollisionsGidStart int
+	err = json.Unmarshal(jsonCollisionContents, &jsonCollisions)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for _, tileSet := range jsonMap.TileSets {
 		switch tileSet.Source {
-		case "collisions.tsj":
-			jsonCollisionsGidStart = tileSet.FirstGid
 		case "items.tsj":
 			jsonItemsGidStart = tileSet.FirstGid
 		case "bloons.tsj":
 			jsonBloonsGidStart = tileSet.FirstGid
+		case "collisions.tsj":
+			jsonCollisionsGidStart = tileSet.FirstGid
 		}
 	}
 
 	itemsSprites := prepareSprites(itemSpritesRaw, &jsonItems, jsonItemsGidStart)
-	collisionsSprites := prepareSprites(collisionSpritesRaw, &jsonCollisions, jsonCollisionsGidStart)
 	bloonsSprites := prepareSprites(bloonsSpritesRaw, &jsonBloons, jsonBloonsGidStart)
+	collisionSprites := prepareSprites(collisionSpritesRaw, &jsonCollisions, jsonCollisionsGidStart)
 
 	chiliAnimations := &Sprites{
 		Texture:      chiliAnimationsRaw,
@@ -114,33 +122,13 @@ func InitiateObjects(cwd string, collisionSpritesRaw, itemSpritesRaw, bloonsSpri
 		WidthInTiles: int(chiliAnimationsRaw.Width) / jsonItems.TileWidth,
 	}
 
-	itemObjects := prepareObjects(jsonMap, itemsSprites, 1, jsonItemsGidStart, jsonItems.TileCount)
-	collisionObjects := prepareObjects(jsonMap, collisionsSprites, 2, jsonCollisionsGidStart, jsonCollisions.TileCount)
-	bloonsObjects := prepareBloons(jsonMap, bloonsSprites, 1, jsonBloonsGidStart, jsonBloons.TileCount)
-	player := &Player{}
+	itemObjects := prepareObjects(&jsonMap, itemsSprites, "Items", jsonItemsGidStart, jsonItems.TileCount)
+	collisionObjects3d := prepareObjects(&jsonMap, collisionSprites, "BackgroundCollisions", jsonCollisionsGidStart, jsonCollisions.TileCount)
+	collisionObjects := prepareCollisions(&jsonMap)
+	bloonsObjects := prepareBloons(&jsonMap, bloonsSprites, "Items", jsonBloonsGidStart, jsonBloons.TileCount)
+	player := preparePlayer(chiliAnimations)
 
-	player = &Player{
-		IsMoving:       false,
-		AnimationStep:  0,
-		Rotation:       0,
-		Animation:      chiliAnimations,
-		DashLastUse:    time.Time{},
-		DashCooldown:   time.Millisecond * 1200,
-		AttackLastUse:  time.Time{},
-		AttackCooldown: time.Millisecond * 500,
-		Object: Object{
-			Position:  rl.Vector2{X: 0 * global.Scale, Y: 0 * global.Scale},
-			Texture:   chiliAnimations.Texture,
-			Rectangle: chiliAnimations.GetSrc(7),
-			HitBox: rl.Rectangle{
-				X:      0 * global.Scale,
-				Y:      0 * global.Scale,
-				Width:  float32(global.TileWidth) * global.Scale,
-				Height: float32(global.TileWidth) * global.Scale,
-			},
-		}}
-
-	return itemObjects, collisionObjects, bloonsObjects, player
+	return itemObjects, collisionObjects, collisionObjects3d, bloonsObjects, player
 }
 
 func prepareSprites(rawSprites rl.Texture2D, jsonObject *JsonSprites, startGid int) *Sprites {
@@ -163,6 +151,13 @@ func prepareSprites(rawSprites rl.Texture2D, jsonObject *JsonSprites, startGid i
 				property.HitBoxWidth = jsonProperty.Value
 			case "HitBoxHeight":
 				property.HitBoxHeight = jsonProperty.Value
+			case "AlwaysAfter":
+				switch jsonProperty.Value {
+				case 1:
+					property.AlwaysRenderLast = true
+				default:
+					property.AlwaysRenderLast = false
+				}
 			}
 		}
 		sprites.Properties = append(sprites.Properties, property)
@@ -171,36 +166,48 @@ func prepareSprites(rawSprites rl.Texture2D, jsonObject *JsonSprites, startGid i
 	return sprites
 }
 
-func prepareObjects(jsonMap JsonMap, sprites *Sprites, layer, startId, n int) []*Object {
+func prepareObjects(jsonMap *JsonMap, sprites *Sprites, layerName string, startId, n int) []*Object {
 	objects := make([]*Object, 0)
 
-	for i, val := range jsonMap.Layers[layer].Data {
-		object := prepareObject(i, val, startId, n, sprites)
-		if object == nil {
+	for _, layer := range jsonMap.Layers {
+		if layer.Name != layerName {
 			continue
 		}
 
-		objects = append(objects, object)
+		for i, val := range layer.Data {
+			object := prepareObject(i, val, startId, n, sprites)
+			if object == nil {
+				continue
+			}
+
+			objects = append(objects, object)
+		}
 	}
 
 	return objects
 }
 
-func prepareBloons(jsonMap JsonMap, sprites *Sprites, layer, startId, n int) []*Bloon {
+func prepareBloons(jsonMap *JsonMap, sprites *Sprites, layerName string, startId, n int) []*Bloon {
 	bloons := make([]*Bloon, 0)
 
-	for i, val := range jsonMap.Layers[layer].Data {
-		object := prepareObject(i, val, startId, n, sprites)
-		if object == nil {
+	for _, layer := range jsonMap.Layers {
+		if layer.Name != layerName {
 			continue
 		}
 
-		bloon := &Bloon{
-			Lives: startId + 3 - val,
-		}
-		bloon.Object = *object
+		for i, val := range layer.Data {
+			object := prepareObject(i, val, startId, n, sprites)
+			if object == nil {
+				continue
+			}
 
-		bloons = append(bloons, bloon)
+			bloon := &Bloon{
+				Lives: startId + 3 - val,
+			}
+			bloon.Object = *object
+
+			bloons = append(bloons, bloon)
+		}
 	}
 
 	return bloons
@@ -234,6 +241,7 @@ func prepareObject(i, val, startId, n int, sprites *Sprites) *Object {
 				Width:  float32(property.HitBoxWidth) * global.Scale,
 				Height: float32(property.HitBoxHeight) * global.Scale,
 			}
+			object.AlwaysRenderLast = property.AlwaysRenderLast
 			break
 		}
 	}

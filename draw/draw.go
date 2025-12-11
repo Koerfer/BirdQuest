@@ -5,26 +5,35 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-var debug = true
+var debug = false
 
-func Draw(camera rl.Camera2D, itemObjects, collisionObjects []*objects.Object, bloonObjects []*objects.Bloon, player *objects.Player, backgroundRaw rl.Texture2D) {
+func Draw(
+	camera rl.Camera2D,
+	itemObjects []*objects.Object,
+	collisionObjects []*rl.Rectangle,
+	collisionObjects3d []*objects.Object,
+	bloonObjects []*objects.Bloon,
+	player *objects.Player,
+	backgroundRaw rl.Texture2D) {
 	rl.BeginDrawing()
 
 	rl.BeginMode2D(camera)
 
 	drawBackground(camera, backgroundRaw)
 
-	if debug {
-		drawDebugInfo(camera, player, itemObjects, collisionObjects, bloonObjects)
-	}
-
 	drawObjects(itemObjects)
 
 	drawBloons(bloonObjects)
 
+	drawAfterPlayer := drawCollisionObjects(collisionObjects3d, player)
+
 	drawPlayer(player)
 
-	drawObjects(collisionObjects)
+	drawCollisionObjectsAfterPlayer(drawAfterPlayer)
+
+	if debug {
+		drawDebugInfo(camera, player, itemObjects, collisionObjects, bloonObjects)
+	}
 
 	rl.EndDrawing()
 }
