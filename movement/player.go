@@ -26,9 +26,8 @@ func Dash(player *objects.Player, camera *rl.Camera2D) {
 		player.Rotation = float32(math.Acos(float64(-dashDirection.Y)) * 180 / math.Pi)
 	}
 
-	speed := global.VariableSet.Speed * global.VariableSet.EntityScale
-	dashDirection.X *= 20 * speed
-	dashDirection.Y *= 20 * speed
+	dashDirection.X *= 20 * global.VariableSet.Speed
+	dashDirection.Y *= 20 * global.VariableSet.Speed
 	player.DashDirection = dashDirection
 }
 
@@ -58,9 +57,8 @@ func Move(player *objects.Player, camera *rl.Camera2D, collisionObjects []*rl.Re
 	left := rl.IsKeyDown(rl.KeyA)
 	right := rl.IsKeyDown(rl.KeyD)
 
-	speed := global.VariableSet.Speed
-	diagonalSpeed := speed * 3.535533
-	normalSpeed := speed * 5
+	diagonalSpeed := global.VariableSet.Speed * 3.535533
+	normalSpeed := global.VariableSet.Speed * 5
 
 	if player.Position.Y <= 0 {
 		up = false
