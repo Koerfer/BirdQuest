@@ -23,8 +23,8 @@ func StartAttack(player *objects.Player, bloons []*objects.Bloon) {
 	extendedPlayerHitBox := &rl.Rectangle{
 		X:      player.HitBox.X,
 		Y:      player.HitBox.Y,
-		Width:  player.HitBox.Width + 5*global.Scale,
-		Height: player.HitBox.Height + 5*global.Scale,
+		Width:  player.HitBox.Width + 5*global.VariableSet.EntityScale,
+		Height: player.HitBox.Height + 5*global.VariableSet.EntityScale,
 	}
 	for i, bloon := range bloons {
 		if bloon == nil {
@@ -57,10 +57,9 @@ func StartAttack(player *objects.Player, bloons []*objects.Bloon) {
 	}
 }
 
-func Attack(player *objects.Player, fps int32) {
-	speed := 60 / float32(fps)
+func Attack(player *objects.Player) {
 
-	if frameCounter >= int(4/speed) {
+	if frameCounter >= int(4/global.VariableSet.FpsScale) {
 		frameCounter = 0
 		player.AnimationStep++
 		if player.AnimationStep == 7 {

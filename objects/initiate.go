@@ -228,7 +228,7 @@ func prepareObject(i, val, startId, n int, sprites *Sprites) *Object {
 	y := float32(i / global.MapWidth * global.TileWidth)
 
 	object := &Object{
-		Position:  rl.Vector2{X: x * global.Scale, Y: y * global.Scale},
+		Position:  rl.Vector2{X: x * global.VariableSet.EntityScale, Y: y * global.VariableSet.EntityScale},
 		Texture:   sprites.Texture,
 		Rectangle: sprites.GetSrc(val - startId),
 	}
@@ -236,10 +236,10 @@ func prepareObject(i, val, startId, n int, sprites *Sprites) *Object {
 	for _, property := range sprites.Properties {
 		if property.id == val {
 			object.HitBox = rl.Rectangle{
-				X:      (x + float32(property.HitBoxX)) * global.Scale,
-				Y:      (y + float32(property.HitBoxY)) * global.Scale,
-				Width:  float32(property.HitBoxWidth) * global.Scale,
-				Height: float32(property.HitBoxHeight) * global.Scale,
+				X:      (x + float32(property.HitBoxX)) * global.VariableSet.EntityScale,
+				Y:      (y + float32(property.HitBoxY)) * global.VariableSet.EntityScale,
+				Width:  float32(property.HitBoxWidth) * global.VariableSet.EntityScale,
+				Height: float32(property.HitBoxHeight) * global.VariableSet.EntityScale,
 			}
 			object.AlwaysRenderLast = property.AlwaysRenderLast
 			break

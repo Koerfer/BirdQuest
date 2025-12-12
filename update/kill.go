@@ -1,6 +1,7 @@
 package update
 
 import (
+	"BirdQuest/global"
 	"BirdQuest/objects"
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"slices"
@@ -31,7 +32,7 @@ func killItems(player *objects.Player, itemObjects []*objects.Object, bloonObjec
 		}
 
 		bloon.AnimationStep++
-		if bloon.AnimationStep == int(70*60/rl.GetFPS()) {
+		if bloon.AnimationStep == int(35/global.VariableSet.FpsScale) {
 			bloon.AnimationStep = 0
 			bloon.PoppingAnimationStage++
 		}

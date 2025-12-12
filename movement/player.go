@@ -10,13 +10,13 @@ import (
 
 var frameCounter int
 
-func Dash(player *objects.Player, camera *rl.Camera2D, fps int32) {
+func Dash(player *objects.Player, camera *rl.Camera2D) {
 	player.DashLastUse = time.Now()
 
 	mousePositionAbsolute := rl.GetMousePosition()
 	mousePositionRelative := rl.Vector2{
-		X: mousePositionAbsolute.X/camera.Zoom + camera.Target.X - (player.Position.X + 16*global.Scale),
-		Y: mousePositionAbsolute.Y/camera.Zoom + camera.Target.Y - (player.Position.Y + 16*global.Scale),
+		X: mousePositionAbsolute.X/camera.Zoom + camera.Target.X - (player.Position.X + global.VariableSet.PlayerMiddleOffset),
+		Y: mousePositionAbsolute.Y/camera.Zoom + camera.Target.Y - (player.Position.Y + global.VariableSet.PlayerMiddleOffset),
 	}
 
 	dashDirection := rl.Vector2Normalize(mousePositionRelative)
@@ -26,7 +26,7 @@ func Dash(player *objects.Player, camera *rl.Camera2D, fps int32) {
 		player.Rotation = float32(math.Acos(float64(-dashDirection.Y)) * 180 / math.Pi)
 	}
 
-	speed := 60 / float32(fps) * global.Scale
+	speed := global.VariableSet.Speed * global.VariableSet.EntityScale
 	dashDirection.X *= 20 * speed
 	dashDirection.Y *= 20 * speed
 	player.DashDirection = dashDirection
@@ -52,23 +52,23 @@ func ContinueDash(player *objects.Player, camera *rl.Camera2D, collisionObjects 
 	player.HitBox.Y = player.Position.Y
 }
 
-func Move(player *objects.Player, camera *rl.Camera2D, fps int32, collisionObjects []*rl.Rectangle) {
+func Move(player *objects.Player, camera *rl.Camera2D, collisionObjects []*rl.Rectangle) {
 	up := rl.IsKeyDown(rl.KeyW)
 	down := rl.IsKeyDown(rl.KeyS)
 	left := rl.IsKeyDown(rl.KeyA)
 	right := rl.IsKeyDown(rl.KeyD)
 
-	speed := 60 / float32(fps) * global.Scale
+	speed := global.VariableSet.Speed
 	diagonalSpeed := speed * 3.535533
 	normalSpeed := speed * 5
 
 	if player.Position.Y <= 0 {
 		up = false
 	}
-	if player.Position.Y+32*global.Scale >= global.ScreenHeight*global.Scale {
+	if player.Position.Y+global.VariableSet.EntitySize >= global.VariableSet.MapHeight {
 		down = false
 	}
-	if player.Position.X+32*global.Scale >= global.ScreenWidth*global.Scale {
+	if player.Position.X+global.VariableSet.EntitySize >= global.VariableSet.MapWidth {
 		right = false
 	}
 	if player.Position.X <= 0 {
@@ -134,7 +134,7 @@ func Move(player *objects.Player, camera *rl.Camera2D, fps int32, collisionObjec
 	}
 
 	if player.IsMoving {
-		if frameCounter >= int(8/speed) {
+		if frameCounter >= int(8/global.VariableSet.FpsScale) {
 			frameCounter = 0
 			player.AnimationStep = (player.AnimationStep + 1) % 3
 			player.Rectangle = player.Animation.GetSrc(player.AnimationStep)
@@ -219,8 +219,8 @@ func moveDown(player *objects.Player, camera *rl.Camera2D, offset float32, colli
 		return
 	}
 
-	if player.Position.Y+offset > (global.ScreenHeight-32)*global.Scale {
-		player.Position.Y = (global.ScreenHeight - 32) * global.Scale
+	if player.Position.Y+offset > global.VariableSet.MapHeight-global.VariableSet.EntitySize {
+		player.Position.Y = global.VariableSet.MapHeight - global.VariableSet.EntitySize
 	} else {
 		player.Position.Y += offset
 	}
@@ -255,8 +255,8 @@ func moveRight(player *objects.Player, camera *rl.Camera2D, offset float32, coll
 		return
 	}
 
-	if player.Position.X+offset > (global.ScreenWidth-32)*global.Scale {
-		player.Position.X = (global.ScreenWidth - 32) * global.Scale
+	if player.Position.X+offset > global.VariableSet.MapWidth-global.VariableSet.EntitySize {
+		player.Position.X = global.VariableSet.MapWidth - global.VariableSet.EntitySize
 	} else {
 		player.Position.X += offset
 	}

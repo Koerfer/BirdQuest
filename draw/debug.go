@@ -44,8 +44,8 @@ func drawDebugInfo(camera rl.Camera2D, player *objects.Player, itemObjects []*ob
 		rl.Black,
 	)
 	rl.DrawText(fmt.Sprintf("%f, %f",
-		player.Position.X+16*global.Scale,
-		player.Position.Y+16*global.Scale,
+		player.Position.X+global.VariableSet.PlayerMiddleOffset,
+		player.Position.Y+global.VariableSet.PlayerMiddleOffset,
 	),
 		int32(camera.Target.X+5),
 		int32(camera.Target.Y+50/camera.Zoom),
@@ -53,14 +53,14 @@ func drawDebugInfo(camera rl.Camera2D, player *objects.Player, itemObjects []*ob
 		rl.Black,
 	)
 	mousePositionRelative := rl.Vector2{
-		X: mousePositionAbsolute.X/camera.Zoom + camera.Target.X - (player.Position.X + 16*global.Scale),
-		Y: mousePositionAbsolute.Y/camera.Zoom + camera.Target.Y - (player.Position.Y + 16*global.Scale),
+		X: mousePositionAbsolute.X/camera.Zoom + camera.Target.X - (player.Position.X + global.VariableSet.PlayerMiddleOffset),
+		Y: mousePositionAbsolute.Y/camera.Zoom + camera.Target.Y - (player.Position.Y + global.VariableSet.PlayerMiddleOffset),
 	}
 
 	dashDirection := rl.Vector2Normalize(mousePositionRelative)
 	dashDirection.X *= 100
 	dashDirection.Y *= 100
-	playerPositionVectorMiddle := rl.NewVector2(player.Position.X+16*global.Scale, player.Position.Y+16*global.Scale)
+	playerPositionVectorMiddle := rl.NewVector2(player.Position.X+global.VariableSet.PlayerMiddleOffset, player.Position.Y+global.VariableSet.PlayerMiddleOffset)
 	rl.DrawLineV(playerPositionVectorMiddle, rl.Vector2Add(playerPositionVectorMiddle, dashDirection), rl.Black)
 
 }

@@ -19,16 +19,16 @@ func drawBackground(camera rl.Camera2D, backgroundRaw rl.Texture2D) {
 	rl.DrawTexturePro(
 		backgroundRaw,
 		rl.Rectangle{
-			X:      camera.Target.X / global.Scale,
-			Y:      camera.Target.Y / global.Scale,
-			Width:  camera.Target.X/global.Scale + drawSizeWidth,
-			Height: camera.Target.Y/global.Scale + drawSizeHeight,
+			X:      camera.Target.X / global.VariableSet.EntityScale,
+			Y:      camera.Target.Y / global.VariableSet.EntityScale,
+			Width:  camera.Target.X/global.VariableSet.EntityScale + drawSizeWidth,
+			Height: camera.Target.Y/global.VariableSet.EntityScale + drawSizeHeight,
 		},
 		rl.Rectangle{
 			X:      camera.Target.X,
 			Y:      camera.Target.Y,
-			Width:  camera.Target.X + drawSizeWidth*global.Scale,
-			Height: camera.Target.Y + drawSizeHeight*global.Scale,
+			Width:  camera.Target.X + drawSizeWidth*global.VariableSet.EntityScale,
+			Height: camera.Target.Y + drawSizeHeight*global.VariableSet.EntityScale,
 		},
 		rl.Vector2{
 			X: 0,

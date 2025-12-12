@@ -18,8 +18,10 @@ func updateZoom(camera *rl.Camera2D, player *objects.Player) {
 		} else if camera.Zoom > maxZoom {
 			camera.Zoom = maxZoom
 		}
-		newX := player.Position.X + 16*global.Scale - global.ScreenWidth*global.Scale/camera.Zoom/2
-		newY := player.Position.Y + 16*global.Scale - global.ScreenHeight*global.Scale/camera.Zoom/2
+		global.Zoom(camera.Zoom, camera)
+
+		newX := player.Position.X + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapWidth/2
+		newY := player.Position.Y + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapHeight/2
 
 		movement.CorrectForZoom(newX, newY, camera)
 	}

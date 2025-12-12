@@ -15,10 +15,10 @@ func prepareCollisions(jsonMap *JsonMap) []*rl.Rectangle {
 
 		for _, obstacle := range jsonMapLayer.Objects {
 			collisionObjects = append(collisionObjects, &rl.Rectangle{
-				X:      obstacle.X * global.Scale,
-				Y:      obstacle.Y * global.Scale,
-				Width:  obstacle.Width * global.Scale,
-				Height: obstacle.Height * global.Scale,
+				X:      obstacle.X * global.VariableSet.EntityScale,
+				Y:      obstacle.Y * global.VariableSet.EntityScale,
+				Width:  obstacle.Width * global.VariableSet.EntityScale,
+				Height: obstacle.Height * global.VariableSet.EntityScale,
 			})
 		}
 	}

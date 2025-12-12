@@ -32,14 +32,14 @@ func preparePlayer(chiliAnimations *Sprites) *Player {
 		AttackLastUse:  time.Time{},
 		AttackCooldown: time.Millisecond * 500,
 		Object: Object{
-			Position:  rl.Vector2{X: global.PlayerStartX * global.Scale, Y: global.PlayerStartY * global.Scale},
+			Position:  rl.Vector2{X: global.PlayerStartX * global.VariableSet.EntityScale, Y: global.PlayerStartY * global.VariableSet.EntityScale},
 			Texture:   chiliAnimations.Texture,
 			Rectangle: chiliAnimations.GetSrc(7),
 			HitBox: rl.Rectangle{
-				X:      0 * global.Scale,
-				Y:      0 * global.Scale,
-				Width:  float32(global.TileWidth) * global.Scale,
-				Height: float32(global.TileWidth) * global.Scale,
+				X:      0,
+				Y:      0,
+				Width:  global.VariableSet.EntitySize,
+				Height: global.VariableSet.EntitySize,
 			},
 		}}
 }

@@ -6,6 +6,7 @@ import (
 	"BirdQuest/movement"
 	objectsPkg "BirdQuest/objects"
 	"BirdQuest/update"
+	"fmt"
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"log"
 	"os"
@@ -13,17 +14,16 @@ import (
 )
 
 func main() {
-	rl.InitWindow(global.ScreenWidth*global.Scale, global.ScreenHeight*global.Scale, "BirdQuest")
+	global.SetDesiredSize(1920, 1080)
 	defer rl.CloseWindow()
 
-	rl.SetTargetFPS(120)
+	global.SetFPS(120)
 
 	camera := rl.Camera2D{}
-	camera.Target = rl.Vector2{
-		X: 0,
-		Y: 0,
-	}
-	camera.Zoom = 3
+	camera.Target = rl.Vector2{}
+	global.Zoom(3, &camera)
+
+	fmt.Println(global.VariableSet)
 
 	cwd, err := os.Getwd()
 	if err != nil {
@@ -41,7 +41,7 @@ func main() {
 	defer rl.UnloadTexture(bloonsSpritesRaw)
 
 	itemObjects, collisionObjects, collisionObjects3d, bloonObjects, player := objectsPkg.InitiateObjects(cwd, itemSpritesRaw, bloonsSpritesRaw, chiliAnimationsRaw, collisionSpritesRaw)
-	movement.InitialiseCamera(player, &camera, global.PlayerStartX, global.PlayerStartY)
+	movement.InitialiseCamera(player, &camera)
 
 	for !rl.WindowShouldClose() { // Detect window close button or ESC key
 		update.Update(&camera, player, itemObjects, collisionObjects, bloonObjects)

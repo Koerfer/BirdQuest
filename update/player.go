@@ -9,18 +9,16 @@ import (
 )
 
 func updatePlayer(camera *rl.Camera2D, player *objects.Player, collisionObjects []*rl.Rectangle, bloonObjects []*objects.Bloon) {
-	fps := rl.GetFPS()
-
 	if player.AttackOngoing {
-		attack.Attack(player, fps)
+		attack.Attack(player)
 	} else if time.Since(player.DashLastUse) < time.Millisecond*200 {
 		movement.ContinueDash(player, camera, collisionObjects)
 	} else {
-		movement.Move(player, camera, fps, collisionObjects)
+		movement.Move(player, camera, collisionObjects)
 
 		if rl.IsKeyPressed(rl.KeySpace) &&
 			player.DashCooldown.Milliseconds() < time.Since(player.DashLastUse).Milliseconds() {
-			movement.Dash(player, camera, fps)
+			movement.Dash(player, camera)
 		}
 		if rl.IsMouseButtonPressed(rl.MouseButtonLeft) &&
 			player.AttackCooldown.Milliseconds() < time.Since(player.AttackLastUse).Milliseconds() {

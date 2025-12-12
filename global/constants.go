@@ -1,7 +1,6 @@
 package global
 
 const (
-	Scale        = 2
 	TileHeight   = 32
 	TileWidth    = 32
 	MapHeight    = 20
