@@ -13,6 +13,11 @@
          "id":0,
          "properties":[
                 {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
+                {
                  "name":"HitBoxHeight",
                  "type":"int",
                  "value":32
@@ -36,6 +41,11 @@
         {
          "id":1,
          "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
                 {
                  "name":"HitBoxHeight",
                  "type":"int",
@@ -61,6 +71,11 @@
          "id":2,
          "properties":[
                 {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
+                {
                  "name":"HitBoxHeight",
                  "type":"int",
                  "value":32
@@ -84,6 +99,11 @@
         {
          "id":3,
          "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
                 {
                  "name":"HitBoxHeight",
                  "type":"int",
@@ -109,6 +129,11 @@
          "id":4,
          "properties":[
                 {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
+                {
                  "name":"HitBoxHeight",
                  "type":"int",
                  "value":32
@@ -133,6 +158,11 @@
          "id":6,
          "properties":[
                 {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
+                {
                  "name":"HitBoxHeight",
                  "type":"int",
                  "value":32
@@ -156,6 +186,11 @@
         {
          "id":7,
          "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
                 {
                  "name":"HitBoxHeight",
                  "type":"int",
@@ -253,6 +288,11 @@
          "id":11,
          "properties":[
                 {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
+                {
                  "name":"HitBoxHeight",
                  "type":"int",
                  "value":32
@@ -276,6 +316,11 @@
         {
          "id":12,
          "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
                 {
                  "name":"HitBoxHeight",
                  "type":"int",
@@ -421,6 +466,11 @@
          "id":19,
          "properties":[
                 {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
+                {
                  "name":"HitBoxHeight",
                  "type":"int",
                  "value":32
@@ -445,6 +495,11 @@
          "id":20,
          "properties":[
                 {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
+                {
                  "name":"HitBoxHeight",
                  "type":"int",
                  "value":32
@@ -466,8 +521,31 @@
                 }]
         }, 
         {
+         "id":22,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":23,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
          "id":24,
          "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
                 {
                  "name":"HitBoxHeight",
                  "type":"int",
@@ -490,8 +568,22 @@
                 }]
         }, 
         {
+         "id":25,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
          "id":26,
          "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
                 {
                  "name":"HitBoxHeight",
                  "type":"int",
@@ -511,6 +603,24 @@
                  "name":"HitBoxY",
                  "type":"int",
                  "value":0
+                }]
+        }, 
+        {
+         "id":30,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":31,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
                 }]
         }, 
         {
@@ -588,6 +698,24 @@
                  "name":"HitBoxY",
                  "type":"int",
                  "value":0
+                }]
+        }, 
+        {
+         "id":38,
+         "properties":[
+                {
+                 "name":"AlwaysFirst",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":39,
+         "properties":[
+                {
+                 "name":"AlwaysFirst",
+                 "type":"int",
+                 "value":1
                 }]
         }, 
         {

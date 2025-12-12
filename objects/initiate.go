@@ -158,6 +158,13 @@ func prepareSprites(rawSprites rl.Texture2D, jsonObject *JsonSprites, startGid i
 				default:
 					property.AlwaysRenderLast = false
 				}
+			case "AlwaysFirst":
+				switch jsonProperty.Value {
+				case 1:
+					property.AlwaysRenderFirst = true
+				default:
+					property.AlwaysRenderFirst = false
+				}
 			}
 		}
 		sprites.Properties = append(sprites.Properties, property)
@@ -242,6 +249,7 @@ func prepareObject(i, val, startId, n int, sprites *Sprites) *Object {
 				Height: float32(property.HitBoxHeight) * global.VariableSet.EntityScale,
 			}
 			object.AlwaysRenderLast = property.AlwaysRenderLast
+			object.AlwaysRenderFirst = property.AlwaysRenderFirst
 			break
 		}
 	}

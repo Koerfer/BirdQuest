@@ -8,6 +8,11 @@ func drawCollisionObjects(collisionObjects []*objects.Object, player *objects.Pl
 	var drawAfterPlayer []*objects.Object
 
 	for _, collisionObject := range collisionObjects {
+		if collisionObject.AlwaysRenderFirst {
+			drawObject(collisionObject)
+			continue
+		}
+
 		if collisionObject.AlwaysRenderLast {
 			if drawAfterPlayer == nil {
 				drawAfterPlayer = make([]*objects.Object, 0)

@@ -47,9 +47,9 @@ func StartAttack(player *objects.Player, bloons []*objects.Bloon) {
 		if bloons[hitId].Lives == 0 {
 			bloons[hitId].PoppingAnimationStage = 1
 		} else {
-			bloons[hitId].Rectangle.X = float32(int(bloons[hitId].Rectangle.X+32) % int(bloons[hitId].Texture.Width))
+			bloons[hitId].Rectangle.X = float32(int(bloons[hitId].Rectangle.X+global.TileWidth) % int(bloons[hitId].Texture.Width))
 			if bloons[hitId].Rectangle.X == 0 {
-				bloons[hitId].Rectangle.X += 32
+				bloons[hitId].Rectangle.X += global.TileWidth
 			}
 		}
 
