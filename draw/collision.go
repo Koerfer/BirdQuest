@@ -7,7 +7,7 @@ import (
 func drawCollisionObjects(player *scene.Player) []*scene.Object {
 	var drawAfterPlayer []*scene.Object
 
-	for _, collisionObject := range scene.CurrentScene.CollisionObjects3d {
+	for _, collisionObject := range scene.CurrentScene.CollisionObjects {
 		if collisionObject.AlwaysRenderFirst {
 			drawObject(collisionObject)
 			continue

@@ -11,15 +11,15 @@ type Object struct {
 	AlwaysRenderFirst bool
 }
 
-type Sprites struct {
+type sprites struct {
 	Texture      rl.Texture2D
 	TileWidth    int
 	TileHeight   int
 	WidthInTiles int
-	Properties   []*Property
+	Properties   []*property
 }
 
-type Property struct {
+type property struct {
 	id                int
 	HitBoxX           int
 	HitBoxY           int
@@ -29,7 +29,7 @@ type Property struct {
 	AlwaysRenderFirst bool
 }
 
-func (s *Sprites) GetSrc(id int) rl.Rectangle {
+func (s *sprites) GetRectangleAreaInTexture(id int) rl.Rectangle {
 	x := id % s.WidthInTiles
 	y := id / s.WidthInTiles
 

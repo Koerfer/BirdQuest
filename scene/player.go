@@ -3,12 +3,13 @@ package scene
 import (
 	"BirdQuest/global"
 	rl "github.com/gen2brain/raylib-go/raylib"
+	"path/filepath"
 	"time"
 )
 
 type Player struct {
 	Object
-	Animation     *Sprites
+	Animation     *sprites
 	IsMoving      bool
 	AnimationStep int
 	Rotation      float32
@@ -21,7 +22,16 @@ type Player struct {
 	AttackOngoing  bool
 }
 
-func preparePlayer(chiliAnimations *Sprites) *Player {
+func preparePlayer(path string) *Player {
+	chiliAnimationsRaw := rl.LoadTexture(filepath.Join(path, "chili.png"))
+
+	chiliAnimations := &sprites{
+		Texture:      chiliAnimationsRaw,
+		TileWidth:    global.TileWidth,
+		TileHeight:   global.TileHeight,
+		WidthInTiles: int(chiliAnimationsRaw.Width) / global.TileWidth,
+	}
+
 	return &Player{
 		IsMoving:       false,
 		AnimationStep:  0,
@@ -34,7 +44,7 @@ func preparePlayer(chiliAnimations *Sprites) *Player {
 		Object: Object{
 			Position:  rl.Vector2{},
 			Texture:   chiliAnimations.Texture,
-			Rectangle: chiliAnimations.GetSrc(7),
+			Rectangle: chiliAnimations.GetRectangleAreaInTexture(7),
 			HitBox: rl.Rectangle{
 				X:      0,
 				Y:      0,

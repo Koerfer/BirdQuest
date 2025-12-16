@@ -5,8 +5,8 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func prepareCollisions(jsonMap *JsonMap) []*rl.Rectangle {
-	collisionObjects := make([]*rl.Rectangle, 0)
+func prepareCollisions(jsonMap *jsonMap) []*rl.Rectangle {
+	collisionBoxes := make([]*rl.Rectangle, 0)
 
 	for _, jsonMapLayer := range jsonMap.Layers {
 		if jsonMapLayer.Name != "Collisions" {
@@ -14,7 +14,7 @@ func prepareCollisions(jsonMap *JsonMap) []*rl.Rectangle {
 		}
 
 		for _, obstacle := range jsonMapLayer.Objects {
-			collisionObjects = append(collisionObjects, &rl.Rectangle{
+			collisionBoxes = append(collisionBoxes, &rl.Rectangle{
 				X:      obstacle.X * global.VariableSet.EntityScale,
 				Y:      obstacle.Y * global.VariableSet.EntityScale,
 				Width:  obstacle.Width * global.VariableSet.EntityScale,
@@ -23,5 +23,5 @@ func prepareCollisions(jsonMap *JsonMap) []*rl.Rectangle {
 		}
 	}
 
-	return collisionObjects
+	return collisionBoxes
 }

@@ -16,7 +16,7 @@ func StartAttack(player *scene.Player) {
 	player.AttackOngoing = true
 
 	player.AnimationStep = 3
-	player.Rectangle = player.Animation.GetSrc(player.AnimationStep)
+	player.Rectangle = player.Animation.GetRectangleAreaInTexture(player.AnimationStep)
 
 	var hit bool
 	var hitId int
@@ -67,7 +67,7 @@ func Attack(player *scene.Player) {
 			player.AttackOngoing = false
 			return
 		}
-		player.Rectangle = player.Animation.GetSrc(player.AnimationStep)
+		player.Rectangle = player.Animation.GetRectangleAreaInTexture(player.AnimationStep)
 	}
 	frameCounter++
 

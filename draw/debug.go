@@ -17,7 +17,7 @@ func drawDebugInfo(camera rl.Camera2D, player *scene.Player) {
 		rl.DrawRectanglePro(object.HitBox, rl.Vector2{X: 0, Y: 0}, 0, rl.Pink)
 	}
 
-	for _, object := range scene.CurrentScene.CollisionObjects {
+	for _, object := range scene.CurrentScene.CollisionBoxes {
 		if object == nil {
 			continue
 		}
