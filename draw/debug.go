@@ -2,13 +2,12 @@ package draw
 
 import (
 	"BirdQuest/global"
-	"BirdQuest/objects"
 	"BirdQuest/scene"
 	"fmt"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func drawDebugInfo(camera rl.Camera2D, player *objects.Player) {
+func drawDebugInfo(camera rl.Camera2D, player *scene.Player) {
 	//rl.DrawFPS(int32(camera.Target.X+5), int32(camera.Target.Y+5))
 
 	for _, object := range scene.CurrentScene.ItemObjects {

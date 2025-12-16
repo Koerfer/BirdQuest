@@ -1,4 +1,4 @@
-package objects
+package scene
 
 import (
 	"BirdQuest/global"
@@ -236,8 +236,8 @@ func prepareObject(i, val, startId, n int, sprites *Sprites) *Object {
 		return nil
 	}
 
-	x := float32(i % global.MapWidth * global.TileWidth)
-	y := float32(i / global.MapWidth * global.TileWidth)
+	x := float32(i % CurrentScene.WidthInTiles * global.TileWidth)
+	y := float32(i / CurrentScene.WidthInTiles * global.TileWidth)
 
 	object := &Object{
 		Position:  rl.Vector2{X: x * global.VariableSet.EntityScale, Y: y * global.VariableSet.EntityScale},

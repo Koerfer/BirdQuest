@@ -2,7 +2,6 @@ package draw
 
 import (
 	"BirdQuest/global"
-	"BirdQuest/objects"
 	"BirdQuest/scene"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
@@ -13,7 +12,7 @@ func drawObjects() {
 	}
 }
 
-func drawObject(object *objects.Object) {
+func drawObject(object *scene.Object) {
 	if object == nil {
 		return
 	}

@@ -2,13 +2,12 @@ package update
 
 import (
 	"BirdQuest/global"
-	"BirdQuest/objects"
 	"BirdQuest/scene"
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"slices"
 )
 
-func killItems(player *objects.Player) {
+func killItems(player *scene.Player) {
 	var objectsToRemove []int
 	for i, object := range scene.CurrentScene.ItemObjects {
 		if object == nil {

@@ -3,12 +3,12 @@ package update
 import (
 	"BirdQuest/attack"
 	"BirdQuest/movement"
-	"BirdQuest/objects"
+	"BirdQuest/scene"
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"time"
 )
 
-func updatePlayer(camera *rl.Camera2D, player *objects.Player) {
+func updatePlayer(camera *rl.Camera2D, player *scene.Player) {
 	if player.AttackOngoing {
 		attack.Attack(player)
 	} else if time.Since(player.DashLastUse) < time.Millisecond*200 {

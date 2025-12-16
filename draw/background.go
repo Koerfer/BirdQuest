@@ -9,13 +9,13 @@ import (
 func drawBackground(camera rl.Camera2D) {
 	rl.ClearBackground(rl.Black)
 
-	drawSizeWidth := global.ScreenWidth/camera.Zoom + 20
-	drawSizeHeight := global.ScreenHeight/camera.Zoom + 20
-	if drawSizeWidth > global.ScreenWidth {
-		drawSizeWidth = global.ScreenWidth
+	drawSizeWidth := scene.CurrentScene.Width/camera.Zoom + 20
+	drawSizeHeight := scene.CurrentScene.Height/camera.Zoom + 20
+	if drawSizeWidth > scene.CurrentScene.Width {
+		drawSizeWidth = scene.CurrentScene.Width
 	}
-	if drawSizeHeight > global.ScreenHeight {
-		drawSizeHeight = global.ScreenHeight
+	if drawSizeHeight > scene.CurrentScene.Height {
+		drawSizeHeight = scene.CurrentScene.Height
 	}
 	rl.DrawTexturePro(
 		scene.CurrentScene.Background,

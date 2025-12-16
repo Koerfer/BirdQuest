@@ -1,4 +1,4 @@
-package objects
+package scene
 
 type Bloon struct {
 	Object

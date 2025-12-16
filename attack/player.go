@@ -2,7 +2,6 @@ package attack
 
 import (
 	"BirdQuest/global"
-	"BirdQuest/objects"
 	"BirdQuest/scene"
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"time"
@@ -10,7 +9,7 @@ import (
 
 var frameCounter int
 
-func StartAttack(player *objects.Player) {
+func StartAttack(player *scene.Player) {
 	frameCounter = 0
 
 	player.AttackLastUse = time.Now()
@@ -59,7 +58,7 @@ func StartAttack(player *objects.Player) {
 	}
 }
 
-func Attack(player *objects.Player) {
+func Attack(player *scene.Player) {
 
 	if frameCounter >= int(4/global.VariableSet.FpsScale) {
 		frameCounter = 0

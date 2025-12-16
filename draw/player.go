@@ -2,11 +2,11 @@ package draw
 
 import (
 	"BirdQuest/global"
-	"BirdQuest/objects"
+	"BirdQuest/scene"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func drawPlayer(player *objects.Player) {
+func drawPlayer(player *scene.Player) {
 	var shadowOffset float32 = 20
 	if !player.IsMoving && !player.AttackOngoing {
 		shadowOffset = 2

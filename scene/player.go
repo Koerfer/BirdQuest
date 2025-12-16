@@ -1,4 +1,4 @@
-package objects
+package scene
 
 import (
 	"BirdQuest/global"
@@ -32,7 +32,7 @@ func preparePlayer(chiliAnimations *Sprites) *Player {
 		AttackLastUse:  time.Time{},
 		AttackCooldown: time.Millisecond * 500,
 		Object: Object{
-			Position:  rl.Vector2{X: global.PlayerStartX * global.VariableSet.EntityScale, Y: global.PlayerStartY * global.VariableSet.EntityScale},
+			Position:  rl.Vector2{},
 			Texture:   chiliAnimations.Texture,
 			Rectangle: chiliAnimations.GetSrc(7),
 			HitBox: rl.Rectangle{

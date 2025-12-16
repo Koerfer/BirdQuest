@@ -1,12 +1,11 @@
 package draw
 
 import (
-	"BirdQuest/objects"
 	"BirdQuest/scene"
 )
 
-func drawCollisionObjects(player *objects.Player) []*objects.Object {
-	var drawAfterPlayer []*objects.Object
+func drawCollisionObjects(player *scene.Player) []*scene.Object {
+	var drawAfterPlayer []*scene.Object
 
 	for _, collisionObject := range scene.CurrentScene.CollisionObjects3d {
 		if collisionObject.AlwaysRenderFirst {
@@ -16,7 +15,7 @@ func drawCollisionObjects(player *objects.Player) []*objects.Object {
 
 		if collisionObject.AlwaysRenderLast {
 			if drawAfterPlayer == nil {
-				drawAfterPlayer = make([]*objects.Object, 0)
+				drawAfterPlayer = make([]*scene.Object, 0)
 			}
 
 			drawAfterPlayer = append(drawAfterPlayer, collisionObject)
@@ -25,7 +24,7 @@ func drawCollisionObjects(player *objects.Player) []*objects.Object {
 
 		if collisionObject.Position.Y >= player.Position.Y {
 			if drawAfterPlayer == nil {
-				drawAfterPlayer = make([]*objects.Object, 0)
+				drawAfterPlayer = make([]*scene.Object, 0)
 			}
 
 			drawAfterPlayer = append(drawAfterPlayer, collisionObject)
@@ -38,7 +37,7 @@ func drawCollisionObjects(player *objects.Player) []*objects.Object {
 	return drawAfterPlayer
 }
 
-func drawCollisionObjectsAfterPlayer(collisionObjects []*objects.Object) {
+func drawCollisionObjectsAfterPlayer(collisionObjects []*scene.Object) {
 	if collisionObjects == nil {
 		return
 	}

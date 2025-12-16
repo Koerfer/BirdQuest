@@ -35,20 +35,6 @@ func SetDesiredWindowSize(width, height float32) {
 	rl.InitWindow(int32(width), int32(height), "BirdQuest")
 	VariableSet.DesiredHeight = height
 	VariableSet.DesiredWidth = width
-
-	VariableSet.EntityScale = width / ScreenWidth
-	VariableSet.ScaleHeight = height / ScreenHeight
-	VariableSet.ScaleWidth = width / ScreenWidth
-
-	if VariableSet.EntityScale < height/ScreenHeight {
-		VariableSet.EntityScale = height / ScreenHeight
-	}
-
-	VariableSet.MapHeight = MapHeight * TileHeight * VariableSet.EntityScale
-	VariableSet.MapWidth = MapWidth * TileWidth * VariableSet.EntityScale
-
-	VariableSet.PlayerMiddleOffset = TileWidth / 2 * VariableSet.EntityScale
-	VariableSet.EntitySize = TileWidth * VariableSet.EntityScale
 }
 
 func SetFPS(fps int32) {

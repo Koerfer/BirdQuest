@@ -2,7 +2,6 @@ package movement
 
 import (
 	"BirdQuest/global"
-	"BirdQuest/objects"
 	"BirdQuest/scene"
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"math"
@@ -11,7 +10,7 @@ import (
 
 var frameCounter int
 
-func Dash(player *objects.Player, camera *rl.Camera2D) {
+func Dash(player *scene.Player, camera *rl.Camera2D) {
 	player.DashLastUse = time.Now()
 
 	mousePositionAbsolute := rl.GetMousePosition()
@@ -32,7 +31,7 @@ func Dash(player *objects.Player, camera *rl.Camera2D) {
 	player.DashDirection = dashDirection
 }
 
-func ContinueDash(player *objects.Player, camera *rl.Camera2D) {
+func ContinueDash(player *scene.Player, camera *rl.Camera2D) {
 	player.IsMoving = true
 	player.AnimationStep = 1
 	player.Rectangle = player.Animation.GetSrc(player.AnimationStep)
@@ -52,7 +51,7 @@ func ContinueDash(player *objects.Player, camera *rl.Camera2D) {
 	player.HitBox.Y = player.Position.Y
 }
 
-func Move(player *objects.Player, camera *rl.Camera2D) {
+func Move(player *scene.Player, camera *rl.Camera2D) {
 	up := rl.IsKeyDown(rl.KeyW)
 	down := rl.IsKeyDown(rl.KeyS)
 	left := rl.IsKeyDown(rl.KeyA)
@@ -155,7 +154,7 @@ func Move(player *objects.Player, camera *rl.Camera2D) {
 
 }
 
-func moveUp(player *objects.Player, camera *rl.Camera2D, offset float32) {
+func moveUp(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	var collided bool
 	var collisionPoint float32
 	var lastPosition float32
@@ -191,7 +190,7 @@ func moveUp(player *objects.Player, camera *rl.Camera2D, offset float32) {
 	moveCameraUp(player, camera, offset)
 }
 
-func moveDown(player *objects.Player, camera *rl.Camera2D, offset float32) {
+func moveDown(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	var collided bool
 	var collisionPoint float32 = math.MaxFloat32
 	var lastPosition float32
@@ -227,7 +226,7 @@ func moveDown(player *objects.Player, camera *rl.Camera2D, offset float32) {
 	moveCameraDown(player, camera, offset)
 }
 
-func moveRight(player *objects.Player, camera *rl.Camera2D, offset float32) {
+func moveRight(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	var collided bool
 	var collisionPoint float32 = math.MaxFloat32
 	var lastPosition float32
@@ -263,7 +262,7 @@ func moveRight(player *objects.Player, camera *rl.Camera2D, offset float32) {
 	moveCameraRight(player, camera, offset)
 }
 
-func moveLeft(player *objects.Player, camera *rl.Camera2D, offset float32) {
+func moveLeft(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	var collided bool
 	var collisionPoint float32
 	var lastPosition float32
