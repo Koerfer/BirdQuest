@@ -3,6 +3,7 @@ package movement
 import (
 	"BirdQuest/global"
 	"BirdQuest/objects"
+	"BirdQuest/scene"
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"math"
 	"time"
@@ -31,27 +32,27 @@ func Dash(player *objects.Player, camera *rl.Camera2D) {
 	player.DashDirection = dashDirection
 }
 
-func ContinueDash(player *objects.Player, camera *rl.Camera2D, collisionObjects []*rl.Rectangle) {
+func ContinueDash(player *objects.Player, camera *rl.Camera2D) {
 	player.IsMoving = true
 	player.AnimationStep = 1
 	player.Rectangle = player.Animation.GetSrc(player.AnimationStep)
 	if player.DashDirection.Y < 0 {
-		moveUp(player, camera, -player.DashDirection.Y, collisionObjects)
+		moveUp(player, camera, -player.DashDirection.Y)
 	} else {
-		moveDown(player, camera, player.DashDirection.Y, collisionObjects)
+		moveDown(player, camera, player.DashDirection.Y)
 	}
 
 	if player.DashDirection.X < 0 {
-		moveLeft(player, camera, -player.DashDirection.X, collisionObjects)
+		moveLeft(player, camera, -player.DashDirection.X)
 	} else {
-		moveRight(player, camera, player.DashDirection.X, collisionObjects)
+		moveRight(player, camera, player.DashDirection.X)
 	}
 
 	player.HitBox.X = player.Position.X
 	player.HitBox.Y = player.Position.Y
 }
 
-func Move(player *objects.Player, camera *rl.Camera2D, collisionObjects []*rl.Rectangle) {
+func Move(player *objects.Player, camera *rl.Camera2D) {
 	up := rl.IsKeyDown(rl.KeyW)
 	down := rl.IsKeyDown(rl.KeyS)
 	left := rl.IsKeyDown(rl.KeyA)
@@ -88,45 +89,45 @@ func Move(player *objects.Player, camera *rl.Camera2D, collisionObjects []*rl.Re
 		player.IsMoving = true
 		player.Rotation = 45
 
-		moveUp(player, camera, diagonalSpeed, collisionObjects)
-		moveRight(player, camera, diagonalSpeed, collisionObjects)
+		moveUp(player, camera, diagonalSpeed)
+		moveRight(player, camera, diagonalSpeed)
 	} else if up && left {
 		player.IsMoving = true
 		player.Rotation = 315
 
-		moveUp(player, camera, diagonalSpeed, collisionObjects)
-		moveLeft(player, camera, diagonalSpeed, collisionObjects)
+		moveUp(player, camera, diagonalSpeed)
+		moveLeft(player, camera, diagonalSpeed)
 	} else if down && left {
 		player.IsMoving = true
 		player.Rotation = 225
 
-		moveDown(player, camera, diagonalSpeed, collisionObjects)
-		moveLeft(player, camera, diagonalSpeed, collisionObjects)
+		moveDown(player, camera, diagonalSpeed)
+		moveLeft(player, camera, diagonalSpeed)
 	} else if down && right {
 		player.IsMoving = true
 		player.Rotation = 135
 
-		moveDown(player, camera, diagonalSpeed, collisionObjects)
-		moveRight(player, camera, diagonalSpeed, collisionObjects)
+		moveDown(player, camera, diagonalSpeed)
+		moveRight(player, camera, diagonalSpeed)
 	} else if up {
 		player.IsMoving = true
 		player.Rotation = 0
 
-		moveUp(player, camera, normalSpeed, collisionObjects)
+		moveUp(player, camera, normalSpeed)
 	} else if down {
 		player.IsMoving = true
 		player.Rotation = 180
-		moveDown(player, camera, normalSpeed, collisionObjects)
+		moveDown(player, camera, normalSpeed)
 	} else if right {
 		player.IsMoving = true
 		player.Rotation = 90
 
-		moveRight(player, camera, normalSpeed, collisionObjects)
+		moveRight(player, camera, normalSpeed)
 	} else if left {
 		player.IsMoving = true
 		player.Rotation = 270
 
-		moveLeft(player, camera, normalSpeed, collisionObjects)
+		moveLeft(player, camera, normalSpeed)
 	} else {
 		player.IsMoving = false
 	}
@@ -154,13 +155,13 @@ func Move(player *objects.Player, camera *rl.Camera2D, collisionObjects []*rl.Re
 
 }
 
-func moveUp(player *objects.Player, camera *rl.Camera2D, offset float32, collisionObjects []*rl.Rectangle) {
+func moveUp(player *objects.Player, camera *rl.Camera2D, offset float32) {
 	var collided bool
 	var collisionPoint float32
 	var lastPosition float32
 
 	newPlayerHitBoxY := player.HitBox.Y - offset
-	for _, collisionObject := range collisionObjects {
+	for _, collisionObject := range scene.CurrentScene.CollisionObjects {
 		if player.HitBox.X+player.HitBox.Width > collisionObject.X &&
 			player.HitBox.X < collisionObject.X+collisionObject.Width &&
 			player.HitBox.Y > collisionObject.Y &&
@@ -190,13 +191,13 @@ func moveUp(player *objects.Player, camera *rl.Camera2D, offset float32, collisi
 	moveCameraUp(player, camera, offset)
 }
 
-func moveDown(player *objects.Player, camera *rl.Camera2D, offset float32, collisionObjects []*rl.Rectangle) {
+func moveDown(player *objects.Player, camera *rl.Camera2D, offset float32) {
 	var collided bool
 	var collisionPoint float32 = math.MaxFloat32
 	var lastPosition float32
 
 	newPlayerHitBoxY := player.HitBox.Y + offset
-	for _, collisionObject := range collisionObjects {
+	for _, collisionObject := range scene.CurrentScene.CollisionObjects {
 		if player.HitBox.X+player.HitBox.Width > collisionObject.X &&
 			player.HitBox.X < collisionObject.X+collisionObject.Width &&
 			player.HitBox.Y+player.HitBox.Height <= collisionObject.Y &&
@@ -226,13 +227,13 @@ func moveDown(player *objects.Player, camera *rl.Camera2D, offset float32, colli
 	moveCameraDown(player, camera, offset)
 }
 
-func moveRight(player *objects.Player, camera *rl.Camera2D, offset float32, collisionObjects []*rl.Rectangle) {
+func moveRight(player *objects.Player, camera *rl.Camera2D, offset float32) {
 	var collided bool
 	var collisionPoint float32 = math.MaxFloat32
 	var lastPosition float32
 
 	newPlayerHitBoxX := player.HitBox.X + offset
-	for _, collisionObject := range collisionObjects {
+	for _, collisionObject := range scene.CurrentScene.CollisionObjects {
 		if player.HitBox.X+player.HitBox.Width <= collisionObject.X &&
 			newPlayerHitBoxX+player.HitBox.Width > collisionObject.X &&
 			player.HitBox.Y+player.HitBox.Height > collisionObject.Y &&
@@ -262,12 +263,12 @@ func moveRight(player *objects.Player, camera *rl.Camera2D, offset float32, coll
 	moveCameraRight(player, camera, offset)
 }
 
-func moveLeft(player *objects.Player, camera *rl.Camera2D, offset float32, collisionObjects []*rl.Rectangle) {
+func moveLeft(player *objects.Player, camera *rl.Camera2D, offset float32) {
 	var collided bool
 	var collisionPoint float32
 	var lastPosition float32
 	newPlayerHitBoxX := player.HitBox.X - offset
-	for _, collisionObject := range collisionObjects {
+	for _, collisionObject := range scene.CurrentScene.CollisionObjects {
 		if player.HitBox.X > collisionObject.X &&
 			newPlayerHitBoxX < collisionObject.X+collisionObject.Width &&
 			player.HitBox.Y+player.HitBox.Height > collisionObject.Y &&

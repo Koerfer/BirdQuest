@@ -3,11 +3,12 @@ package draw
 import (
 	"BirdQuest/global"
 	"BirdQuest/objects"
+	"BirdQuest/scene"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func drawObjects(objects []*objects.Object) {
-	for _, object := range objects {
+func drawObjects() {
+	for _, object := range scene.CurrentScene.ItemObjects {
 		drawObject(object)
 	}
 }

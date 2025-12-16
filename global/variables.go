@@ -28,17 +28,17 @@ type Variables struct {
 
 var VariableSet *Variables
 
-func SetDesiredSize(width, height float32) {
+func SetDesiredWindowSize(width, height float32) {
 	if VariableSet == nil {
 		VariableSet = &Variables{}
 	}
 	rl.InitWindow(int32(width), int32(height), "BirdQuest")
+	VariableSet.DesiredHeight = height
+	VariableSet.DesiredWidth = width
 
 	VariableSet.EntityScale = width / ScreenWidth
 	VariableSet.ScaleHeight = height / ScreenHeight
 	VariableSet.ScaleWidth = width / ScreenWidth
-	VariableSet.DesiredHeight = height
-	VariableSet.DesiredWidth = width
 
 	if VariableSet.EntityScale < height/ScreenHeight {
 		VariableSet.EntityScale = height / ScreenHeight

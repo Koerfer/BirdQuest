@@ -2,10 +2,11 @@ package draw
 
 import (
 	"BirdQuest/global"
+	"BirdQuest/scene"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func drawBackground(camera rl.Camera2D, backgroundRaw rl.Texture2D) {
+func drawBackground(camera rl.Camera2D) {
 	rl.ClearBackground(rl.Black)
 
 	drawSizeWidth := global.ScreenWidth/camera.Zoom + 20
@@ -17,7 +18,7 @@ func drawBackground(camera rl.Camera2D, backgroundRaw rl.Texture2D) {
 		drawSizeHeight = global.ScreenHeight
 	}
 	rl.DrawTexturePro(
-		backgroundRaw,
+		scene.CurrentScene.Background,
 		rl.Rectangle{
 			X:      camera.Target.X / global.VariableSet.EntityScale,
 			Y:      camera.Target.Y / global.VariableSet.EntityScale,

@@ -2,12 +2,13 @@ package draw
 
 import (
 	"BirdQuest/objects"
+	"BirdQuest/scene"
 )
 
-func drawCollisionObjects(collisionObjects []*objects.Object, player *objects.Player) []*objects.Object {
+func drawCollisionObjects(player *objects.Player) []*objects.Object {
 	var drawAfterPlayer []*objects.Object
 
-	for _, collisionObject := range collisionObjects {
+	for _, collisionObject := range scene.CurrentScene.CollisionObjects3d {
 		if collisionObject.AlwaysRenderFirst {
 			drawObject(collisionObject)
 			continue

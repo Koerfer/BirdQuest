@@ -3,13 +3,14 @@ package update
 import (
 	"BirdQuest/global"
 	"BirdQuest/objects"
+	"BirdQuest/scene"
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"slices"
 )
 
-func killItems(player *objects.Player, itemObjects []*objects.Object, bloonObjects []*objects.Bloon) {
+func killItems(player *objects.Player) {
 	var objectsToRemove []int
-	for i, object := range itemObjects {
+	for i, object := range scene.CurrentScene.ItemObjects {
 		if object == nil {
 			continue
 		}
@@ -19,10 +20,10 @@ func killItems(player *objects.Player, itemObjects []*objects.Object, bloonObjec
 	}
 
 	for _, remove := range objectsToRemove {
-		itemObjects = slices.Delete(itemObjects, remove, remove+1)
+		scene.CurrentScene.ItemObjects = slices.Delete(scene.CurrentScene.ItemObjects, remove, remove+1)
 	}
 
-	for i, bloon := range bloonObjects {
+	for i, bloon := range scene.CurrentScene.BloonObjects {
 		if bloon == nil {
 			continue
 		}
@@ -38,7 +39,7 @@ func killItems(player *objects.Player, itemObjects []*objects.Object, bloonObjec
 		}
 
 		if bloon.PoppingAnimationStage == 5 {
-			bloonObjects = slices.Delete(bloonObjects, i, i+1)
+			scene.CurrentScene.BloonObjects = slices.Delete(scene.CurrentScene.BloonObjects, i, i+1)
 		}
 
 	}

@@ -3,13 +3,14 @@ package attack
 import (
 	"BirdQuest/global"
 	"BirdQuest/objects"
+	"BirdQuest/scene"
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"time"
 )
 
 var frameCounter int
 
-func StartAttack(player *objects.Player, bloons []*objects.Bloon) {
+func StartAttack(player *objects.Player) {
 	frameCounter = 0
 
 	player.AttackLastUse = time.Now()
@@ -26,7 +27,7 @@ func StartAttack(player *objects.Player, bloons []*objects.Bloon) {
 		Width:  player.HitBox.Width + 5*global.VariableSet.EntityScale,
 		Height: player.HitBox.Height + 5*global.VariableSet.EntityScale,
 	}
-	for i, bloon := range bloons {
+	for i, bloon := range scene.CurrentScene.BloonObjects {
 		if bloon == nil {
 			continue
 		}
@@ -39,6 +40,7 @@ func StartAttack(player *objects.Player, bloons []*objects.Bloon) {
 	extendedPlayerHitBox = nil
 
 	if hit {
+		bloons := scene.CurrentScene.BloonObjects
 		if bloons[hitId].Lives == 0 {
 			return
 		}

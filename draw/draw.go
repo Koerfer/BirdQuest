@@ -7,32 +7,25 @@ import (
 
 var debug = false
 
-func Draw(
-	camera rl.Camera2D,
-	itemObjects []*objects.Object,
-	collisionObjects []*rl.Rectangle,
-	collisionObjects3d []*objects.Object,
-	bloonObjects []*objects.Bloon,
-	player *objects.Player,
-	backgroundRaw rl.Texture2D) {
+func Draw(camera rl.Camera2D, player *objects.Player) {
 	rl.BeginDrawing()
 
 	rl.BeginMode2D(camera)
 
-	drawBackground(camera, backgroundRaw)
+	drawBackground(camera)
 
-	drawObjects(itemObjects)
+	drawObjects()
 
-	drawBloons(bloonObjects)
+	drawBloons()
 
-	drawAfterPlayer := drawCollisionObjects(collisionObjects3d, player)
+	drawAfterPlayer := drawCollisionObjects(player)
 
 	drawPlayer(player)
 
 	drawCollisionObjectsAfterPlayer(drawAfterPlayer)
 
 	if debug {
-		drawDebugInfo(camera, player, itemObjects, collisionObjects, bloonObjects)
+		drawDebugInfo(camera, player)
 	}
 
 	rl.EndDrawing()

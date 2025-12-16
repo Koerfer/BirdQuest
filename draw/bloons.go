@@ -2,12 +2,12 @@ package draw
 
 import (
 	"BirdQuest/global"
-	"BirdQuest/objects"
+	"BirdQuest/scene"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func drawBloons(bloons []*objects.Bloon) {
-	for _, bloon := range bloons {
+func drawBloons() {
+	for _, bloon := range scene.CurrentScene.BloonObjects {
 		if bloon == nil {
 			continue
 		}

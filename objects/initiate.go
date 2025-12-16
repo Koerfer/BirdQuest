@@ -54,21 +54,26 @@ type JsonTiles struct {
 	Properties []*JsonProperty `json:"properties"`
 }
 
-func InitiateObjects(cwd string, itemSpritesRaw, bloonsSpritesRaw, chiliAnimationsRaw, collisionSpritesRaw rl.Texture2D) ([]*Object, []*rl.Rectangle, []*Object, []*Bloon, *Player) {
+func InitiateObjects(path string) ([]*Object, []*rl.Rectangle, []*Object, []*Bloon, *Player) {
 
-	jsonMapContents, err := os.ReadFile(filepath.Join(cwd, "sprites/map.tmj"))
+	itemSpritesRaw := rl.LoadTexture(filepath.Join(path, "item_sprites.png"))
+	collisionSpritesRaw := rl.LoadTexture(filepath.Join(path, "collision_sprites.png"))
+	chiliAnimationsRaw := rl.LoadTexture(filepath.Join(path, "chili.png"))
+	bloonsSpritesRaw := rl.LoadTexture(filepath.Join(path, "bloons.png"))
+
+	jsonMapContents, err := os.ReadFile(filepath.Join(path, "map.tmj"))
 	if err != nil {
 		log.Fatal(err)
 	}
-	jsonItemsContents, err := os.ReadFile(filepath.Join(cwd, "sprites/items.tsj"))
+	jsonItemsContents, err := os.ReadFile(filepath.Join(path, "items.tsj"))
 	if err != nil {
 		log.Fatal(err)
 	}
-	jsonBloonsContents, err := os.ReadFile(filepath.Join(cwd, "sprites/bloons.tsj"))
+	jsonBloonsContents, err := os.ReadFile(filepath.Join(path, "bloons.tsj"))
 	if err != nil {
 		log.Fatal(err)
 	}
-	jsonCollisionContents, err := os.ReadFile(filepath.Join(cwd, "sprites/collisions.tsj"))
+	jsonCollisionContents, err := os.ReadFile(filepath.Join(path, "collisions.tsj"))
 	if err != nil {
 		log.Fatal(err)
 	}

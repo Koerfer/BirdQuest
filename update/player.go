@@ -8,13 +8,13 @@ import (
 	"time"
 )
 
-func updatePlayer(camera *rl.Camera2D, player *objects.Player, collisionObjects []*rl.Rectangle, bloonObjects []*objects.Bloon) {
+func updatePlayer(camera *rl.Camera2D, player *objects.Player) {
 	if player.AttackOngoing {
 		attack.Attack(player)
 	} else if time.Since(player.DashLastUse) < time.Millisecond*200 {
-		movement.ContinueDash(player, camera, collisionObjects)
+		movement.ContinueDash(player, camera)
 	} else {
-		movement.Move(player, camera, collisionObjects)
+		movement.Move(player, camera)
 
 		if rl.IsKeyPressed(rl.KeySpace) &&
 			player.DashCooldown.Milliseconds() < time.Since(player.DashLastUse).Milliseconds() {
@@ -22,7 +22,7 @@ func updatePlayer(camera *rl.Camera2D, player *objects.Player, collisionObjects 
 		}
 		if rl.IsMouseButtonPressed(rl.MouseButtonLeft) &&
 			player.AttackCooldown.Milliseconds() < time.Since(player.AttackLastUse).Milliseconds() {
-			attack.StartAttack(player, bloonObjects)
+			attack.StartAttack(player)
 		}
 	}
 }
