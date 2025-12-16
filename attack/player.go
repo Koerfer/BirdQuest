@@ -26,7 +26,7 @@ func StartAttack(player *scene.Player) {
 		Width:  player.HitBox.Width + 5*global.VariableSet.EntityScale,
 		Height: player.HitBox.Height + 5*global.VariableSet.EntityScale,
 	}
-	for i, bloon := range scene.CurrentScene.BloonObjects {
+	for i, bloon := range scene.CurrentScene.Bloons.BloonObjects {
 		if bloon == nil {
 			continue
 		}
@@ -39,7 +39,7 @@ func StartAttack(player *scene.Player) {
 	extendedPlayerHitBox = nil
 
 	if hit {
-		bloons := scene.CurrentScene.BloonObjects
+		bloons := scene.CurrentScene.Bloons.BloonObjects
 		if bloons[hitId].Lives == 0 {
 			return
 		}
@@ -48,7 +48,7 @@ func StartAttack(player *scene.Player) {
 		if bloons[hitId].Lives == 0 {
 			bloons[hitId].PoppingAnimationStage = 1
 		} else {
-			bloons[hitId].Rectangle.X = float32(int(bloons[hitId].Rectangle.X+global.TileWidth) % int(bloons[hitId].Texture.Width))
+			bloons[hitId].Rectangle.X = float32(int(bloons[hitId].Rectangle.X+global.TileWidth) % int(scene.CurrentScene.Bloons.Texture.Width))
 			if bloons[hitId].Rectangle.X == 0 {
 				bloons[hitId].Rectangle.X += global.TileWidth
 			}

@@ -10,7 +10,7 @@ import (
 func drawDebugInfo(camera rl.Camera2D, player *scene.Player) {
 	//rl.DrawFPS(int32(camera.Target.X+5), int32(camera.Target.Y+5))
 
-	for _, object := range scene.CurrentScene.ItemObjects {
+	for _, object := range scene.CurrentScene.ItemObjects.Objects {
 		if object == nil {
 			continue
 		}
@@ -24,7 +24,7 @@ func drawDebugInfo(camera rl.Camera2D, player *scene.Player) {
 		rl.DrawRectanglePro(*object, rl.Vector2{X: 0, Y: 0}, 0, rl.Red)
 	}
 
-	for _, bloon := range scene.CurrentScene.BloonObjects {
+	for _, bloon := range scene.CurrentScene.Bloons.BloonObjects {
 		if bloon == nil {
 			continue
 		}

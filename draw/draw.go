@@ -14,15 +14,11 @@ func Draw(camera rl.Camera2D, player *scene.Player) {
 
 	drawBackground(camera)
 
-	drawObjects()
-
-	drawBloons()
-
-	drawAfterPlayer := drawCollisionObjects(player)
-
-	drawPlayer(player)
-
-	drawCollisionObjectsAfterPlayer(drawAfterPlayer)
+	scene.CurrentScene.ItemObjects.Draw()
+	scene.CurrentScene.Bloons.Draw()
+	scene.CurrentScene.CollisionObjects.DrawFirstLayer()
+	scene.CurrentScene.CollisionObjects.DrawDynamicLayer(player)
+	scene.CurrentScene.CollisionObjects.DrawLastLayer()
 
 	if debug {
 		drawDebugInfo(camera, player)

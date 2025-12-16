@@ -9,7 +9,7 @@ import (
 
 func killItems(player *scene.Player) {
 	var objectsToRemove []int
-	for i, object := range scene.CurrentScene.ItemObjects {
+	for i, object := range scene.CurrentScene.ItemObjects.Objects {
 		if object == nil {
 			continue
 		}
@@ -19,10 +19,10 @@ func killItems(player *scene.Player) {
 	}
 
 	for _, remove := range objectsToRemove {
-		scene.CurrentScene.ItemObjects = slices.Delete(scene.CurrentScene.ItemObjects, remove, remove+1)
+		scene.CurrentScene.ItemObjects.Objects = slices.Delete(scene.CurrentScene.ItemObjects.Objects, remove, remove+1)
 	}
 
-	for i, bloon := range scene.CurrentScene.BloonObjects {
+	for i, bloon := range scene.CurrentScene.Bloons.BloonObjects {
 		if bloon == nil {
 			continue
 		}
@@ -38,7 +38,7 @@ func killItems(player *scene.Player) {
 		}
 
 		if bloon.PoppingAnimationStage == 5 {
-			scene.CurrentScene.BloonObjects = slices.Delete(scene.CurrentScene.BloonObjects, i, i+1)
+			scene.CurrentScene.Bloons.BloonObjects = slices.Delete(scene.CurrentScene.Bloons.BloonObjects, i, i+1)
 		}
 
 	}

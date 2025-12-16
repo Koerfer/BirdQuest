@@ -2,13 +2,23 @@ package scene
 
 import rl "github.com/gen2brain/raylib-go/raylib"
 
+type Items struct {
+	Objects []*Object
+	Texture rl.Texture2D
+}
+
+type CollisionItems struct {
+	DrawFirst   []*Object
+	DrawDynamic []*Object
+	DrawLast    []*Object
+
+	Texture rl.Texture2D
+}
+
 type Object struct {
-	Position          rl.Vector2
-	Texture           rl.Texture2D
-	Rectangle         rl.Rectangle
-	HitBox            rl.Rectangle
-	AlwaysRenderLast  bool
-	AlwaysRenderFirst bool
+	Position  rl.Vector2
+	Rectangle rl.Rectangle
+	HitBox    rl.Rectangle
 }
 
 type sprites struct {

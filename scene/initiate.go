@@ -54,24 +54,8 @@ type jsonTiles struct {
 	Properties []*jsonProperty `json:"properties"`
 }
 
-func initiateObjects(path string) ([]*Object, []*rl.Rectangle, []*Object, []*Bloon) {
-	itemSpritesRaw := rl.LoadTexture(filepath.Join(path, "item_sprites.png"))
-	collisionSpritesRaw := rl.LoadTexture(filepath.Join(path, "collision_sprites.png"))
-	bloonsSpritesRaw := rl.LoadTexture(filepath.Join(path, "bloons.png"))
-
+func initiateObjects(path string) {
 	jsonMapContents, err := os.ReadFile(filepath.Join(path, "map.tmj"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	jsonItemsContents, err := os.ReadFile(filepath.Join(path, "items.tsj"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	jsonBloonsContents, err := os.ReadFile(filepath.Join(path, "bloons.tsj"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	jsonCollisionContents, err := os.ReadFile(filepath.Join(path, "collisions.tsj"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -82,27 +66,9 @@ func initiateObjects(path string) ([]*Object, []*rl.Rectangle, []*Object, []*Blo
 		log.Fatal(err)
 	}
 
-	var jsonItems jsonSprites
-	var jsonItemsGidStart int
-	err = json.Unmarshal(jsonItemsContents, &jsonItems)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var jsonBloons jsonSprites
-	var jsonBloonsGidStart int
-	err = json.Unmarshal(jsonBloonsContents, &jsonBloons)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var jsonCollisions jsonSprites
 	var jsonCollisionsGidStart int
-	err = json.Unmarshal(jsonCollisionContents, &jsonCollisions)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	var jsonItemsGidStart int
+	var jsonBloonsGidStart int
 	for _, tileSet := range jMap.TileSets {
 		switch tileSet.Source {
 		case "items.tsj":
@@ -114,21 +80,14 @@ func initiateObjects(path string) ([]*Object, []*rl.Rectangle, []*Object, []*Blo
 		}
 	}
 
-	itemsSprites := prepareSprites(itemSpritesRaw, &jsonItems, jsonItemsGidStart)
-	bloonsSprites := prepareSprites(bloonsSpritesRaw, &jsonBloons, jsonBloonsGidStart)
-	collisionSprites := prepareSprites(collisionSpritesRaw, &jsonCollisions, jsonCollisionsGidStart)
-
-	itemObjects := prepareObjects(&jMap, itemsSprites, "Items", jsonItemsGidStart, jsonItems.TileCount)
-	collisionObjects := prepareObjects(&jMap, collisionSprites, "BackgroundCollisions", jsonCollisionsGidStart, jsonCollisions.TileCount)
-	collisionBoxes := prepareCollisions(&jMap)
-	bloonsObjects := prepareBloons(&jMap, bloonsSprites, "Items", jsonBloonsGidStart, jsonBloons.TileCount)
-
-	return itemObjects, collisionBoxes, collisionObjects, bloonsObjects
+	prepareCollisionObjects(&jMap, "BackgroundCollisions", path, jsonCollisionsGidStart)
+	prepareItems(&jMap, "Items", path, jsonItemsGidStart)
+	prepareBloons(&jMap, "Items", path, jsonBloonsGidStart)
+	prepareCollisions(&jMap)
 }
 
 func prepareSprites(rawSprites rl.Texture2D, jsonObject *jsonSprites, startGid int) *sprites {
 	ss := &sprites{
-		Texture:      rawSprites,
 		TileWidth:    jsonObject.TileWidth,
 		TileHeight:   jsonObject.TileHeight,
 		WidthInTiles: int(rawSprites.Width) / jsonObject.TileWidth,
@@ -168,62 +127,112 @@ func prepareSprites(rawSprites rl.Texture2D, jsonObject *jsonSprites, startGid i
 	return ss
 }
 
-func prepareObjects(jsonMap *jsonMap, sprites *sprites, layerName string, startId, n int) []*Object {
-	objects := make([]*Object, 0)
-
-	for _, layer := range jsonMap.Layers {
-		if layer.Name != layerName {
-			continue
-		}
-
-		for i, val := range layer.Data {
-			object := prepareObject(i, val, startId, n, sprites)
-			if object == nil {
-				continue
-			}
-
-			objects = append(objects, object)
-		}
+func prepareItems(jMap *jsonMap, layerName, path string, startId int) {
+	itemSpritesRaw := rl.LoadTexture(filepath.Join(path, "item_sprites.png"))
+	jsonItemContents, err := os.ReadFile(filepath.Join(path, "items.tsj"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	var jsonItems jsonSprites
+	err = json.Unmarshal(jsonItemContents, &jsonItems)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	return objects
-}
+	itemSprites := prepareSprites(itemSpritesRaw, &jsonItems, startId)
+	CurrentScene.ItemObjects = &Items{
+		Texture: itemSpritesRaw,
+		Objects: make([]*Object, 0),
+	}
 
-func prepareBloons(jsonMap *jsonMap, sprites *sprites, layerName string, startId, n int) []*Bloon {
-	bloons := make([]*Bloon, 0)
-
-	for _, layer := range jsonMap.Layers {
+	for _, layer := range jMap.Layers {
 		if layer.Name != layerName {
 			continue
 		}
 
 		for i, val := range layer.Data {
-			object := prepareObject(i, val, startId, n, sprites)
-			if object == nil {
-				continue
+			prepareItem(i, val, startId, jsonItems.TileCount, itemSprites)
+		}
+	}
+}
+
+func prepareBloons(jMap *jsonMap, layerName, path string, startId int) {
+	bloonSpritesRaw := rl.LoadTexture(filepath.Join(path, "bloons.png"))
+	jsonBloonContents, err := os.ReadFile(filepath.Join(path, "bloons.tsj"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	var jsonBloons jsonSprites
+	err = json.Unmarshal(jsonBloonContents, &jsonBloons)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	bloonSprites := prepareSprites(bloonSpritesRaw, &jsonBloons, startId)
+	CurrentScene.Bloons = &Bloons{
+		Texture:      bloonSpritesRaw,
+		BloonObjects: make([]*Bloon, 0),
+	}
+
+	for _, layer := range jMap.Layers {
+		if layer.Name != layerName {
+			continue
+		}
+
+		for i, val := range layer.Data {
+			prepareBloon(i, val, startId, jsonBloons.TileCount, bloonSprites)
+		}
+	}
+}
+
+func prepareBloon(i, val, startId, n int, sprites *sprites) {
+	if val == 0 {
+		return
+	}
+	if val < startId {
+		return
+	}
+	if val >= startId+n {
+		return
+	}
+
+	x := float32(i % CurrentScene.WidthInTiles * global.TileWidth)
+	y := float32(i / CurrentScene.WidthInTiles * global.TileWidth)
+
+	bloonObject := &Object{
+		Position:  rl.Vector2{X: x * global.VariableSet.EntityScale, Y: y * global.VariableSet.EntityScale},
+		Rectangle: sprites.GetRectangleAreaInTexture(val - startId),
+	}
+
+	for _, prop := range sprites.Properties {
+		if prop.id == val {
+			bloonObject.HitBox = rl.Rectangle{
+				X:      (x + float32(prop.HitBoxX)) * global.VariableSet.EntityScale,
+				Y:      (y + float32(prop.HitBoxY)) * global.VariableSet.EntityScale,
+				Width:  float32(prop.HitBoxWidth) * global.VariableSet.EntityScale,
+				Height: float32(prop.HitBoxHeight) * global.VariableSet.EntityScale,
 			}
 
 			bloon := &Bloon{
 				Lives: startId + 3 - val,
 			}
-			bloon.Object = *object
+			bloon.Object = *bloonObject
 
-			bloons = append(bloons, bloon)
+			CurrentScene.Bloons.BloonObjects = append(CurrentScene.Bloons.BloonObjects, bloon)
+			return
 		}
 	}
-
-	return bloons
 }
 
-func prepareObject(i, val, startId, n int, sprites *sprites) *Object {
+func prepareItem(i, val, startId, n int, sprites *sprites) {
 	if val == 0 {
-		return nil
+		return
 	}
 	if val < startId {
-		return nil
+		return
 	}
 	if val >= startId+n {
-		return nil
+		return
 	}
 
 	x := float32(i % CurrentScene.WidthInTiles * global.TileWidth)
@@ -231,7 +240,6 @@ func prepareObject(i, val, startId, n int, sprites *sprites) *Object {
 
 	object := &Object{
 		Position:  rl.Vector2{X: x * global.VariableSet.EntityScale, Y: y * global.VariableSet.EntityScale},
-		Texture:   sprites.Texture,
 		Rectangle: sprites.GetRectangleAreaInTexture(val - startId),
 	}
 
@@ -243,11 +251,81 @@ func prepareObject(i, val, startId, n int, sprites *sprites) *Object {
 				Width:  float32(prop.HitBoxWidth) * global.VariableSet.EntityScale,
 				Height: float32(prop.HitBoxHeight) * global.VariableSet.EntityScale,
 			}
-			object.AlwaysRenderLast = prop.AlwaysRenderLast
-			object.AlwaysRenderFirst = prop.AlwaysRenderFirst
-			break
+
+			CurrentScene.ItemObjects.Objects = append(CurrentScene.ItemObjects.Objects, object)
+			return
 		}
 	}
+}
 
-	return object
+func prepareCollisionObjects(jMap *jsonMap, layerName, path string, startId int) {
+	collisionSpritesRaw := rl.LoadTexture(filepath.Join(path, "collision_sprites.png"))
+	jsonCollisionContents, err := os.ReadFile(filepath.Join(path, "collisions.tsj"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var jsonCollisions jsonSprites
+	err = json.Unmarshal(jsonCollisionContents, &jsonCollisions)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	collisionSprites := prepareSprites(collisionSpritesRaw, &jsonCollisions, startId)
+	CurrentScene.CollisionObjects = &CollisionItems{
+		Texture:     collisionSpritesRaw,
+		DrawFirst:   make([]*Object, 0),
+		DrawDynamic: make([]*Object, 0),
+		DrawLast:    make([]*Object, 0),
+	}
+
+	for _, layer := range jMap.Layers {
+		if layer.Name != layerName {
+			continue
+		}
+
+		for i, val := range layer.Data {
+			prepareCollisionObject(i, val, startId, jsonCollisions.TileCount, collisionSprites)
+		}
+	}
+}
+
+func prepareCollisionObject(i, val, startId, n int, sprites *sprites) {
+	if val == 0 {
+		return
+	}
+	if val < startId {
+		return
+	}
+	if val >= startId+n {
+		return
+	}
+
+	x := float32(i % CurrentScene.WidthInTiles * global.TileWidth)
+	y := float32(i / CurrentScene.WidthInTiles * global.TileWidth)
+
+	object := &Object{
+		Position:  rl.Vector2{X: x * global.VariableSet.EntityScale, Y: y * global.VariableSet.EntityScale},
+		Rectangle: sprites.GetRectangleAreaInTexture(val - startId),
+	}
+
+	for _, prop := range sprites.Properties {
+		if prop.id == val {
+			object.HitBox = rl.Rectangle{
+				X:      (x + float32(prop.HitBoxX)) * global.VariableSet.EntityScale,
+				Y:      (y + float32(prop.HitBoxY)) * global.VariableSet.EntityScale,
+				Width:  float32(prop.HitBoxWidth) * global.VariableSet.EntityScale,
+				Height: float32(prop.HitBoxHeight) * global.VariableSet.EntityScale,
+			}
+
+			if prop.AlwaysRenderFirst {
+				CurrentScene.CollisionObjects.DrawFirst = append(CurrentScene.CollisionObjects.DrawFirst, object)
+			} else if prop.AlwaysRenderLast {
+				CurrentScene.CollisionObjects.DrawLast = append(CurrentScene.CollisionObjects.DrawLast, object)
+			} else {
+				CurrentScene.CollisionObjects.DrawDynamic = append(CurrentScene.CollisionObjects.DrawDynamic, object)
+			}
+			return
+		}
+	}
 }

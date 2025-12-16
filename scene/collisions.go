@@ -5,7 +5,7 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func prepareCollisions(jsonMap *jsonMap) []*rl.Rectangle {
+func prepareCollisions(jsonMap *jsonMap) {
 	collisionBoxes := make([]*rl.Rectangle, 0)
 
 	for _, jsonMapLayer := range jsonMap.Layers {
@@ -23,5 +23,5 @@ func prepareCollisions(jsonMap *jsonMap) []*rl.Rectangle {
 		}
 	}
 
-	return collisionBoxes
+	CurrentScene.CollisionBoxes = collisionBoxes
 }

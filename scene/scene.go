@@ -11,10 +11,10 @@ import (
 type Scene struct {
 	Name             string
 	Background       rl.Texture2D
-	ItemObjects      []*Object
+	ItemObjects      *Items
 	CollisionBoxes   []*rl.Rectangle
-	CollisionObjects []*Object
-	BloonObjects     []*Bloon
+	CollisionObjects *CollisionItems
+	Bloons           *Bloons
 
 	Width  float32
 	Height float32
@@ -61,17 +61,12 @@ func SetScene(sceneName string, playerX, playerY float32) *Player {
 	global.VariableSet.EntitySize = global.TileWidth * global.VariableSet.EntityScale
 
 	global.VariableSet.Speed = global.VariableSet.FpsScale * global.VariableSet.EntityScale
-
-	itemObjects, collisionBoxes, collisionObjects, bloonObjects := initiateObjects(scenePath)
+	initiateObjects(scenePath)
 
 	player := preparePlayer(playerPath)
 	player.Position.X = playerX * global.VariableSet.EntityScale
 	player.Position.Y = playerY * global.VariableSet.EntityScale
 	CurrentScene.Background = background
-	CurrentScene.ItemObjects = itemObjects
-	CurrentScene.CollisionBoxes = collisionBoxes
-	CurrentScene.CollisionObjects = collisionObjects
-	CurrentScene.BloonObjects = bloonObjects
 
 	return player
 }
@@ -79,14 +74,14 @@ func SetScene(sceneName string, playerX, playerY float32) *Player {
 func UnloadAllTextures() {
 	rl.UnloadTexture(CurrentScene.Background)
 
-	if CurrentScene.ItemObjects != nil && len(CurrentScene.ItemObjects) != 0 {
-		rl.UnloadTexture(CurrentScene.ItemObjects[0].Texture)
+	if CurrentScene.ItemObjects != nil {
+		rl.UnloadTexture(CurrentScene.ItemObjects.Texture)
 	}
-	if CurrentScene.CollisionObjects != nil && len(CurrentScene.CollisionObjects) != 0 {
-		rl.UnloadTexture(CurrentScene.CollisionObjects[0].Texture)
+	if CurrentScene.CollisionObjects != nil {
+		rl.UnloadTexture(CurrentScene.CollisionObjects.Texture)
 	}
-	if CurrentScene.BloonObjects != nil && len(CurrentScene.BloonObjects) != 0 {
-		rl.UnloadTexture(CurrentScene.BloonObjects[0].Texture)
+	if CurrentScene.Bloons != nil {
+		rl.UnloadTexture(CurrentScene.Bloons.Texture)
 	}
 
 	CurrentScene = nil

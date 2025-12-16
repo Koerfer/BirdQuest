@@ -10,6 +10,7 @@ import (
 type Player struct {
 	Object
 	Animation     *sprites
+	Texture       rl.Texture2D
 	IsMoving      bool
 	AnimationStep int
 	Rotation      float32
@@ -41,9 +42,10 @@ func preparePlayer(path string) *Player {
 		DashCooldown:   time.Millisecond * 1200,
 		AttackLastUse:  time.Time{},
 		AttackCooldown: time.Millisecond * 500,
+
+		Texture: chiliAnimations.Texture,
 		Object: Object{
 			Position:  rl.Vector2{},
-			Texture:   chiliAnimations.Texture,
 			Rectangle: chiliAnimations.GetRectangleAreaInTexture(7),
 			HitBox: rl.Rectangle{
 				X:      0,
