@@ -2,6 +2,7 @@ package update
 
 import (
 	"BirdQuest/attack"
+	"BirdQuest/global"
 	"BirdQuest/movement"
 	"BirdQuest/scene"
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -29,7 +30,18 @@ func updatePlayer(camera *rl.Camera2D, player *scene.Player) {
 	}
 
 	if door != nil {
+		previousHeight := scene.CurrentScene.Height
 		scene.ChangeScene(door, player)
+
+		zoom := scene.CurrentScene.Height * camera.Zoom / previousHeight
+		if zoom < 1 {
+			zoom = 1
+		} else if zoom > maxZoom {
+			zoom = maxZoom
+		}
+
+		global.Zoom(zoom, camera)
+
 		movement.InitialiseCamera(player, camera)
 	}
 }

@@ -29,7 +29,7 @@ var AllScenes map[string]*Scene
 
 func ChangeScene(door *Door, player *Player) *Player {
 	if AllScenes[door.GoesToScene] == nil {
-		return SetScene(door.GoesToScene, door.GoesToX, door.GoesToY)
+		return SetScene(door.GoesToScene, door.GoesToX, door.GoesToY, player)
 	}
 
 	player.DashDirection.X *= 1 / global.VariableSet.Speed
@@ -62,7 +62,7 @@ func ChangeScene(door *Door, player *Player) *Player {
 	return player
 }
 
-func SetScene(sceneName string, playerX, playerY float32) *Player {
+func SetScene(sceneName string, playerX, playerY float32, player *Player) *Player {
 	cwd, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
@@ -71,7 +71,7 @@ func SetScene(sceneName string, playerX, playerY float32) *Player {
 	playerPath := filepath.Join(cwd, "sprites", "player")
 	background := rl.LoadTexture(filepath.Join(scenePath, "background.png"))
 	if background.Width == 0 {
-		return SetScene(sceneName, playerX, playerY)
+		return SetScene(sceneName, playerX, playerY, player)
 	}
 
 	scene := &Scene{
@@ -100,7 +100,9 @@ func SetScene(sceneName string, playerX, playerY float32) *Player {
 	global.VariableSet.Speed = global.VariableSet.FpsScale * global.VariableSet.EntityScale
 	initiateObjects(scenePath, scene)
 
-	player := preparePlayer(playerPath)
+	if player == nil {
+		player = preparePlayer(playerPath)
+	}
 	player.Position.X = playerX * global.VariableSet.EntityScale
 	player.Position.Y = playerY * global.VariableSet.EntityScale
 	scene.Background = background
@@ -115,17 +117,19 @@ func SetScene(sceneName string, playerX, playerY float32) *Player {
 }
 
 func UnloadAllTextures() {
-	rl.UnloadTexture(CurrentScene.Background)
+	for _, scene := range AllScenes {
+		rl.UnloadTexture(scene.Background)
 
-	if CurrentScene.ItemObjects != nil {
-		rl.UnloadTexture(CurrentScene.ItemObjects.Texture)
-	}
-	if CurrentScene.CollisionObjects != nil {
-		rl.UnloadTexture(CurrentScene.CollisionObjects.Texture)
-	}
-	if CurrentScene.Bloons != nil {
-		rl.UnloadTexture(CurrentScene.Bloons.Texture)
-	}
+		if scene.ItemObjects != nil {
+			rl.UnloadTexture(scene.ItemObjects.Texture)
+		}
+		if scene.CollisionObjects != nil {
+			rl.UnloadTexture(scene.CollisionObjects.Texture)
+		}
+		if scene.Bloons != nil {
+			rl.UnloadTexture(scene.Bloons.Texture)
+		}
 
-	CurrentScene = nil
+		scene = nil
+	}
 }

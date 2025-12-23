@@ -19,7 +19,7 @@ func main() {
 	camera.Target = rl.Vector2{}
 	global.Zoom(1, &camera)
 
-	player := scene.SetScene("main", 250, 250)
+	player := scene.SetScene("main", 250, 250, nil)
 	movement.InitialiseCamera(player, &camera)
 
 	for !rl.WindowShouldClose() {
