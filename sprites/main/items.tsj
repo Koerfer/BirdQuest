@@ -1,5 +1,5 @@
 { "columns":3,
- "image":"item_sprites.png",
+ "image":"..\/item_sprites.png",
  "imageheight":32,
  "imagewidth":96,
  "margin":0,

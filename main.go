@@ -19,7 +19,7 @@ func main() {
 	camera.Target = rl.Vector2{}
 	global.Zoom(1, &camera)
 
-	player := scene.SetScene("house", 250, 250)
+	player := scene.SetScene("main", 250, 250)
 	movement.InitialiseCamera(player, &camera)
 
 	for !rl.WindowShouldClose() {
@@ -28,18 +28,6 @@ func main() {
 		}
 
 		update.Update(&camera, player)
-
-		if rl.IsKeyPressed(rl.KeyOne) {
-			switch scene.CurrentScene.Name {
-			case "main":
-				scene.UnloadAllTextures()
-				player = scene.SetScene("house", 250, 250)
-			case "house":
-				scene.UnloadAllTextures()
-				player = scene.SetScene("main", 250, 250)
-			}
-			movement.InitialiseCamera(player, &camera)
-		}
 
 		draw.Draw(camera, player)
 	}

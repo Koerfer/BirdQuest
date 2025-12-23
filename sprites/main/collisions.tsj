@@ -1,5 +1,5 @@
 { "columns":8,
- "image":"collision_sprites.png",
+ "image":"..\/collision_sprites.png",
  "imageheight":256,
  "imagewidth":256,
  "margin":0,
@@ -394,6 +394,11 @@
          "id":16,
          "properties":[
                 {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
+                {
                  "name":"HitBoxHeight",
                  "type":"int",
                  "value":4
@@ -417,6 +422,11 @@
         {
          "id":17,
          "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
                 {
                  "name":"HitBoxHeight",
                  "type":"int",
@@ -606,6 +616,24 @@
                 }]
         }, 
         {
+         "id":28,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":29,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
          "id":30,
          "properties":[
                 {
@@ -626,6 +654,11 @@
         {
          "id":32,
          "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
                 {
                  "name":"HitBoxHeight",
                  "type":"int",
@@ -701,6 +734,24 @@
                 }]
         }, 
         {
+         "id":36,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":37,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
          "id":38,
          "properties":[
                 {
@@ -721,6 +772,11 @@
         {
          "id":40,
          "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
                 {
                  "name":"HitBoxHeight",
                  "type":"int",
@@ -745,6 +801,11 @@
         {
          "id":41,
          "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }, 
                 {
                  "name":"HitBoxHeight",
                  "type":"int",
@@ -788,6 +849,96 @@
                  "name":"HitBoxY",
                  "type":"int",
                  "value":0
+                }]
+        }, 
+        {
+         "id":44,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":45,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":48,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":49,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":52,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":53,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":56,
+         "properties":[
+                {
+                 "name":"AlwaysFirst",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":57,
+         "properties":[
+                {
+                 "name":"AlwaysFirst",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":60,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":61,
+         "properties":[
+                {
+                 "name":"AlwaysAfter",
+                 "type":"int",
+                 "value":1
                 }]
         }],
  "tilewidth":32,

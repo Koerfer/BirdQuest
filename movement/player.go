@@ -31,27 +31,32 @@ func Dash(player *scene.Player, camera *rl.Camera2D) {
 	player.DashDirection = dashDirection
 }
 
-func ContinueDash(player *scene.Player, camera *rl.Camera2D) {
+func ContinueDash(player *scene.Player, camera *rl.Camera2D) *scene.Door {
 	player.IsMoving = true
 	player.AnimationStep = 1
 	player.Rectangle = player.Animation.GetRectangleAreaInTexture(player.AnimationStep)
+
+	var goThroughDoor *scene.Door
+
 	if player.DashDirection.Y < 0 {
-		moveUp(player, camera, -player.DashDirection.Y)
+		goThroughDoor = moveUp(player, camera, -player.DashDirection.Y)
 	} else {
-		moveDown(player, camera, player.DashDirection.Y)
+		goThroughDoor = moveDown(player, camera, player.DashDirection.Y)
 	}
 
 	if player.DashDirection.X < 0 {
-		moveLeft(player, camera, -player.DashDirection.X)
+		goThroughDoor = moveLeft(player, camera, -player.DashDirection.X)
 	} else {
-		moveRight(player, camera, player.DashDirection.X)
+		goThroughDoor = moveRight(player, camera, player.DashDirection.X)
 	}
 
 	player.HitBox.X = player.Position.X
 	player.HitBox.Y = player.Position.Y
+
+	return goThroughDoor
 }
 
-func Move(player *scene.Player, camera *rl.Camera2D) {
+func Move(player *scene.Player, camera *rl.Camera2D) *scene.Door {
 	up := rl.IsKeyDown(rl.KeyW)
 	down := rl.IsKeyDown(rl.KeyS)
 	left := rl.IsKeyDown(rl.KeyA)
@@ -84,49 +89,51 @@ func Move(player *scene.Player, camera *rl.Camera2D) {
 		right = false
 	}
 
+	var goThroughDoor *scene.Door
+
 	if up && right {
 		player.IsMoving = true
 		player.Rotation = 45
 
-		moveUp(player, camera, diagonalSpeed)
-		moveRight(player, camera, diagonalSpeed)
+		goThroughDoor = moveUp(player, camera, diagonalSpeed)
+		goThroughDoor = moveRight(player, camera, diagonalSpeed)
 	} else if up && left {
 		player.IsMoving = true
 		player.Rotation = 315
 
-		moveUp(player, camera, diagonalSpeed)
-		moveLeft(player, camera, diagonalSpeed)
+		goThroughDoor = moveUp(player, camera, diagonalSpeed)
+		goThroughDoor = moveLeft(player, camera, diagonalSpeed)
 	} else if down && left {
 		player.IsMoving = true
 		player.Rotation = 225
 
-		moveDown(player, camera, diagonalSpeed)
-		moveLeft(player, camera, diagonalSpeed)
+		goThroughDoor = moveDown(player, camera, diagonalSpeed)
+		goThroughDoor = moveLeft(player, camera, diagonalSpeed)
 	} else if down && right {
 		player.IsMoving = true
 		player.Rotation = 135
 
-		moveDown(player, camera, diagonalSpeed)
-		moveRight(player, camera, diagonalSpeed)
+		goThroughDoor = moveDown(player, camera, diagonalSpeed)
+		goThroughDoor = moveRight(player, camera, diagonalSpeed)
 	} else if up {
 		player.IsMoving = true
 		player.Rotation = 0
 
-		moveUp(player, camera, normalSpeed)
+		goThroughDoor = moveUp(player, camera, normalSpeed)
 	} else if down {
 		player.IsMoving = true
 		player.Rotation = 180
-		moveDown(player, camera, normalSpeed)
+		goThroughDoor = moveDown(player, camera, normalSpeed)
 	} else if right {
 		player.IsMoving = true
 		player.Rotation = 90
 
-		moveRight(player, camera, normalSpeed)
+		goThroughDoor = moveRight(player, camera, normalSpeed)
 	} else if left {
 		player.IsMoving = true
 		player.Rotation = 270
 
-		moveLeft(player, camera, normalSpeed)
+		goThroughDoor = moveLeft(player, camera, normalSpeed)
 	} else {
 		player.IsMoving = false
 	}
@@ -152,9 +159,10 @@ func Move(player *scene.Player, camera *rl.Camera2D) {
 	player.HitBox.X = player.Position.X
 	player.HitBox.Y = player.Position.Y
 
+	return goThroughDoor
 }
 
-func moveUp(player *scene.Player, camera *rl.Camera2D, offset float32) {
+func moveUp(player *scene.Player, camera *rl.Camera2D, offset float32) *scene.Door {
 	var collided bool
 	var collisionPoint float32
 	var lastPosition float32
@@ -178,7 +186,17 @@ func moveUp(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	if collided {
 		player.Position.Y = collisionPoint
 		moveCameraUp(player, camera, lastPosition-collisionPoint)
-		return
+		return nil
+	}
+
+	for _, door := range scene.CurrentScene.Doors {
+		if player.HitBox.X+player.HitBox.Width > door.Rectangle.X &&
+			player.HitBox.X < door.Rectangle.X+door.Rectangle.Width &&
+			player.HitBox.Y > door.Rectangle.Y &&
+			newPlayerHitBoxY < door.Rectangle.Y+door.Rectangle.Height {
+
+			return door
+		}
 	}
 
 	if player.Position.Y-offset < 0 {
@@ -188,9 +206,10 @@ func moveUp(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	}
 
 	moveCameraUp(player, camera, offset)
+	return nil
 }
 
-func moveDown(player *scene.Player, camera *rl.Camera2D, offset float32) {
+func moveDown(player *scene.Player, camera *rl.Camera2D, offset float32) *scene.Door {
 	var collided bool
 	var collisionPoint float32 = math.MaxFloat32
 	var lastPosition float32
@@ -214,7 +233,17 @@ func moveDown(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	if collided {
 		player.Position.Y = collisionPoint
 		moveCameraDown(player, camera, lastPosition-collisionPoint)
-		return
+		return nil
+	}
+
+	for _, door := range scene.CurrentScene.Doors {
+		if player.HitBox.X+player.HitBox.Width > door.Rectangle.X &&
+			player.HitBox.X < door.Rectangle.X+door.Rectangle.Width &&
+			player.HitBox.Y+player.HitBox.Height <= door.Rectangle.Y &&
+			newPlayerHitBoxY+player.HitBox.Height > door.Rectangle.Y {
+
+			return door
+		}
 	}
 
 	if player.Position.Y+offset > global.VariableSet.MapHeight-global.VariableSet.EntitySize {
@@ -224,9 +253,10 @@ func moveDown(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	}
 
 	moveCameraDown(player, camera, offset)
+	return nil
 }
 
-func moveRight(player *scene.Player, camera *rl.Camera2D, offset float32) {
+func moveRight(player *scene.Player, camera *rl.Camera2D, offset float32) *scene.Door {
 	var collided bool
 	var collisionPoint float32 = math.MaxFloat32
 	var lastPosition float32
@@ -250,7 +280,17 @@ func moveRight(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	if collided {
 		player.Position.X = collisionPoint
 		moveCameraRight(player, camera, lastPosition-collisionPoint)
-		return
+		return nil
+	}
+
+	for _, door := range scene.CurrentScene.Doors {
+		if player.HitBox.X+player.HitBox.Width <= door.Rectangle.X &&
+			newPlayerHitBoxX+player.HitBox.Width > door.Rectangle.X &&
+			player.HitBox.Y+player.HitBox.Height > door.Rectangle.Y &&
+			player.HitBox.Y < door.Rectangle.Y+door.Rectangle.Height {
+
+			return door
+		}
 	}
 
 	if player.Position.X+offset > global.VariableSet.MapWidth-global.VariableSet.EntitySize {
@@ -260,9 +300,10 @@ func moveRight(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	}
 
 	moveCameraRight(player, camera, offset)
+	return nil
 }
 
-func moveLeft(player *scene.Player, camera *rl.Camera2D, offset float32) {
+func moveLeft(player *scene.Player, camera *rl.Camera2D, offset float32) *scene.Door {
 	var collided bool
 	var collisionPoint float32
 	var lastPosition float32
@@ -285,7 +326,17 @@ func moveLeft(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	if collided {
 		player.Position.X = collisionPoint
 		moveCameraLeft(player, camera, lastPosition-collisionPoint)
-		return
+		return nil
+	}
+
+	for _, door := range scene.CurrentScene.Doors {
+		if player.HitBox.X > door.Rectangle.X &&
+			newPlayerHitBoxX < door.Rectangle.X+door.Rectangle.Width &&
+			player.HitBox.Y+player.HitBox.Height > door.Rectangle.Y &&
+			player.HitBox.Y < door.Rectangle.Y+door.Rectangle.Height {
+
+			return door
+		}
 	}
 
 	if player.Position.X-offset < 0 {
@@ -295,4 +346,5 @@ func moveLeft(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	}
 
 	moveCameraLeft(player, camera, offset)
+	return nil
 }

@@ -15,6 +15,13 @@ type CollisionItems struct {
 	Texture rl.Texture2D
 }
 
+type Door struct {
+	Rectangle   *rl.Rectangle
+	GoesToScene string
+	GoesToX     float32
+	GoesToY     float32
+}
+
 type Object struct {
 	Position  rl.Vector2
 	Rectangle rl.Rectangle

@@ -9,12 +9,14 @@ import (
 )
 
 func updatePlayer(camera *rl.Camera2D, player *scene.Player) {
+	var door *scene.Door
+
 	if player.AttackOngoing {
 		attack.Attack(player)
 	} else if time.Since(player.DashLastUse) < time.Millisecond*200 {
-		movement.ContinueDash(player, camera)
+		door = movement.ContinueDash(player, camera)
 	} else {
-		movement.Move(player, camera)
+		door = movement.Move(player, camera)
 
 		if rl.IsKeyPressed(rl.KeySpace) &&
 			player.DashCooldown.Milliseconds() < time.Since(player.DashLastUse).Milliseconds() {
@@ -24,5 +26,10 @@ func updatePlayer(camera *rl.Camera2D, player *scene.Player) {
 			player.AttackCooldown.Milliseconds() < time.Since(player.AttackLastUse).Milliseconds() {
 			attack.StartAttack(player)
 		}
+	}
+
+	if door != nil {
+		scene.ChangeScene(door, player)
+		movement.InitialiseCamera(player, camera)
 	}
 }
