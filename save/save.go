@@ -1,22 +1,30 @@
 package save
 
 import (
+	"BirdQuest/global"
 	"BirdQuest/scene"
 	"BirdQuest/scene/models"
 	"encoding/gob"
+	rl "github.com/gen2brain/raylib-go/raylib"
 	"log"
 	"os"
 )
 
 type State struct {
-	Player *models.Player
-	Scenes map[string]*models.Scene
+	Player          *models.Player
+	Camera          rl.Camera2D
+	CurrentScene    *models.Scene
+	Scenes          map[string]*models.Scene
+	GlobalVariables *global.Variables
 }
 
-func Save(player *models.Player) {
+func Save(player *models.Player, camera rl.Camera2D) {
 	state := &State{
-		Player: player,
-		Scenes: scene.AllScenes,
+		Player:          player,
+		Camera:          camera,
+		CurrentScene:    scene.CurrentScene,
+		Scenes:          scene.AllScenes,
+		GlobalVariables: global.VariableSet,
 	}
 
 	cwd, _ := os.Getwd()

@@ -27,6 +27,8 @@ func main() {
 			continue
 		}
 
+		update.SaveHandler(player, camera)
+
 		update.Update(&camera, player)
 
 		update.Window(player, &camera)
