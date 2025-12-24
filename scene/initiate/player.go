@@ -4,18 +4,15 @@ import (
 	"BirdQuest/global"
 	"BirdQuest/scene/models"
 	rl "github.com/gen2brain/raylib-go/raylib"
-	"path/filepath"
 	"time"
 )
 
-func PreparePlayer(path string) *models.Player {
-	chiliAnimationsRaw := rl.LoadTexture(filepath.Join(path, "chili.png"))
-
+func PreparePlayer() *models.Player {
 	chiliAnimations := &models.Sprites{
-		Texture:      chiliAnimationsRaw,
+		Texture:      global.VariableSet.PlayerTexture,
 		TileWidth:    global.TileWidth,
 		TileHeight:   global.TileHeight,
-		WidthInTiles: int(chiliAnimationsRaw.Width) / global.TileWidth,
+		WidthInTiles: int(global.VariableSet.PlayerTexture.Width) / global.TileWidth,
 	}
 
 	player := &models.Player{
@@ -28,7 +25,6 @@ func PreparePlayer(path string) *models.Player {
 		AttackLastUse:  time.Time{},
 		AttackCooldown: time.Millisecond * 500,
 
-		Texture: chiliAnimations.Texture,
 		Object: models.Object{
 			BasePosition:  &rl.Vector2{},
 			BaseRectangle: chiliAnimations.GetRectangleAreaInTexture(7),

@@ -57,9 +57,7 @@ func prepareCollisionObjects(jMap *jsonMap, layerName, path string, startId int,
 		DrawLast:    make([]*models.Object, 0),
 	}
 
-	collisionSpritesRaw := prepareTexture(path, "collision_sprites.png")
-	scene.CollisionObjects.Texture = collisionSpritesRaw
-	collisionSprites := prepareSprites(collisionSpritesRaw, &jsonCollisions, startId)
+	collisionSprites := prepareSprites(global.VariableSet.CollisionObjectsTexture, &jsonCollisions, startId)
 
 	for _, layer := range jMap.Layers {
 		if layer.Name != layerName {

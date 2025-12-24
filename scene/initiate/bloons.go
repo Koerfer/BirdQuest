@@ -25,9 +25,7 @@ func prepareBloons(jMap *jsonMap, layerName, path string, startId int, scene *mo
 		BloonObjects: make([]*models.Bloon, 0),
 	}
 
-	bloonSpritesRaw := prepareTexture(path, "bloons.png")
-	scene.Bloons.Texture = bloonSpritesRaw
-	bloonSprites := prepareSprites(bloonSpritesRaw, &jsonBloons, startId)
+	bloonSprites := prepareSprites(global.VariableSet.BloonsTexture, &jsonBloons, startId)
 
 	for _, layer := range jMap.Layers {
 		if layer.Name != layerName {

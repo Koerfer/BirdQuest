@@ -25,9 +25,7 @@ func prepareItems(jMap *jsonMap, layerName, path string, startId int, scene *mod
 		Objects: make([]*models.Object, 0),
 	}
 
-	itemSpritesRaw := prepareTexture(path, "item_sprites.png")
-	scene.ItemObjects.Texture = itemSpritesRaw
-	itemSprites := prepareSprites(itemSpritesRaw, &jsonItems, startId)
+	itemSprites := prepareSprites(global.VariableSet.ItemsTexture, &jsonItems, startId)
 
 	for _, layer := range jMap.Layers {
 		if layer.Name != layerName {

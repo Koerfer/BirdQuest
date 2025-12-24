@@ -1,6 +1,7 @@
 package models
 
 import (
+	"BirdQuest/global"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -8,8 +9,6 @@ type CollisionItems struct {
 	DrawFirst   []*Object
 	DrawDynamic []*Object
 	DrawLast    []*Object
-
-	Texture rl.Texture2D
 }
 
 func (items *CollisionItems) DrawFirstLayer() {
@@ -19,7 +18,7 @@ func (items *CollisionItems) DrawFirstLayer() {
 		}
 
 		rl.DrawTexturePro(
-			items.Texture,
+			global.VariableSet.CollisionObjectsTexture,
 			*item.BaseRectangle,
 			rl.Rectangle{
 				X:      item.Rectangle.X,
@@ -55,7 +54,7 @@ func (items *CollisionItems) DrawDynamicLayer(player *Player) {
 		}
 
 		rl.DrawTexturePro(
-			items.Texture,
+			global.VariableSet.CollisionObjectsTexture,
 			*item.BaseRectangle,
 			rl.Rectangle{
 				X:      item.Rectangle.X,
@@ -80,7 +79,7 @@ func (items *CollisionItems) DrawDynamicLayer(player *Player) {
 		}
 
 		rl.DrawTexturePro(
-			items.Texture,
+			global.VariableSet.CollisionObjectsTexture,
 			*item.BaseRectangle,
 			rl.Rectangle{
 				X:      item.Rectangle.X,
@@ -105,7 +104,7 @@ func (items *CollisionItems) DrawLastLayer() {
 		}
 
 		rl.DrawTexturePro(
-			items.Texture,
+			global.VariableSet.CollisionObjectsTexture,
 			*item.BaseRectangle,
 			rl.Rectangle{
 				X:      item.Rectangle.X,

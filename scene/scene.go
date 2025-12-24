@@ -61,7 +61,6 @@ func SetScene(sceneName string, playerX, playerY float32, player *models.Player)
 		log.Fatal(err)
 	}
 	scenePath := filepath.Join(cwd, "sprites", sceneName)
-	playerPath := filepath.Join(cwd, "sprites", "player")
 	background := rl.LoadTexture(filepath.Join(scenePath, "background.png"))
 	if background.Width == 0 {
 		return SetScene(sceneName, playerX, playerY, player)
@@ -95,7 +94,7 @@ func SetScene(sceneName string, playerX, playerY float32, player *models.Player)
 	initiate.InitiateObjects(scenePath, scene)
 
 	if player == nil {
-		player = initiate.PreparePlayer(playerPath)
+		player = initiate.PreparePlayer()
 	} else {
 		player.Rectangle.Width = player.BaseRectangle.Width * global.VariableSet.EntityScale
 		player.Rectangle.Height = player.BaseRectangle.Height * global.VariableSet.EntityScale
@@ -118,20 +117,8 @@ func SetScene(sceneName string, playerX, playerY float32, player *models.Player)
 	return player
 }
 
-func UnloadAllTextures() {
+func UnloadAllBackgroundTextures() {
 	for _, scene := range AllScenes {
 		rl.UnloadTexture(scene.Background)
-
-		if scene.ItemObjects != nil {
-			rl.UnloadTexture(scene.ItemObjects.Texture)
-		}
-		if scene.CollisionObjects != nil {
-			rl.UnloadTexture(scene.CollisionObjects.Texture)
-		}
-		if scene.Bloons != nil {
-			rl.UnloadTexture(scene.Bloons.Texture)
-		}
-
-		scene = nil
 	}
 }

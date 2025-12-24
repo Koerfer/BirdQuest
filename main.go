@@ -2,6 +2,7 @@ package main
 
 import (
 	"BirdQuest/draw"
+	"BirdQuest/global"
 	"BirdQuest/scene"
 	"BirdQuest/update"
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -10,9 +11,10 @@ import (
 func main() {
 	player, camera := update.InitialLoader()
 	defer rl.CloseWindow()
-	defer scene.UnloadAllTextures()
+	defer scene.UnloadAllBackgroundTextures()
+	defer global.UnloadAllTextures()
 
-	for !rl.WindowShouldClose() {
+	for !rl.WindowShouldClose() || rl.IsKeyPressed(rl.KeyEscape) {
 		if scene.CurrentScene.Width == 0 {
 			continue
 		}

@@ -147,15 +147,11 @@ func Move(player *models.Player, camera *rl.Camera2D) *models.Door {
 	}
 
 	if !player.IsMoving {
-		player.Texture = player.Animation.Texture
 		player.BaseRectangle = player.Animation.GetRectangleAreaInTexture(7)
 		player.AnimationStep = 0
 		player.Rotation = 0
 		player.IsMoving = false
 	}
-
-	player.Rectangle.X = player.Rectangle.X
-	player.Rectangle.Y = player.Rectangle.Y
 
 	return goThroughDoor
 }

@@ -14,7 +14,6 @@ type Bloon struct {
 
 type Bloons struct {
 	BloonObjects []*Bloon
-	Texture      rl.Texture2D
 }
 
 func (bloons *Bloons) Draw() {
@@ -35,7 +34,7 @@ func (bloons *Bloons) Draw() {
 		}
 
 		rl.DrawTexturePro(
-			bloons.Texture,
+			global.VariableSet.BloonsTexture,
 			*bloon.BaseRectangle,
 			rl.Rectangle{
 				X:      bloon.Rectangle.X,

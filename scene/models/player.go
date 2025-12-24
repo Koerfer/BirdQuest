@@ -9,7 +9,6 @@ import (
 type Player struct {
 	Object
 	Animation     *Sprites
-	Texture       rl.Texture2D
 	IsMoving      bool
 	AnimationStep int
 	Rotation      float32
@@ -29,7 +28,7 @@ func (player *Player) Draw() {
 	}
 
 	rl.DrawTexturePro(
-		player.Texture,
+		global.VariableSet.PlayerTexture,
 		rl.Rectangle{
 			X:      player.BaseRectangle.X,
 			Y:      player.BaseRectangle.Y + 96,
@@ -48,7 +47,7 @@ func (player *Player) Draw() {
 	)
 
 	rl.DrawTexturePro(
-		player.Texture,
+		global.VariableSet.PlayerTexture,
 		*player.BaseRectangle,
 		rl.Rectangle{
 			X:      player.Rectangle.X + global.VariableSet.PlayerMiddleOffset,

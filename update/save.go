@@ -41,6 +41,7 @@ func InitialLoader() (*models.Player, rl.Camera2D) {
 	if saveState == nil {
 		global.SetDesiredWindowSize(1920, 1080)
 		global.SetFPS(120)
+		global.LoadAllTextures()
 
 		camera := rl.Camera2D{}
 		camera.Target = rl.Vector2{}
