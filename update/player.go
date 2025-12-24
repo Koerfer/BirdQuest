@@ -5,12 +5,13 @@ import (
 	"BirdQuest/global"
 	"BirdQuest/movement"
 	"BirdQuest/scene"
+	"BirdQuest/scene/models"
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"time"
 )
 
-func updatePlayer(camera *rl.Camera2D, player *scene.Player) {
-	var door *scene.Door
+func updatePlayer(camera *rl.Camera2D, player *models.Player) {
+	var door *models.Door
 
 	if player.AttackOngoing {
 		attack.Attack(player)

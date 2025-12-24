@@ -2,32 +2,18 @@ package scene
 
 import (
 	"BirdQuest/global"
+	"BirdQuest/scene/initiate"
+	"BirdQuest/scene/models"
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"log"
 	"os"
 	"path/filepath"
 )
 
-type Scene struct {
-	Name             string
-	Background       rl.Texture2D
-	ItemObjects      *Items
-	CollisionBoxes   []*rl.Rectangle
-	CollisionObjects *CollisionItems
-	Doors            []*Door
-	Bloons           *Bloons
+var CurrentScene *models.Scene
+var AllScenes map[string]*models.Scene
 
-	Width  float32
-	Height float32
-
-	WidthInTiles  int
-	HeightInTiles int
-}
-
-var CurrentScene *Scene
-var AllScenes map[string]*Scene
-
-func ChangeScene(door *Door, player *Player) *Player {
+func ChangeScene(door *models.Door, player *models.Player) *models.Player {
 	if AllScenes[door.GoesToScene] == nil {
 		return SetScene(door.GoesToScene, door.GoesToX, door.GoesToY, player)
 	}
@@ -48,13 +34,20 @@ func ChangeScene(door *Door, player *Player) *Player {
 	global.VariableSet.MapHeight = CurrentScene.Height * global.VariableSet.EntityScale
 	global.VariableSet.MapWidth = CurrentScene.Width * global.VariableSet.EntityScale
 
+	global.VariableSet.BasePlayerMiddleOffset = global.TileWidth / 2
 	global.VariableSet.PlayerMiddleOffset = global.TileWidth / 2 * global.VariableSet.EntityScale
 	global.VariableSet.EntitySize = global.TileWidth * global.VariableSet.EntityScale
 
 	global.VariableSet.Speed = global.VariableSet.FpsScale * global.VariableSet.EntityScale
 
-	player.Position.X = door.GoesToX * global.VariableSet.EntityScale
-	player.Position.Y = door.GoesToY * global.VariableSet.EntityScale
+	player.Rectangle.Width = player.BaseRectangle.Width * global.VariableSet.EntityScale
+	player.Rectangle.Height = player.BaseRectangle.Height * global.VariableSet.EntityScale
+
+	player.BasePosition.X = door.GoesToX
+	player.BasePosition.Y = door.GoesToY
+
+	player.Rectangle.X = door.GoesToX * global.VariableSet.EntityScale
+	player.Rectangle.Y = door.GoesToY * global.VariableSet.EntityScale
 
 	player.DashDirection.X *= global.VariableSet.Speed
 	player.DashDirection.Y *= global.VariableSet.Speed
@@ -62,7 +55,7 @@ func ChangeScene(door *Door, player *Player) *Player {
 	return player
 }
 
-func SetScene(sceneName string, playerX, playerY float32, player *Player) *Player {
+func SetScene(sceneName string, playerX, playerY float32, player *models.Player) *models.Player {
 	cwd, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
@@ -74,7 +67,7 @@ func SetScene(sceneName string, playerX, playerY float32, player *Player) *Playe
 		return SetScene(sceneName, playerX, playerY, player)
 	}
 
-	scene := &Scene{
+	scene := &models.Scene{
 		Name:          sceneName,
 		Background:    background,
 		Width:         float32(background.Width),
@@ -94,21 +87,30 @@ func SetScene(sceneName string, playerX, playerY float32, player *Player) *Playe
 	global.VariableSet.MapHeight = scene.Height * global.VariableSet.EntityScale
 	global.VariableSet.MapWidth = scene.Width * global.VariableSet.EntityScale
 
+	global.VariableSet.BasePlayerMiddleOffset = global.TileWidth / 2
 	global.VariableSet.PlayerMiddleOffset = global.TileWidth / 2 * global.VariableSet.EntityScale
 	global.VariableSet.EntitySize = global.TileWidth * global.VariableSet.EntityScale
 
 	global.VariableSet.Speed = global.VariableSet.FpsScale * global.VariableSet.EntityScale
-	initiateObjects(scenePath, scene)
+	initiate.InitiateObjects(scenePath, scene)
 
 	if player == nil {
-		player = preparePlayer(playerPath)
+		player = initiate.PreparePlayer(playerPath)
+	} else {
+		player.Rectangle.Width = player.BaseRectangle.Width * global.VariableSet.EntityScale
+		player.Rectangle.Height = player.BaseRectangle.Height * global.VariableSet.EntityScale
 	}
-	player.Position.X = playerX * global.VariableSet.EntityScale
-	player.Position.Y = playerY * global.VariableSet.EntityScale
+
+	player.BasePosition.X = playerX
+	player.BasePosition.Y = playerY
+
+	player.Rectangle.X = playerX * global.VariableSet.EntityScale
+	player.Rectangle.Y = playerY * global.VariableSet.EntityScale
+
 	scene.Background = background
 
 	if AllScenes == nil {
-		AllScenes = make(map[string]*Scene)
+		AllScenes = make(map[string]*models.Scene)
 	}
 	AllScenes[sceneName] = scene
 	CurrentScene = scene

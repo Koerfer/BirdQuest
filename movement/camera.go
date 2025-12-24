@@ -2,7 +2,7 @@ package movement
 
 import (
 	"BirdQuest/global"
-	"BirdQuest/scene"
+	"BirdQuest/scene/models"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -24,15 +24,15 @@ func CorrectForZoom(x, y float32, camera *rl.Camera2D) {
 	}
 }
 
-func InitialiseCamera(player *scene.Player, camera *rl.Camera2D) {
-	newX := player.Position.X + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapWidth/2
-	newY := player.Position.Y + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapHeight/2
+func InitialiseCamera(player *models.Player, camera *rl.Camera2D) {
+	newX := player.Rectangle.X + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapWidth/2
+	newY := player.Rectangle.Y + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapHeight/2
 
 	CorrectForZoom(newX, newY, camera)
 }
 
-func moveCameraUp(player *scene.Player, camera *rl.Camera2D, offset float32) {
-	if player.Position.Y+global.VariableSet.PlayerMiddleOffset <= camera.Target.Y+global.VariableSet.DesiredHeight/(camera.Zoom*2) &&
+func moveCameraUp(player *models.Player, camera *rl.Camera2D, offset float32) {
+	if player.Rectangle.Y+global.VariableSet.PlayerMiddleOffset <= camera.Target.Y+global.VariableSet.DesiredHeight/(camera.Zoom*2) &&
 		camera.Target.Y > offset {
 
 		camera.Target.Y -= offset
@@ -41,8 +41,8 @@ func moveCameraUp(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	}
 }
 
-func moveCameraDown(player *scene.Player, camera *rl.Camera2D, offset float32) {
-	if player.Position.Y+global.VariableSet.PlayerMiddleOffset >= camera.Target.Y+global.VariableSet.VisibleMapHeight/2 &&
+func moveCameraDown(player *models.Player, camera *rl.Camera2D, offset float32) {
+	if player.Rectangle.Y+global.VariableSet.PlayerMiddleOffset >= camera.Target.Y+global.VariableSet.VisibleMapHeight/2 &&
 		camera.Target.Y+global.VariableSet.VisibleMapHeight+offset < global.VariableSet.MapHeight {
 
 		camera.Target.Y += offset
@@ -51,8 +51,8 @@ func moveCameraDown(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	}
 }
 
-func moveCameraLeft(player *scene.Player, camera *rl.Camera2D, offset float32) {
-	if player.Position.X+global.VariableSet.PlayerMiddleOffset <= camera.Target.X+global.VariableSet.DesiredWidth/(camera.Zoom*2) &&
+func moveCameraLeft(player *models.Player, camera *rl.Camera2D, offset float32) {
+	if player.Rectangle.X+global.VariableSet.PlayerMiddleOffset <= camera.Target.X+global.VariableSet.DesiredWidth/(camera.Zoom*2) &&
 		camera.Target.X-offset > 0 {
 
 		camera.Target.X -= offset
@@ -61,8 +61,8 @@ func moveCameraLeft(player *scene.Player, camera *rl.Camera2D, offset float32) {
 	}
 }
 
-func moveCameraRight(player *scene.Player, camera *rl.Camera2D, offset float32) {
-	if player.Position.X+global.VariableSet.PlayerMiddleOffset >= camera.Target.X+global.VariableSet.VisibleMapWidth/2 &&
+func moveCameraRight(player *models.Player, camera *rl.Camera2D, offset float32) {
+	if player.Rectangle.X+global.VariableSet.PlayerMiddleOffset >= camera.Target.X+global.VariableSet.VisibleMapWidth/2 &&
 		camera.Target.X+global.VariableSet.VisibleMapWidth+offset < global.VariableSet.MapWidth {
 
 		camera.Target.X += offset

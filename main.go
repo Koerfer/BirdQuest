@@ -29,6 +29,8 @@ func main() {
 
 		update.Update(&camera, player)
 
+		update.Window(player, &camera)
+
 		draw.Draw(camera, player)
 	}
 

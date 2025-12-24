@@ -9,9 +9,10 @@ type Variables struct {
 	FpsScale float32
 	Speed    float32
 
-	EntityScale        float32
-	EntitySize         float32
-	PlayerMiddleOffset float32
+	EntityScale            float32
+	EntitySize             float32
+	BasePlayerMiddleOffset float32
+	PlayerMiddleOffset     float32
 
 	ScaleHeight float32
 	ScaleWidth  float32
@@ -33,6 +34,7 @@ func SetDesiredWindowSize(width, height float32) {
 		VariableSet = &Variables{}
 	}
 	rl.InitWindow(int32(width), int32(height), "BirdQuest")
+	rl.SetWindowState(rl.FlagWindowResizable)
 	VariableSet.DesiredHeight = height
 	VariableSet.DesiredWidth = width
 }

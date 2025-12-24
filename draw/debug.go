@@ -3,18 +3,19 @@ package draw
 import (
 	"BirdQuest/global"
 	"BirdQuest/scene"
+	"BirdQuest/scene/models"
 	"fmt"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func drawDebugInfo(camera rl.Camera2D, player *scene.Player) {
+func drawDebugInfo(camera rl.Camera2D, player *models.Player) {
 	//rl.DrawFPS(int32(camera.Target.X+5), int32(camera.Target.Y+5))
 
 	for _, object := range scene.CurrentScene.ItemObjects.Objects {
 		if object == nil {
 			continue
 		}
-		rl.DrawRectanglePro(object.HitBox, rl.Vector2{X: 0, Y: 0}, 0, rl.Pink)
+		rl.DrawRectanglePro(*object.Rectangle, rl.Vector2{X: 0, Y: 0}, 0, rl.Pink)
 	}
 
 	for _, object := range scene.CurrentScene.CollisionBoxes {
@@ -28,10 +29,10 @@ func drawDebugInfo(camera rl.Camera2D, player *scene.Player) {
 		if bloon == nil {
 			continue
 		}
-		rl.DrawRectanglePro(bloon.HitBox, rl.Vector2{X: 0, Y: 0}, 0, rl.Orange)
+		rl.DrawRectanglePro(*bloon.Rectangle, rl.Vector2{X: 0, Y: 0}, 0, rl.Orange)
 	}
 
-	rl.DrawRectanglePro(player.HitBox, rl.Vector2{X: 0, Y: 0}, 0, rl.Green)
+	rl.DrawRectanglePro(*player.Rectangle, rl.Vector2{X: 0, Y: 0}, 0, rl.Green)
 
 	mousePositionAbsolute := rl.GetMousePosition()
 	rl.DrawText(fmt.Sprintf("%f, %f",
@@ -44,8 +45,8 @@ func drawDebugInfo(camera rl.Camera2D, player *scene.Player) {
 		rl.Black,
 	)
 	rl.DrawText(fmt.Sprintf("%f, %f",
-		player.Position.X+global.VariableSet.PlayerMiddleOffset,
-		player.Position.Y+global.VariableSet.PlayerMiddleOffset,
+		player.Rectangle.X+global.VariableSet.PlayerMiddleOffset,
+		player.Rectangle.Y+global.VariableSet.PlayerMiddleOffset,
 	),
 		int32(camera.Target.X+5),
 		int32(camera.Target.Y+50/camera.Zoom),
@@ -53,14 +54,14 @@ func drawDebugInfo(camera rl.Camera2D, player *scene.Player) {
 		rl.Black,
 	)
 	mousePositionRelative := rl.Vector2{
-		X: mousePositionAbsolute.X/camera.Zoom + camera.Target.X - (player.Position.X + global.VariableSet.PlayerMiddleOffset),
-		Y: mousePositionAbsolute.Y/camera.Zoom + camera.Target.Y - (player.Position.Y + global.VariableSet.PlayerMiddleOffset),
+		X: mousePositionAbsolute.X/camera.Zoom + camera.Target.X - (player.Rectangle.X + global.VariableSet.PlayerMiddleOffset),
+		Y: mousePositionAbsolute.Y/camera.Zoom + camera.Target.Y - (player.Rectangle.Y + global.VariableSet.PlayerMiddleOffset),
 	}
 
 	dashDirection := rl.Vector2Normalize(mousePositionRelative)
 	dashDirection.X *= 100
 	dashDirection.Y *= 100
-	playerPositionVectorMiddle := rl.NewVector2(player.Position.X+global.VariableSet.PlayerMiddleOffset, player.Position.Y+global.VariableSet.PlayerMiddleOffset)
+	playerPositionVectorMiddle := rl.NewVector2(player.Rectangle.X+global.VariableSet.PlayerMiddleOffset, player.Rectangle.Y+global.VariableSet.PlayerMiddleOffset)
 	rl.DrawLineV(playerPositionVectorMiddle, rl.Vector2Add(playerPositionVectorMiddle, dashDirection), rl.Black)
 
 }

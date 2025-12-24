@@ -1,33 +1,13 @@
-package scene
+package initiate
 
 import (
 	"BirdQuest/global"
+	"BirdQuest/scene/models"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func prepareCollisions(jsonMap *jsonMap, scene *Scene) {
-	collisionBoxes := make([]*rl.Rectangle, 0)
-
-	for _, jsonMapLayer := range jsonMap.Layers {
-		if jsonMapLayer.Name != "Collisions" {
-			continue
-		}
-
-		for _, obstacle := range jsonMapLayer.Objects {
-			collisionBoxes = append(collisionBoxes, &rl.Rectangle{
-				X:      obstacle.X * global.VariableSet.EntityScale,
-				Y:      obstacle.Y * global.VariableSet.EntityScale,
-				Width:  obstacle.Width * global.VariableSet.EntityScale,
-				Height: obstacle.Height * global.VariableSet.EntityScale,
-			})
-		}
-	}
-
-	scene.CollisionBoxes = collisionBoxes
-}
-
-func prepareDoors(jsonMap *jsonMap, scene *Scene) {
-	doors := make([]*Door, 0)
+func prepareDoors(jsonMap *jsonMap, scene *models.Scene) {
+	doors := make([]*models.Door, 0)
 
 	for _, jsonMapLayer := range jsonMap.Layers {
 		if jsonMapLayer.Name != "Doors" {
@@ -35,7 +15,13 @@ func prepareDoors(jsonMap *jsonMap, scene *Scene) {
 		}
 
 		for _, jsonDoor := range jsonMapLayer.Objects {
-			door := &Door{
+			door := &models.Door{
+				BaseRectangle: &rl.Rectangle{
+					X:      jsonDoor.X,
+					Y:      jsonDoor.Y,
+					Width:  jsonDoor.Width,
+					Height: jsonDoor.Height,
+				},
 				Rectangle: &rl.Rectangle{
 					X:      jsonDoor.X * global.VariableSet.EntityScale,
 					Y:      jsonDoor.Y * global.VariableSet.EntityScale,

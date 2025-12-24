@@ -1,11 +1,11 @@
 package update
 
 import (
-	"BirdQuest/scene"
+	"BirdQuest/scene/models"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func Update(camera *rl.Camera2D, player *scene.Player) {
+func Update(camera *rl.Camera2D, player *models.Player) {
 	updateZoom(camera, player)
 
 	updatePlayer(camera, player)

@@ -3,40 +3,41 @@ package attack
 import (
 	"BirdQuest/global"
 	"BirdQuest/scene"
+	"BirdQuest/scene/models"
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"time"
 )
 
 var frameCounter int
 
-func StartAttack(player *scene.Player) {
+func StartAttack(player *models.Player) {
 	frameCounter = 0
 
 	player.AttackLastUse = time.Now()
 	player.AttackOngoing = true
 
 	player.AnimationStep = 3
-	player.Rectangle = player.Animation.GetRectangleAreaInTexture(player.AnimationStep)
+	player.BaseRectangle = player.Animation.GetRectangleAreaInTexture(player.AnimationStep)
 
 	var hit bool
 	var hitId int
-	extendedPlayerHitBox := &rl.Rectangle{
-		X:      player.HitBox.X,
-		Y:      player.HitBox.Y,
-		Width:  player.HitBox.Width + 5*global.VariableSet.EntityScale,
-		Height: player.HitBox.Height + 5*global.VariableSet.EntityScale,
+	extendedPlayerRectangle := &rl.Rectangle{
+		X:      player.Rectangle.X,
+		Y:      player.Rectangle.Y,
+		Width:  player.Rectangle.Width + 5*global.VariableSet.EntityScale,
+		Height: player.Rectangle.Height + 5*global.VariableSet.EntityScale,
 	}
 	for i, bloon := range scene.CurrentScene.Bloons.BloonObjects {
 		if bloon == nil {
 			continue
 		}
-		if rl.CheckCollisionRecs(*extendedPlayerHitBox, bloon.HitBox) {
+		if rl.CheckCollisionRecs(*extendedPlayerRectangle, *bloon.Rectangle) {
 			hit = true
 			hitId = i
 			break
 		}
 	}
-	extendedPlayerHitBox = nil
+	extendedPlayerRectangle = nil
 
 	if hit {
 		bloons := scene.CurrentScene.Bloons.BloonObjects
@@ -48,9 +49,9 @@ func StartAttack(player *scene.Player) {
 		if bloons[hitId].Lives == 0 {
 			bloons[hitId].PoppingAnimationStage = 1
 		} else {
-			bloons[hitId].Rectangle.X = float32(int(bloons[hitId].Rectangle.X+global.TileWidth) % int(scene.CurrentScene.Bloons.Texture.Width))
-			if bloons[hitId].Rectangle.X == 0 {
-				bloons[hitId].Rectangle.X += global.TileWidth
+			bloons[hitId].BaseRectangle.X = float32(int(bloons[hitId].BaseRectangle.X+global.TileWidth) % int(scene.CurrentScene.Bloons.Texture.Width))
+			if bloons[hitId].BaseRectangle.X == 0 {
+				bloons[hitId].BaseRectangle.X += global.TileWidth
 			}
 		}
 
@@ -58,7 +59,7 @@ func StartAttack(player *scene.Player) {
 	}
 }
 
-func Attack(player *scene.Player) {
+func Attack(player *models.Player) {
 
 	if frameCounter >= int(4/global.VariableSet.FpsScale) {
 		frameCounter = 0
@@ -67,7 +68,7 @@ func Attack(player *scene.Player) {
 			player.AttackOngoing = false
 			return
 		}
-		player.Rectangle = player.Animation.GetRectangleAreaInTexture(player.AnimationStep)
+		player.BaseRectangle = player.Animation.GetRectangleAreaInTexture(player.AnimationStep)
 	}
 	frameCounter++
 

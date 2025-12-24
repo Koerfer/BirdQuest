@@ -13,22 +13,22 @@
          "id":0,
          "properties":[
                 {
-                 "name":"HitBoxHeight",
+                 "name":"RectangleHeight",
                  "type":"int",
                  "value":32
                 }, 
                 {
-                 "name":"HitBoxWidth",
+                 "name":"RectangleWidth",
                  "type":"int",
                  "value":32
                 }, 
                 {
-                 "name":"HitBoxX",
+                 "name":"RectangleX",
                  "type":"int",
                  "value":0
                 }, 
                 {
-                 "name":"HitBoxY",
+                 "name":"RectangleY",
                  "type":"int",
                  "value":0
                 }]
@@ -37,22 +37,22 @@
          "id":1,
          "properties":[
                 {
-                 "name":"HitBoxHeight",
+                 "name":"RectangleHeight",
                  "type":"int",
                  "value":32
                 }, 
                 {
-                 "name":"HitBoxWidth",
+                 "name":"RectangleWidth",
                  "type":"int",
                  "value":32
                 }, 
                 {
-                 "name":"HitBoxX",
+                 "name":"RectangleX",
                  "type":"int",
                  "value":0
                 }, 
                 {
-                 "name":"HitBoxY",
+                 "name":"RectangleY",
                  "type":"int",
                  "value":0
                 }]
@@ -61,22 +61,22 @@
          "id":2,
          "properties":[
                 {
-                 "name":"HitBoxHeight",
+                 "name":"RectangleHeight",
                  "type":"int",
                  "value":32
                 }, 
                 {
-                 "name":"HitBoxWidth",
+                 "name":"RectangleWidth",
                  "type":"int",
                  "value":32
                 }, 
                 {
-                 "name":"HitBoxX",
+                 "name":"RectangleX",
                  "type":"int",
                  "value":0
                 }, 
                 {
-                 "name":"HitBoxY",
+                 "name":"RectangleY",
                  "type":"int",
                  "value":0
                 }]

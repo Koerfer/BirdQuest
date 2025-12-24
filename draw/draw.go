@@ -2,12 +2,13 @@ package draw
 
 import (
 	"BirdQuest/scene"
+	"BirdQuest/scene/models"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 var debug = false
 
-func Draw(camera rl.Camera2D, player *scene.Player) {
+func Draw(camera rl.Camera2D, player *models.Player) {
 	rl.BeginDrawing()
 
 	rl.BeginMode2D(camera)
