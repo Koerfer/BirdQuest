@@ -17,7 +17,12 @@ func Load() *State {
 	if err != nil {
 		log.Fatalf("unable to open binary file: %v", err)
 	}
-	defer binaryData.Close()
+	defer func(binaryData *os.File) {
+		err := binaryData.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(binaryData)
 
 	saveState := &State{}
 	dec := gob.NewDecoder(binaryData)

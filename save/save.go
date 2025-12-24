@@ -44,7 +44,12 @@ func Save(player *models.Player, camera rl.Camera2D) {
 	if err != nil {
 		log.Fatalf("unable to create data.bin file: %v", err)
 	}
-	defer dumpFile.Close()
+	defer func(dumpFile *os.File) {
+		err := dumpFile.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(dumpFile)
 
 	enc := gob.NewEncoder(dumpFile)
 	if err := enc.Encode(state); err != nil {

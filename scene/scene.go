@@ -91,7 +91,7 @@ func SetScene(sceneName string, playerX, playerY float32, player *models.Player)
 	global.VariableSet.EntitySize = global.TileWidth * global.VariableSet.EntityScale
 
 	global.VariableSet.Speed = global.VariableSet.FpsScale * global.VariableSet.EntityScale
-	initiate.InitiateObjects(scenePath, scene)
+	initiate.Objects(scenePath, scene)
 
 	if player == nil {
 		player = initiate.PreparePlayer()

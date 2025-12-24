@@ -13,7 +13,7 @@ type jsonTiles struct {
 	Properties []*jsonProperty `json:"properties"`
 }
 
-func InitiateObjects(path string, scene *models.Scene) {
+func Objects(path string, scene *models.Scene) {
 	jsonMapContents, err := os.ReadFile(filepath.Join(path, "map.tmj"))
 	if err != nil {
 		log.Fatal(err)
