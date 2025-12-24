@@ -16,6 +16,12 @@ type State struct {
 	CurrentScene    *models.Scene
 	Scenes          map[string]*models.Scene
 	GlobalVariables *global.Variables
+
+	IsFullScreen   bool
+	IsMaximised    bool
+	WindowWidth    float32
+	WindowHeight   float32
+	WindowPosition rl.Vector2
 }
 
 func Save(player *models.Player, camera rl.Camera2D) {
@@ -25,6 +31,12 @@ func Save(player *models.Player, camera rl.Camera2D) {
 		CurrentScene:    scene.CurrentScene,
 		Scenes:          scene.AllScenes,
 		GlobalVariables: global.VariableSet,
+
+		IsFullScreen:   rl.IsWindowFullscreen(),
+		IsMaximised:    rl.IsWindowMaximized(),
+		WindowWidth:    float32(rl.GetScreenWidth()),
+		WindowHeight:   float32(rl.GetScreenHeight()),
+		WindowPosition: rl.GetWindowPosition(),
 	}
 
 	cwd, _ := os.Getwd()
