@@ -19,12 +19,17 @@ func SaveHandler(player *models.Player, camera *rl.Camera2D) (*models.Player, *r
 		if saveState == nil {
 			return nil, nil
 		}
+		global.UnloadAllTextures()
 
 		player = saveState.Player
 		camera = &saveState.Camera
 		scene.CurrentScene = saveState.CurrentScene
 		scene.AllScenes = saveState.Scenes
 		global.VariableSet = saveState.GlobalVariables
+		global.LoadAllTextures()
+
+		rl.SetWindowSize(int(saveState.WindowWidth), int(saveState.WindowHeight))
+		rl.SetWindowPosition(int(saveState.WindowPosition.X), int(saveState.WindowPosition.Y))
 
 		if saveState.IsFullScreen && !rl.IsWindowFullscreen() {
 			rl.ToggleFullscreen()
@@ -60,6 +65,7 @@ func InitialLoader() (*models.Player, rl.Camera2D) {
 	player := saveState.Player
 
 	global.VariableSet = saveState.GlobalVariables
+	global.LoadAllTextures()
 
 	for sceneName, savedScene := range saveState.Scenes {
 		if sceneName == saveState.CurrentScene.Name {
