@@ -60,7 +60,7 @@ func SetScene(sceneName string, playerX, playerY float32, player *models.Player)
 	if err != nil {
 		log.Fatal(err)
 	}
-	scenePath := filepath.Join(cwd, "sprites", sceneName)
+	scenePath := filepath.Join(cwd, "resources", sceneName)
 	background := rl.LoadTexture(filepath.Join(scenePath, "background.png"))
 	if background.Width == 0 {
 		return SetScene(sceneName, playerX, playerY, player)

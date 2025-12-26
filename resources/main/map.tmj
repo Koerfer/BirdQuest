@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":"..\/IdeaProjects\/BirdQuest\/sprites\/map.tmj"
+         "target":"..\/IdeaProjects\/BirdQuest\/resources\/map.tmj"
         }
     },
  "height":20,

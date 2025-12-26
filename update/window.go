@@ -2,6 +2,7 @@ package update
 
 import (
 	"BirdQuest/global"
+	"BirdQuest/menus"
 	"BirdQuest/movement"
 	"BirdQuest/scene"
 	"BirdQuest/scene/models"
@@ -107,6 +108,26 @@ func updateDesiredWindowSize(width, height float32, player *models.Player, camer
 			Y:      door.BaseRectangle.Y * global.VariableSet.EntityScale,
 			Width:  door.BaseRectangle.Width * global.VariableSet.EntityScale,
 			Height: door.BaseRectangle.Height * global.VariableSet.EntityScale,
+		}
+	}
+
+	for _, menu := range menus.AllMenus {
+		menuScaler := global.VariableSet.EntityScale
+		if menu.BaseRectangle.Height*global.VariableSet.EntityScale > global.VariableSet.VisibleMapHeight {
+			menuScaler = global.VariableSet.VisibleMapHeight / menu.BaseRectangle.Height * 0.98 * camera.Zoom
+		}
+
+		menu.FontSize = menu.BaseFontSize * menuScaler
+		menu.Rectangle.X = menu.BaseRectangle.X * menuScaler
+		menu.Rectangle.Y = menu.BaseRectangle.Y * menuScaler
+		menu.Rectangle.Width = menu.BaseRectangle.Width * menuScaler
+		menu.Rectangle.Height = menu.BaseRectangle.Height * menuScaler
+
+		for _, button := range menu.Buttons {
+			button.Rectangle.X = button.BaseRectangle.X * menuScaler
+			button.Rectangle.Y = button.BaseRectangle.Y * menuScaler
+			button.Rectangle.Width = button.BaseRectangle.Width * menuScaler
+			button.Rectangle.Height = button.BaseRectangle.Height * menuScaler
 		}
 	}
 

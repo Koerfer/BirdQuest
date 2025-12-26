@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 type Variables struct {
@@ -36,6 +37,7 @@ type Variables struct {
 }
 
 var VariableSet *Variables
+var Font rl.Font
 
 func LoadAllTextures() {
 	cwd, err := os.Getwd()
@@ -43,10 +45,17 @@ func LoadAllTextures() {
 		log.Fatal(err)
 	}
 
-	VariableSet.CollisionObjectsTexture = rl.LoadTexture(filepath.Join(cwd, "sprites", "collision_sprites.png"))
-	VariableSet.BloonsTexture = rl.LoadTexture(filepath.Join(cwd, "sprites", "bloons.png"))
-	VariableSet.ItemsTexture = rl.LoadTexture(filepath.Join(cwd, "sprites", "item_sprites.png"))
-	VariableSet.PlayerTexture = rl.LoadTexture(filepath.Join(cwd, "sprites", "chili.png"))
+	if time.Now().Month() == 12 && time.Now().Day() > 23 && time.Now().Day() < 31 {
+		VariableSet.CollisionObjectsTexture = rl.LoadTexture(filepath.Join(cwd, "resources", "collision_sprites_winter.png"))
+	} else {
+		VariableSet.CollisionObjectsTexture = rl.LoadTexture(filepath.Join(cwd, "resources", "collision_sprites.png"))
+	}
+	VariableSet.BloonsTexture = rl.LoadTexture(filepath.Join(cwd, "resources", "bloons.png"))
+	VariableSet.ItemsTexture = rl.LoadTexture(filepath.Join(cwd, "resources", "item_sprites.png"))
+	VariableSet.PlayerTexture = rl.LoadTexture(filepath.Join(cwd, "resources", "chili.png"))
+
+	Font = rl.LoadFontEx(filepath.Join(cwd, "resources", "fonts", "font.ttf"), 512, nil, 150)
+
 }
 
 func UnloadAllTextures() {
@@ -54,6 +63,8 @@ func UnloadAllTextures() {
 	rl.UnloadTexture(VariableSet.CollisionObjectsTexture)
 	rl.UnloadTexture(VariableSet.BloonsTexture)
 	rl.UnloadTexture(VariableSet.PlayerTexture)
+
+	rl.UnloadFont(Font)
 }
 
 func SetDesiredWindowSize(width, height float32) {

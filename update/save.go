@@ -9,36 +9,29 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func SaveHandler(player *models.Player, camera *rl.Camera2D) (*models.Player, *rl.Camera2D) {
-	if rl.IsKeyPressed(rl.KeyF6) {
-		save.Save(player, *camera)
+func LoadHandler(player *models.Player, camera *rl.Camera2D) (*models.Player, *rl.Camera2D) {
+	saveState := save.Load()
+	if saveState == nil {
+		return nil, nil
+	}
+	global.UnloadAllTextures()
+
+	player = saveState.Player
+	camera = &saveState.Camera
+	scene.CurrentScene = saveState.CurrentScene
+	scene.AllScenes = saveState.Scenes
+	global.VariableSet = saveState.GlobalVariables
+	global.LoadAllTextures()
+
+	rl.SetWindowSize(int(saveState.WindowWidth), int(saveState.WindowHeight))
+	rl.SetWindowPosition(int(saveState.WindowPosition.X), int(saveState.WindowPosition.Y))
+	updateDesiredWindowSize(saveState.WindowWidth, saveState.WindowHeight, player, camera)
+
+	if saveState.IsFullScreen && !rl.IsWindowFullscreen() {
+		rl.ToggleFullscreen()
 	}
 
-	if rl.IsKeyPressed(rl.KeyF7) {
-		saveState := save.Load()
-		if saveState == nil {
-			return nil, nil
-		}
-		global.UnloadAllTextures()
-
-		player = saveState.Player
-		camera = &saveState.Camera
-		scene.CurrentScene = saveState.CurrentScene
-		scene.AllScenes = saveState.Scenes
-		global.VariableSet = saveState.GlobalVariables
-		global.LoadAllTextures()
-
-		rl.SetWindowSize(int(saveState.WindowWidth), int(saveState.WindowHeight))
-		rl.SetWindowPosition(int(saveState.WindowPosition.X), int(saveState.WindowPosition.Y))
-
-		if saveState.IsFullScreen && !rl.IsWindowFullscreen() {
-			rl.ToggleFullscreen()
-		}
-
-		return player, camera
-	}
-
-	return nil, nil
+	return player, camera
 }
 
 func InitialLoader() (*models.Player, rl.Camera2D) {

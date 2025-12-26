@@ -1,6 +1,7 @@
 package draw
 
 import (
+	"BirdQuest/menus"
 	"BirdQuest/scene"
 	"BirdQuest/scene/models"
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -23,6 +24,10 @@ func Draw(camera rl.Camera2D, player *models.Player) {
 
 	if debug {
 		drawDebugInfo(camera, player)
+	}
+
+	if menus.ActiveMenu != nil {
+		menus.ActiveMenu.Draw(camera)
 	}
 
 	rl.EndDrawing()
