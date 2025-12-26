@@ -7,8 +7,6 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-var debug = false
-
 func Draw(camera rl.Camera2D, player *models.Player) {
 	rl.BeginDrawing()
 
@@ -22,9 +20,7 @@ func Draw(camera rl.Camera2D, player *models.Player) {
 	scene.CurrentScene.CollisionObjects.DrawDynamicLayer(player)
 	scene.CurrentScene.CollisionObjects.DrawLastLayer()
 
-	if debug {
-		drawDebugInfo(camera, player)
-	}
+	//drawDebugInfo(camera, player)
 
 	if menus.ActiveMenu != nil {
 		menus.ActiveMenu.Draw(camera)

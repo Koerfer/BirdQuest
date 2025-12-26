@@ -46,6 +46,18 @@ func Menu(player *models.Player, camera rl.Camera2D) (bool, *models.Player, *rl.
 		case menus.ActionResume:
 			menus.ActiveMenu = nil
 			return true, nil, nil, false
+		case menus.ActionOptionsMenu:
+			menus.ActiveMenu = menus.AllMenus["options"]
+		case menus.ActionMainMenu:
+			menus.ActiveMenu = menus.AllMenus["main"]
+		case menus.ActionFullScreen:
+			if !rl.IsWindowFullscreen() {
+				rl.ToggleFullscreen()
+				updateDesiredWindowSize(float32(rl.GetMonitorWidth(rl.GetCurrentMonitor())), float32(rl.GetMonitorHeight(rl.GetCurrentMonitor())), player, &camera)
+			} else if rl.IsWindowFullscreen() {
+				rl.ToggleFullscreen()
+				updateDesiredWindowSize(float32(rl.GetScreenWidth()), float32(rl.GetScreenHeight()), player, &camera)
+			}
 		}
 	}
 

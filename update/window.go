@@ -10,14 +10,6 @@ import (
 )
 
 func Window(player *models.Player, camera *rl.Camera2D) {
-	if rl.IsKeyPressed(rl.KeyF5) && !rl.IsWindowFullscreen() {
-		rl.ToggleFullscreen()
-		updateDesiredWindowSize(float32(rl.GetMonitorWidth(rl.GetCurrentMonitor())), float32(rl.GetMonitorHeight(rl.GetCurrentMonitor())), player, camera)
-	} else if rl.IsKeyPressed(rl.KeyF5) && rl.IsWindowFullscreen() {
-		rl.ToggleFullscreen()
-		updateDesiredWindowSize(float32(rl.GetScreenWidth()), float32(rl.GetScreenHeight()), player, camera)
-	}
-
 	if rl.IsWindowResized() {
 		updateDesiredWindowSize(float32(rl.GetScreenWidth()), float32(rl.GetScreenHeight()), player, camera)
 	}

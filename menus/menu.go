@@ -36,6 +36,9 @@ const (
 	ActionLoad
 	ActionExit
 	ActionResume
+	ActionOptionsMenu
+	ActionMainMenu
+	ActionFullScreen
 )
 
 var ActiveMenu *Menu
@@ -44,18 +47,21 @@ var AllMenus map[string]*Menu
 func PrepareMenus() {
 	AllMenus = make(map[string]*Menu)
 
-	var standardWidth float32 = 280
-	var standardButtonHeight float32 = 95
-	var standardButtonSpacing float32 = 8
-
-	mainMenu := CreateMenu(standardWidth, standardButtonHeight, standardButtonSpacing, 64)
-	mainMenu.AddButton("START", rl.Green, rl.White, ActionResume)
-	mainMenu.AddButton("OPTIONS", rl.Green, rl.White, ActionInvalid)
+	mainMenu := CreateMenu(300, 95, 8, 64)
+	mainMenu.AddButton("RESUME", rl.Green, rl.White, ActionResume)
+	mainMenu.AddButton("OPTIONS", rl.Green, rl.White, ActionOptionsMenu)
 	mainMenu.AddButton("SAVE", rl.Green, rl.White, ActionSave)
 	mainMenu.AddButton("LOAD", rl.Green, rl.White, ActionLoad)
 	mainMenu.AddButton("EXIT", rl.Green, rl.White, ActionExit)
 
+	optionsMenu := CreateMenu(300, 95, 8, 60)
+	optionsMenu.AddButton("FULLSCREEN", rl.Green, rl.White, ActionFullScreen)
+	optionsMenu.AddButton("BACK", rl.Green, rl.White, ActionMainMenu)
+	optionsMenu.BaseRectangle.Height = mainMenu.BaseRectangle.Height
+	optionsMenu.Rectangle.Height = mainMenu.Rectangle.Height
+
 	AllMenus["main"] = mainMenu
+	AllMenus["options"] = optionsMenu
 }
 
 func CreateMenu(menuWidth, buttonHeight, buttonSpacing, fontSize float32) *Menu {
