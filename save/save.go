@@ -2,6 +2,7 @@ package save
 
 import (
 	"BirdQuest/global"
+	"BirdQuest/menus"
 	"BirdQuest/scene"
 	"BirdQuest/scene/models"
 	"encoding/gob"
@@ -22,6 +23,8 @@ type State struct {
 	WindowWidth    float32
 	WindowHeight   float32
 	WindowPosition rl.Vector2
+
+	AllMenus map[string]*menus.Menu
 }
 
 func Save(player *models.Player, camera rl.Camera2D) {
@@ -37,6 +40,7 @@ func Save(player *models.Player, camera rl.Camera2D) {
 		WindowWidth:    float32(rl.GetScreenWidth()),
 		WindowHeight:   float32(rl.GetScreenHeight()),
 		WindowPosition: rl.GetWindowPosition(),
+		AllMenus:       menus.AllMenus,
 	}
 
 	cwd, _ := os.Getwd()

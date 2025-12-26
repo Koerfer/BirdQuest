@@ -11,7 +11,9 @@ import (
 
 func main() {
 	player, camera := update.InitialLoader()
-	menus.PrepareMenus()
+	if menus.AllMenus == nil {
+		menus.PrepareMenus()
+	}
 	defer rl.CloseWindow()
 	defer scene.UnloadAllBackgroundTextures()
 	defer global.UnloadAllTextures()

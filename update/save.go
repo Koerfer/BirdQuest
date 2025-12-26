@@ -2,6 +2,7 @@ package update
 
 import (
 	"BirdQuest/global"
+	"BirdQuest/menus"
 	"BirdQuest/movement"
 	"BirdQuest/save"
 	"BirdQuest/scene"
@@ -85,6 +86,8 @@ func InitialLoader() (*models.Player, rl.Camera2D) {
 	scene.CurrentScene.Bloons.BloonObjects = saveState.CurrentScene.Bloons.BloonObjects
 	scene.CurrentScene.Doors = saveState.CurrentScene.Doors
 	scene.CurrentScene.ItemObjects.Objects = saveState.CurrentScene.ItemObjects.Objects
+
+	menus.AllMenus = saveState.AllMenus
 
 	rl.SetWindowPosition(int(saveState.WindowPosition.X), int(saveState.WindowPosition.Y))
 	if saveState.IsMaximised {

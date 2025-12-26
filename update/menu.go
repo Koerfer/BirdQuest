@@ -13,6 +13,7 @@ var lastPressed time.Time
 func Menu(player *models.Player, camera rl.Camera2D) (bool, *models.Player, *rl.Camera2D, bool) {
 	if rl.IsKeyPressed(rl.KeyEscape) {
 		if menus.ActiveMenu != nil && time.Since(lastPressed).Milliseconds() > 200 {
+			menus.ActiveMenu.SelectedButton = 0
 			menus.ActiveMenu = nil
 			return false, nil, nil, false
 		}
