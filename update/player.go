@@ -15,7 +15,7 @@ func updatePlayer(camera *rl.Camera2D, player *models.Player) {
 
 	if player.AttackOngoing {
 		attack.Attack(player)
-	} else if time.Since(player.DashLastUse) < time.Millisecond*200 {
+	} else if time.Since(player.DashLastUse) < time.Millisecond*150 {
 		door = movement.ContinueDash(player, camera)
 	} else {
 		door = movement.Move(player, camera)

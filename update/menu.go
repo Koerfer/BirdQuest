@@ -1,6 +1,7 @@
 package update
 
 import (
+	"BirdQuest/global"
 	"BirdQuest/menus"
 	"BirdQuest/save"
 	"BirdQuest/scene/models"
@@ -27,14 +28,19 @@ func Menu(player *models.Player, camera rl.Camera2D) (bool, *models.Player, *rl.
 		return false, nil, nil, false
 	}
 
+	if buttonIndex := checkMouseHover(camera); buttonIndex != nil {
+		menus.ActiveMenu.SelectedButton = *buttonIndex
+	}
+
 	if rl.IsKeyPressed(rl.KeyDown) || rl.IsKeyPressed(rl.KeyS) {
 		menus.ActiveMenu.SelectedButton = (menus.ActiveMenu.SelectedButton + 1) % len(menus.ActiveMenu.Buttons)
 	} else if rl.IsKeyPressed(rl.KeyUp) || rl.IsKeyPressed(rl.KeyW) {
 		menus.ActiveMenu.SelectedButton = (menus.ActiveMenu.SelectedButton + len(menus.ActiveMenu.Buttons) - 1) % len(menus.ActiveMenu.Buttons)
-	} else if rl.IsKeyPressed(rl.KeySpace) || rl.IsKeyPressed(rl.KeyEnter) {
+	} else if rl.IsKeyPressed(rl.KeySpace) || rl.IsKeyPressed(rl.KeyEnter) ||
+		(checkMouseHover(camera) != nil && rl.IsMouseButtonPressed(rl.MouseButtonLeft)) {
 		switch menus.ActiveMenu.Buttons[menus.ActiveMenu.SelectedButton].ActionToDo {
 		case menus.ActionInvalid:
-			//do nothing
+			return true, nil, nil, false
 		case menus.ActionSave:
 			save.Save(player, camera)
 			menus.ActiveMenu.Buttons[menus.ActiveMenu.SelectedButton].Name = "DONE"
@@ -68,4 +74,29 @@ func Menu(player *models.Player, camera rl.Camera2D) (bool, *models.Player, *rl.
 func mainMenuSaveButton(button int) {
 	time.Sleep(1 * time.Second)
 	menus.AllMenus["main"].Buttons[button].Name = "SAVE"
+}
+
+func checkMouseHover(camera rl.Camera2D) *int {
+	mousePositionAbsolute := rl.GetMousePosition()
+	mousePositionRelative := rl.Vector2{
+		X: mousePositionAbsolute.X/camera.Zoom + camera.Target.X,
+		Y: mousePositionAbsolute.Y/camera.Zoom + camera.Target.Y,
+	}
+
+	for i, button := range menus.ActiveMenu.Buttons {
+		collisionRectangle := rl.Rectangle{
+			X:      button.Rectangle.X/camera.Zoom - button.Rectangle.Width/2/camera.Zoom + camera.Target.X + global.VariableSet.VisibleMapWidth/2,
+			Y:      button.Rectangle.Y/camera.Zoom + camera.Target.Y + global.VariableSet.VisibleMapHeight/2 - menus.ActiveMenu.Rectangle.Height/2/camera.Zoom,
+			Width:  button.Rectangle.Width / camera.Zoom,
+			Height: button.Rectangle.Height / camera.Zoom,
+		}
+		if collisionRectangle.X < mousePositionRelative.X &&
+			collisionRectangle.X+collisionRectangle.Width > mousePositionRelative.X &&
+			collisionRectangle.Y < mousePositionRelative.Y &&
+			collisionRectangle.Y+collisionRectangle.Height > mousePositionRelative.Y {
+			return &i
+		}
+	}
+
+	return nil
 }
