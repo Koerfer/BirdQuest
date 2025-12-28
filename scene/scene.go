@@ -20,8 +20,6 @@ func ChangeScene(door *models.Door, player *models.Player) *models.Player {
 	CurrentScene = AllScenes[door.GoesToScene]
 
 	global.VariableSet.EntityScale = global.VariableSet.DesiredWidth / CurrentScene.Width
-	global.VariableSet.ScaleHeight = global.VariableSet.DesiredHeight / CurrentScene.Height
-	global.VariableSet.ScaleWidth = global.VariableSet.DesiredWidth / CurrentScene.Width
 
 	if global.VariableSet.EntityScale < global.VariableSet.DesiredHeight/CurrentScene.Height {
 		global.VariableSet.EntityScale = global.VariableSet.DesiredHeight / CurrentScene.Height
@@ -59,9 +57,6 @@ func SetScene(sceneName string, playerX, playerY float32, player *models.Player)
 		Height:        float32(background.Height),
 		HeightInTiles: int(background.Height / global.TileHeight),
 	}
-
-	global.VariableSet.ScaleHeight = global.VariableSet.DesiredHeight / scene.Height
-	global.VariableSet.ScaleWidth = global.VariableSet.DesiredWidth / scene.Width
 
 	global.VariableSet.EntityScale = global.VariableSet.DesiredWidth / scene.Width
 	if global.VariableSet.EntityScale < global.VariableSet.DesiredHeight/scene.Height {

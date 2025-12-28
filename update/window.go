@@ -19,9 +19,6 @@ func updateDesiredWindowSize(width, height float32, player *models.Player, camer
 	global.VariableSet.DesiredWidth = width
 	global.VariableSet.DesiredHeight = height
 
-	global.VariableSet.ScaleHeight = global.VariableSet.DesiredHeight / scene.CurrentScene.Height
-	global.VariableSet.ScaleWidth = global.VariableSet.DesiredWidth / scene.CurrentScene.Width
-
 	global.VariableSet.EntityScale = global.VariableSet.DesiredWidth / scene.CurrentScene.Width
 	if global.VariableSet.EntityScale < global.VariableSet.DesiredHeight/scene.CurrentScene.Height {
 		global.VariableSet.EntityScale = global.VariableSet.DesiredHeight / scene.CurrentScene.Height

@@ -17,9 +17,6 @@ type Variables struct {
 	BasePlayerMiddleOffset float32
 	PlayerMiddleOffset     float32
 
-	ScaleHeight float32
-	ScaleWidth  float32
-
 	DesiredHeight float32
 	DesiredWidth  float32
 
