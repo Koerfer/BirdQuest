@@ -17,10 +17,6 @@ func ChangeScene(door *models.Door, player *models.Player) *models.Player {
 	if AllScenes[door.GoesToScene] == nil {
 		return SetScene(door.GoesToScene, door.GoesToX, door.GoesToY, player)
 	}
-
-	player.DashDirection.X *= 1 / global.VariableSet.Speed
-	player.DashDirection.Y *= 1 / global.VariableSet.Speed
-
 	CurrentScene = AllScenes[door.GoesToScene]
 
 	global.VariableSet.EntityScale = global.VariableSet.DesiredWidth / CurrentScene.Width
@@ -38,19 +34,8 @@ func ChangeScene(door *models.Door, player *models.Player) *models.Player {
 	global.VariableSet.PlayerMiddleOffset = global.TileWidth / 2 * global.VariableSet.EntityScale
 	global.VariableSet.EntitySize = global.TileWidth * global.VariableSet.EntityScale
 
-	global.VariableSet.Speed = global.VariableSet.FpsScale * global.VariableSet.EntityScale
-
-	player.Rectangle.Width = player.BaseRectangle.Width * global.VariableSet.EntityScale
-	player.Rectangle.Height = player.BaseRectangle.Height * global.VariableSet.EntityScale
-
-	player.BasePosition.X = door.GoesToX
-	player.BasePosition.Y = door.GoesToY
-
-	player.Rectangle.X = door.GoesToX * global.VariableSet.EntityScale
-	player.Rectangle.Y = door.GoesToY * global.VariableSet.EntityScale
-
-	player.DashDirection.X *= global.VariableSet.Speed
-	player.DashDirection.Y *= global.VariableSet.Speed
+	player.BasePositionRectangle.X = door.GoesToX
+	player.BasePositionRectangle.Y = door.GoesToY
 
 	return player
 }
@@ -75,10 +60,10 @@ func SetScene(sceneName string, playerX, playerY float32, player *models.Player)
 		HeightInTiles: int(background.Height / global.TileHeight),
 	}
 
-	global.VariableSet.EntityScale = global.VariableSet.DesiredWidth / scene.Width
 	global.VariableSet.ScaleHeight = global.VariableSet.DesiredHeight / scene.Height
 	global.VariableSet.ScaleWidth = global.VariableSet.DesiredWidth / scene.Width
 
+	global.VariableSet.EntityScale = global.VariableSet.DesiredWidth / scene.Width
 	if global.VariableSet.EntityScale < global.VariableSet.DesiredHeight/scene.Height {
 		global.VariableSet.EntityScale = global.VariableSet.DesiredHeight / scene.Height
 	}
@@ -90,21 +75,14 @@ func SetScene(sceneName string, playerX, playerY float32, player *models.Player)
 	global.VariableSet.PlayerMiddleOffset = global.TileWidth / 2 * global.VariableSet.EntityScale
 	global.VariableSet.EntitySize = global.TileWidth * global.VariableSet.EntityScale
 
-	global.VariableSet.Speed = global.VariableSet.FpsScale * global.VariableSet.EntityScale
 	initiate.Objects(scenePath, scene)
 
 	if player == nil {
 		player = initiate.PreparePlayer()
-	} else {
-		player.Rectangle.Width = player.BaseRectangle.Width * global.VariableSet.EntityScale
-		player.Rectangle.Height = player.BaseRectangle.Height * global.VariableSet.EntityScale
 	}
 
-	player.BasePosition.X = playerX
-	player.BasePosition.Y = playerY
-
-	player.Rectangle.X = playerX * global.VariableSet.EntityScale
-	player.Rectangle.Y = playerY * global.VariableSet.EntityScale
+	player.BasePositionRectangle.X = playerX
+	player.BasePositionRectangle.Y = playerY
 
 	scene.Background = background
 

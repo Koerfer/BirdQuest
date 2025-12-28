@@ -37,10 +37,10 @@ func (bloons *Bloons) Draw() {
 			global.VariableSet.BloonsTexture,
 			*bloon.BaseRectangle,
 			rl.Rectangle{
-				X:      bloon.Rectangle.X,
-				Y:      bloon.Rectangle.Y,
-				Width:  bloon.Rectangle.Width,
-				Height: bloon.Rectangle.Height,
+				X:      bloon.BasePositionRectangle.X * global.VariableSet.EntityScale,
+				Y:      bloon.BasePositionRectangle.Y * global.VariableSet.EntityScale,
+				Width:  bloon.BasePositionRectangle.Width * global.VariableSet.EntityScale,
+				Height: bloon.BasePositionRectangle.Height * global.VariableSet.EntityScale,
 			},
 			rl.Vector2{
 				X: 0,

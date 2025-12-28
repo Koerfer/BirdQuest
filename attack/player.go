@@ -22,16 +22,16 @@ func StartAttack(player *models.Player) {
 	var hit bool
 	var hitId int
 	extendedPlayerRectangle := &rl.Rectangle{
-		X:      player.Rectangle.X,
-		Y:      player.Rectangle.Y,
-		Width:  player.Rectangle.Width + 5*global.VariableSet.EntityScale,
-		Height: player.Rectangle.Height + 5*global.VariableSet.EntityScale,
+		X:      player.BasePositionRectangle.X - 5,
+		Y:      player.BasePositionRectangle.Y - 5,
+		Width:  player.BasePositionRectangle.Width + 5,
+		Height: player.BasePositionRectangle.Height + 5,
 	}
 	for i, bloon := range scene.CurrentScene.Bloons.BloonObjects {
 		if bloon == nil {
 			continue
 		}
-		if rl.CheckCollisionRecs(*extendedPlayerRectangle, *bloon.Rectangle) {
+		if rl.CheckCollisionRecs(*extendedPlayerRectangle, *bloon.BasePositionRectangle) {
 			hit = true
 			hitId = i
 			break

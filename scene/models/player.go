@@ -19,6 +19,11 @@ type Player struct {
 	AttackCooldown time.Duration
 	AttackLastUse  time.Time
 	AttackOngoing  bool
+
+	Talking      bool
+	DialogStep   int
+	DialogNPC    *NPC
+	CurrentQuest *Quest
 }
 
 func (player *Player) Draw() {
@@ -36,10 +41,10 @@ func (player *Player) Draw() {
 			Height: player.BaseRectangle.Height,
 		},
 		rl.Rectangle{
-			X:      player.Rectangle.X + global.VariableSet.PlayerMiddleOffset,
-			Y:      player.Rectangle.Y + global.VariableSet.PlayerMiddleOffset + shadowOffset*global.VariableSet.EntityScale,
-			Width:  player.Rectangle.Width,
-			Height: player.Rectangle.Height,
+			X:      player.BasePositionRectangle.X*global.VariableSet.EntityScale + global.VariableSet.PlayerMiddleOffset,
+			Y:      player.BasePositionRectangle.Y*global.VariableSet.EntityScale + global.VariableSet.PlayerMiddleOffset + shadowOffset*global.VariableSet.EntityScale,
+			Width:  player.BasePositionRectangle.Width * global.VariableSet.EntityScale,
+			Height: player.BasePositionRectangle.Height * global.VariableSet.EntityScale,
 		},
 		rl.Vector2{X: global.VariableSet.PlayerMiddleOffset, Y: global.VariableSet.PlayerMiddleOffset},
 		player.Rotation,
@@ -50,10 +55,10 @@ func (player *Player) Draw() {
 		global.VariableSet.PlayerTexture,
 		*player.BaseRectangle,
 		rl.Rectangle{
-			X:      player.Rectangle.X + global.VariableSet.PlayerMiddleOffset,
-			Y:      player.Rectangle.Y + global.VariableSet.PlayerMiddleOffset,
-			Width:  player.Rectangle.Width,
-			Height: player.Rectangle.Height,
+			X:      player.BasePositionRectangle.X*global.VariableSet.EntityScale + global.VariableSet.PlayerMiddleOffset,
+			Y:      player.BasePositionRectangle.Y*global.VariableSet.EntityScale + global.VariableSet.PlayerMiddleOffset,
+			Width:  player.BasePositionRectangle.Width * global.VariableSet.EntityScale,
+			Height: player.BasePositionRectangle.Height * global.VariableSet.EntityScale,
 		},
 		rl.Vector2{X: global.VariableSet.PlayerMiddleOffset, Y: global.VariableSet.PlayerMiddleOffset},
 		player.Rotation,

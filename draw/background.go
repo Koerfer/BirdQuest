@@ -9,8 +9,8 @@ import (
 func drawBackground(camera rl.Camera2D) {
 	rl.ClearBackground(rl.Black)
 
-	drawSizeWidth := scene.CurrentScene.Width/camera.Zoom + 20
-	drawSizeHeight := scene.CurrentScene.Height/camera.Zoom + 20
+	drawSizeWidth := scene.CurrentScene.Width / camera.Zoom
+	drawSizeHeight := scene.CurrentScene.Height / camera.Zoom
 	if drawSizeWidth > scene.CurrentScene.Width {
 		drawSizeWidth = scene.CurrentScene.Width
 	}

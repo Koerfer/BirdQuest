@@ -26,15 +26,14 @@ func PreparePlayer() *models.Player {
 		AttackCooldown: time.Millisecond * 500,
 
 		Object: models.Object{
-			BasePosition:  &rl.Vector2{},
 			BaseRectangle: chiliAnimations.GetRectangleAreaInTexture(7),
 		}}
 
-	player.Rectangle = &rl.Rectangle{
-		X:      player.BasePosition.X * global.VariableSet.EntityScale,
-		Y:      player.BasePosition.Y * global.VariableSet.EntityScale,
-		Width:  player.BaseRectangle.Width * global.VariableSet.EntityScale,
-		Height: player.BaseRectangle.Height * global.VariableSet.EntityScale,
+	player.BasePositionRectangle = &rl.Rectangle{
+		X:      0,
+		Y:      0,
+		Width:  player.BaseRectangle.Width,
+		Height: player.BaseRectangle.Height,
 	}
 
 	return player

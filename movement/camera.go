@@ -25,14 +25,15 @@ func CorrectForZoom(x, y float32, camera *rl.Camera2D) {
 }
 
 func InitialiseCamera(player *models.Player, camera *rl.Camera2D) {
-	newX := player.Rectangle.X + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapWidth/2
-	newY := player.Rectangle.Y + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapHeight/2
+	newX := player.BasePositionRectangle.X*global.VariableSet.EntityScale + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapWidth/2
+	newY := player.BasePositionRectangle.Y*global.VariableSet.EntityScale + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapHeight/2
 
 	CorrectForZoom(newX, newY, camera)
 }
 
 func moveCameraUp(player *models.Player, camera *rl.Camera2D, offset float32) {
-	if player.Rectangle.Y+global.VariableSet.PlayerMiddleOffset <= camera.Target.Y+global.VariableSet.DesiredHeight/(camera.Zoom*2) &&
+	offset *= global.VariableSet.EntityScale
+	if player.BasePositionRectangle.Y*global.VariableSet.EntityScale+global.VariableSet.PlayerMiddleOffset <= camera.Target.Y+global.VariableSet.DesiredHeight/(camera.Zoom*2) &&
 		camera.Target.Y > offset {
 
 		camera.Target.Y -= offset
@@ -42,7 +43,8 @@ func moveCameraUp(player *models.Player, camera *rl.Camera2D, offset float32) {
 }
 
 func moveCameraDown(player *models.Player, camera *rl.Camera2D, offset float32) {
-	if player.Rectangle.Y+global.VariableSet.PlayerMiddleOffset >= camera.Target.Y+global.VariableSet.VisibleMapHeight/2 &&
+	offset *= global.VariableSet.EntityScale
+	if player.BasePositionRectangle.Y*global.VariableSet.EntityScale+global.VariableSet.PlayerMiddleOffset >= camera.Target.Y+global.VariableSet.VisibleMapHeight/2 &&
 		camera.Target.Y+global.VariableSet.VisibleMapHeight+offset < global.VariableSet.MapHeight {
 
 		camera.Target.Y += offset
@@ -52,7 +54,8 @@ func moveCameraDown(player *models.Player, camera *rl.Camera2D, offset float32) 
 }
 
 func moveCameraLeft(player *models.Player, camera *rl.Camera2D, offset float32) {
-	if player.Rectangle.X+global.VariableSet.PlayerMiddleOffset <= camera.Target.X+global.VariableSet.DesiredWidth/(camera.Zoom*2) &&
+	offset *= global.VariableSet.EntityScale
+	if player.BasePositionRectangle.X*global.VariableSet.EntityScale+global.VariableSet.PlayerMiddleOffset <= camera.Target.X+global.VariableSet.DesiredWidth/(camera.Zoom*2) &&
 		camera.Target.X-offset > 0 {
 
 		camera.Target.X -= offset
@@ -62,7 +65,8 @@ func moveCameraLeft(player *models.Player, camera *rl.Camera2D, offset float32) 
 }
 
 func moveCameraRight(player *models.Player, camera *rl.Camera2D, offset float32) {
-	if player.Rectangle.X+global.VariableSet.PlayerMiddleOffset >= camera.Target.X+global.VariableSet.VisibleMapWidth/2 &&
+	offset *= global.VariableSet.EntityScale
+	if player.BasePositionRectangle.X*global.VariableSet.EntityScale+global.VariableSet.PlayerMiddleOffset >= camera.Target.X+global.VariableSet.VisibleMapWidth/2 &&
 		camera.Target.X+global.VariableSet.VisibleMapWidth+offset < global.VariableSet.MapWidth {
 
 		camera.Target.X += offset

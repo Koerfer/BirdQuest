@@ -52,15 +52,12 @@ func prepareBloon(i, val, startId, n int, sprites *models.Sprites, scene *models
 	x := float32(i % scene.WidthInTiles * global.TileWidth)
 	y := float32(i / scene.WidthInTiles * global.TileWidth)
 
-	bloonObject := &models.Object{
-		BasePosition:  &rl.Vector2{X: x, Y: y},
-		BaseRectangle: sprites.GetRectangleAreaInTexture(val - startId),
-	}
-	bloonObject.Rectangle = &rl.Rectangle{
-		X:      bloonObject.BasePosition.X * global.VariableSet.EntityScale,
-		Y:      bloonObject.BasePosition.Y * global.VariableSet.EntityScale,
-		Width:  bloonObject.BaseRectangle.Width * global.VariableSet.EntityScale,
-		Height: bloonObject.BaseRectangle.Height * global.VariableSet.EntityScale,
+	bloonObject := &models.Object{BaseRectangle: sprites.GetRectangleAreaInTexture(val - startId)}
+	bloonObject.BasePositionRectangle = &rl.Rectangle{
+		X:      x,
+		Y:      y,
+		Width:  bloonObject.BaseRectangle.Width,
+		Height: bloonObject.BaseRectangle.Height,
 	}
 
 	for _, prop := range sprites.Properties {

@@ -53,14 +53,13 @@ func prepareItem(i, val, startId, n int, sprites *models.Sprites, scene *models.
 	y := float32(i / scene.WidthInTiles * global.TileWidth)
 
 	object := &models.Object{
-		BasePosition:  &rl.Vector2{X: x, Y: y},
 		BaseRectangle: sprites.GetRectangleAreaInTexture(val - startId),
 	}
-	object.Rectangle = &rl.Rectangle{
-		X:      object.BasePosition.X * global.VariableSet.EntityScale,
-		Y:      object.BasePosition.Y * global.VariableSet.EntityScale,
-		Width:  object.BaseRectangle.Width * global.VariableSet.EntityScale,
-		Height: object.BaseRectangle.Height * global.VariableSet.EntityScale,
+	object.BasePositionRectangle = &rl.Rectangle{
+		X:      x,
+		Y:      y,
+		Width:  object.BaseRectangle.Width,
+		Height: object.BaseRectangle.Height,
 	}
 
 	scene.ItemObjects.Objects = append(scene.ItemObjects.Objects, object)

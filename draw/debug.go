@@ -15,10 +15,10 @@ func drawDebugInfo(camera rl.Camera2D, player *models.Player) {
 		if object == nil {
 			continue
 		}
-		rl.DrawRectanglePro(*object.Rectangle, rl.Vector2{X: 0, Y: 0}, 0, rl.Pink)
+		rl.DrawRectanglePro(*object.BasePositionRectangle, rl.Vector2{X: 0, Y: 0}, 0, rl.Pink)
 	}
 
-	for _, object := range scene.CurrentScene.CollisionBoxes {
+	for _, object := range scene.CurrentScene.BaseCollisionBoxes {
 		if object == nil {
 			continue
 		}
@@ -29,10 +29,10 @@ func drawDebugInfo(camera rl.Camera2D, player *models.Player) {
 		if bloon == nil {
 			continue
 		}
-		rl.DrawRectanglePro(*bloon.Rectangle, rl.Vector2{X: 0, Y: 0}, 0, rl.Orange)
+		rl.DrawRectanglePro(*bloon.BasePositionRectangle, rl.Vector2{X: 0, Y: 0}, 0, rl.Orange)
 	}
 
-	rl.DrawRectanglePro(*player.Rectangle, rl.Vector2{X: 0, Y: 0}, 0, rl.Green)
+	rl.DrawRectanglePro(*player.BasePositionRectangle, rl.Vector2{X: 0, Y: 0}, 0, rl.Green)
 
 	mousePositionAbsolute := rl.GetMousePosition()
 	rl.DrawText(fmt.Sprintf("%f, %f",
@@ -45,8 +45,8 @@ func drawDebugInfo(camera rl.Camera2D, player *models.Player) {
 		rl.Black,
 	)
 	rl.DrawText(fmt.Sprintf("%f, %f",
-		player.Rectangle.X+global.VariableSet.PlayerMiddleOffset,
-		player.Rectangle.Y+global.VariableSet.PlayerMiddleOffset,
+		player.BasePositionRectangle.X+global.VariableSet.PlayerMiddleOffset,
+		player.BasePositionRectangle.Y+global.VariableSet.PlayerMiddleOffset,
 	),
 		int32(camera.Target.X+5),
 		int32(camera.Target.Y+50/camera.Zoom),
@@ -54,14 +54,13 @@ func drawDebugInfo(camera rl.Camera2D, player *models.Player) {
 		rl.Black,
 	)
 	mousePositionRelative := rl.Vector2{
-		X: mousePositionAbsolute.X/camera.Zoom + camera.Target.X - (player.Rectangle.X + global.VariableSet.PlayerMiddleOffset),
-		Y: mousePositionAbsolute.Y/camera.Zoom + camera.Target.Y - (player.Rectangle.Y + global.VariableSet.PlayerMiddleOffset),
+		X: mousePositionAbsolute.X/camera.Zoom + camera.Target.X - (player.BasePositionRectangle.X + global.VariableSet.PlayerMiddleOffset),
+		Y: mousePositionAbsolute.Y/camera.Zoom + camera.Target.Y - (player.BasePositionRectangle.Y + global.VariableSet.PlayerMiddleOffset),
 	}
 
 	dashDirection := rl.Vector2Normalize(mousePositionRelative)
 	dashDirection.X *= 100
 	dashDirection.Y *= 100
-	playerPositionVectorMiddle := rl.NewVector2(player.Rectangle.X+global.VariableSet.PlayerMiddleOffset, player.Rectangle.Y+global.VariableSet.PlayerMiddleOffset)
+	playerPositionVectorMiddle := rl.NewVector2(player.BasePositionRectangle.X+global.VariableSet.PlayerMiddleOffset, player.BasePositionRectangle.Y+global.VariableSet.PlayerMiddleOffset)
 	rl.DrawLineV(playerPositionVectorMiddle, rl.Vector2Add(playerPositionVectorMiddle, dashDirection), rl.Black)
-
 }

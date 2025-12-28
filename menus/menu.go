@@ -47,16 +47,16 @@ var AllMenus map[string]*Menu
 func PrepareMenus() {
 	AllMenus = make(map[string]*Menu)
 
-	mainMenu := CreateMenu(300, 95, 8, 64)
-	mainMenu.AddButton("RESUME", rl.Green, rl.White, ActionResume)
-	mainMenu.AddButton("OPTIONS", rl.Green, rl.White, ActionOptionsMenu)
-	mainMenu.AddButton("SAVE", rl.Green, rl.White, ActionSave)
-	mainMenu.AddButton("LOAD", rl.Green, rl.White, ActionLoad)
-	mainMenu.AddButton("EXIT", rl.Green, rl.White, ActionExit)
+	mainMenu := createMenu(300, 95, 8, 64)
+	mainMenu.addButton("RESUME", rl.Green, rl.White, ActionResume)
+	mainMenu.addButton("OPTIONS", rl.Green, rl.White, ActionOptionsMenu)
+	mainMenu.addButton("SAVE", rl.Green, rl.White, ActionSave)
+	mainMenu.addButton("LOAD", rl.Green, rl.White, ActionLoad)
+	mainMenu.addButton("EXIT", rl.Green, rl.White, ActionExit)
 
-	optionsMenu := CreateMenu(300, 95, 8, 60)
-	optionsMenu.AddButton("FULLSCREEN", rl.Green, rl.White, ActionFullScreen)
-	optionsMenu.AddButton("BACK", rl.Green, rl.White, ActionMainMenu)
+	optionsMenu := createMenu(300, 95, 8, 60)
+	optionsMenu.addButton("FULLSCREEN", rl.Green, rl.White, ActionFullScreen)
+	optionsMenu.addButton("BACK", rl.Green, rl.White, ActionMainMenu)
 	optionsMenu.BaseRectangle.Height = mainMenu.BaseRectangle.Height
 	optionsMenu.Rectangle.Height = mainMenu.Rectangle.Height
 
@@ -64,7 +64,7 @@ func PrepareMenus() {
 	AllMenus["options"] = optionsMenu
 }
 
-func CreateMenu(menuWidth, buttonHeight, buttonSpacing, fontSize float32) *Menu {
+func createMenu(menuWidth, buttonHeight, buttonSpacing, fontSize float32) *Menu {
 	menu := &Menu{
 		Buttons:       make([]*Button, 0),
 		ButtonHeight:  buttonHeight,
@@ -89,7 +89,7 @@ func CreateMenu(menuWidth, buttonHeight, buttonSpacing, fontSize float32) *Menu 
 	return menu
 }
 
-func (menu *Menu) AddButton(name string, selectedColour, defaultColour rl.Color, action Action) {
+func (menu *Menu) addButton(name string, selectedColour, defaultColour rl.Color, action Action) {
 	menu.BaseRectangle.Height += menu.ButtonHeight + menu.ButtonSpacing
 	menu.Rectangle.Height = menu.BaseRectangle.Height * global.VariableSet.EntityScale
 
@@ -117,18 +117,20 @@ func (menu *Menu) AddButton(name string, selectedColour, defaultColour rl.Color,
 }
 
 func (menu *Menu) Draw(camera rl.Camera2D) {
-	rl.DrawRectanglePro(rl.Rectangle{
-		X:      menu.Rectangle.X / camera.Zoom,
-		Y:      menu.Rectangle.Y / camera.Zoom,
-		Width:  menu.Rectangle.Width / camera.Zoom,
-		Height: menu.Rectangle.Height / camera.Zoom,
-	},
+	rl.DrawRectanglePro(
+		rl.Rectangle{
+			X:      menu.Rectangle.X / camera.Zoom,
+			Y:      menu.Rectangle.Y / camera.Zoom,
+			Width:  menu.Rectangle.Width / camera.Zoom,
+			Height: menu.Rectangle.Height / camera.Zoom,
+		},
 		rl.Vector2{
 			X: -camera.Target.X - global.VariableSet.VisibleMapWidth/2 + menu.Rectangle.Width/2/camera.Zoom,
 			Y: -camera.Target.Y - global.VariableSet.VisibleMapHeight/2 + menu.Rectangle.Height/2/camera.Zoom,
 		},
 		0,
-		color.RGBA{A: 200})
+		color.RGBA{A: 200},
+	)
 
 	for i, button := range menu.Buttons {
 		colour := button.DefaultColour
@@ -154,6 +156,10 @@ func (menu *Menu) Draw(camera rl.Camera2D) {
 				newRectangle.Y+button.Rectangle.Height/2/camera.Zoom,
 			),
 			rl.NewVector2(textSize.X/2, textSize.Y/2),
-			0, menu.FontSize/camera.Zoom, 2*global.VariableSet.EntityScale/camera.Zoom, colour)
+			0,
+			menu.FontSize/camera.Zoom,
+			2*global.VariableSet.EntityScale/camera.Zoom,
+			colour,
+		)
 	}
 }

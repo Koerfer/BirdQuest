@@ -14,7 +14,7 @@ func killItems(player *models.Player) {
 		if object == nil {
 			continue
 		}
-		if rl.CheckCollisionRecs(*player.Rectangle, *object.Rectangle) {
+		if rl.CheckCollisionRecs(*player.BasePositionRectangle, *object.BasePositionRectangle) {
 			objectsToRemove = append(objectsToRemove, i)
 		}
 	}

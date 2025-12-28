@@ -25,6 +25,7 @@ type State struct {
 	WindowPosition rl.Vector2
 
 	AllMenus map[string]*menus.Menu
+	Quests   []*models.Quest
 }
 
 func Save(player *models.Player, camera rl.Camera2D) {
@@ -41,6 +42,7 @@ func Save(player *models.Player, camera rl.Camera2D) {
 		WindowHeight:   float32(rl.GetScreenHeight()),
 		WindowPosition: rl.GetWindowPosition(),
 		AllMenus:       menus.AllMenus,
+		Quests:         scene.Quests,
 	}
 
 	cwd, _ := os.Getwd()

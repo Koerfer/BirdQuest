@@ -31,11 +31,11 @@ func main() {
 			if p != nil && c != nil {
 				player = p
 				camera = *c
-			} else {
-				update.Window(player, &camera)
-				draw.Draw(camera, player)
-				continue
 			}
+
+			update.Window(player, &camera)
+			draw.Draw(camera, player)
+			continue
 		}
 
 		update.Update(&camera, player)

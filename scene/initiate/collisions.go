@@ -12,7 +12,6 @@ import (
 
 func prepareCollisions(jsonMap *jsonMap, scene *models.Scene) {
 	baseCollisionBoxes := make([]*rl.Rectangle, 0)
-	collisionBoxes := make([]*rl.Rectangle, 0)
 
 	for _, jsonMapLayer := range jsonMap.Layers {
 		if jsonMapLayer.Name != "Collisions" {
@@ -26,17 +25,10 @@ func prepareCollisions(jsonMap *jsonMap, scene *models.Scene) {
 				Width:  obstacle.Width,
 				Height: obstacle.Height,
 			})
-			collisionBoxes = append(collisionBoxes, &rl.Rectangle{
-				X:      obstacle.X * global.VariableSet.EntityScale,
-				Y:      obstacle.Y * global.VariableSet.EntityScale,
-				Width:  obstacle.Width * global.VariableSet.EntityScale,
-				Height: obstacle.Height * global.VariableSet.EntityScale,
-			})
 		}
 	}
 
 	scene.BaseCollisionBoxes = baseCollisionBoxes
-	scene.CollisionBoxes = collisionBoxes
 }
 
 func prepareCollisionObjects(jMap *jsonMap, layerName, path string, startId int, scene *models.Scene) {
@@ -85,14 +77,13 @@ func prepareCollisionObject(i, val, startId, n int, sprites *models.Sprites, sce
 	y := float32(i / scene.WidthInTiles * global.TileWidth)
 
 	object := &models.Object{
-		BasePosition:  &rl.Vector2{X: x, Y: y},
 		BaseRectangle: sprites.GetRectangleAreaInTexture(val - startId),
 	}
-	object.Rectangle = &rl.Rectangle{
-		X:      object.BasePosition.X * global.VariableSet.EntityScale,
-		Y:      object.BasePosition.Y * global.VariableSet.EntityScale,
-		Width:  object.BaseRectangle.Width * global.VariableSet.EntityScale,
-		Height: object.BaseRectangle.Height * global.VariableSet.EntityScale,
+	object.BasePositionRectangle = &rl.Rectangle{
+		X:      x,
+		Y:      y,
+		Width:  object.BaseRectangle.Width,
+		Height: object.BaseRectangle.Height,
 	}
 
 	for _, prop := range sprites.Properties {

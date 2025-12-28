@@ -1,7 +1,6 @@
 package initiate
 
 import (
-	"BirdQuest/global"
 	"BirdQuest/scene/models"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
@@ -21,12 +20,6 @@ func prepareDoors(jsonMap *jsonMap, scene *models.Scene) {
 					Y:      jsonDoor.Y,
 					Width:  jsonDoor.Width,
 					Height: jsonDoor.Height,
-				},
-				Rectangle: &rl.Rectangle{
-					X:      jsonDoor.X * global.VariableSet.EntityScale,
-					Y:      jsonDoor.Y * global.VariableSet.EntityScale,
-					Width:  jsonDoor.Width * global.VariableSet.EntityScale,
-					Height: jsonDoor.Height * global.VariableSet.EntityScale,
 				},
 			}
 

@@ -19,10 +19,10 @@ func (items *Items) Draw() {
 			global.VariableSet.ItemsTexture,
 			*item.BaseRectangle,
 			rl.Rectangle{
-				X:      item.Rectangle.X,
-				Y:      item.Rectangle.Y,
-				Width:  item.Rectangle.Width,
-				Height: item.Rectangle.Height,
+				X:      item.BasePositionRectangle.X * global.VariableSet.EntityScale,
+				Y:      item.BasePositionRectangle.Y * global.VariableSet.EntityScale,
+				Width:  item.BasePositionRectangle.Width * global.VariableSet.EntityScale,
+				Height: item.BasePositionRectangle.Height * global.VariableSet.EntityScale,
 			},
 			rl.Vector2{
 				X: 0,

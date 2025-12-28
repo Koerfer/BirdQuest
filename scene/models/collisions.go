@@ -21,10 +21,10 @@ func (items *CollisionItems) DrawFirstLayer() {
 			global.VariableSet.CollisionObjectsTexture,
 			*item.BaseRectangle,
 			rl.Rectangle{
-				X:      item.Rectangle.X,
-				Y:      item.Rectangle.Y,
-				Width:  item.Rectangle.Width,
-				Height: item.Rectangle.Height,
+				X:      item.BasePositionRectangle.X * global.VariableSet.EntityScale,
+				Y:      item.BasePositionRectangle.Y * global.VariableSet.EntityScale,
+				Width:  item.BasePositionRectangle.Width * global.VariableSet.EntityScale,
+				Height: item.BasePositionRectangle.Height * global.VariableSet.EntityScale,
 			},
 			rl.Vector2{
 				X: 0,
@@ -44,7 +44,7 @@ func (items *CollisionItems) DrawDynamicLayer(player *Player) {
 			continue
 		}
 
-		if item.Rectangle.Y >= player.Rectangle.Y {
+		if item.BasePositionRectangle.Y >= player.BasePositionRectangle.Y {
 			if drawAfterPlayer == nil {
 				drawAfterPlayer = make([]*Object, 0)
 			}
@@ -57,10 +57,10 @@ func (items *CollisionItems) DrawDynamicLayer(player *Player) {
 			global.VariableSet.CollisionObjectsTexture,
 			*item.BaseRectangle,
 			rl.Rectangle{
-				X:      item.Rectangle.X,
-				Y:      item.Rectangle.Y,
-				Width:  item.Rectangle.Width,
-				Height: item.Rectangle.Height,
+				X:      item.BasePositionRectangle.X * global.VariableSet.EntityScale,
+				Y:      item.BasePositionRectangle.Y * global.VariableSet.EntityScale,
+				Width:  item.BasePositionRectangle.Width * global.VariableSet.EntityScale,
+				Height: item.BasePositionRectangle.Height * global.VariableSet.EntityScale,
 			},
 			rl.Vector2{
 				X: 0,
@@ -82,10 +82,10 @@ func (items *CollisionItems) DrawDynamicLayer(player *Player) {
 			global.VariableSet.CollisionObjectsTexture,
 			*item.BaseRectangle,
 			rl.Rectangle{
-				X:      item.Rectangle.X,
-				Y:      item.Rectangle.Y,
-				Width:  item.Rectangle.Width,
-				Height: item.Rectangle.Height,
+				X:      item.BasePositionRectangle.X * global.VariableSet.EntityScale,
+				Y:      item.BasePositionRectangle.Y * global.VariableSet.EntityScale,
+				Width:  item.BasePositionRectangle.Width * global.VariableSet.EntityScale,
+				Height: item.BasePositionRectangle.Height * global.VariableSet.EntityScale,
 			},
 			rl.Vector2{
 				X: 0,
@@ -107,10 +107,10 @@ func (items *CollisionItems) DrawLastLayer() {
 			global.VariableSet.CollisionObjectsTexture,
 			*item.BaseRectangle,
 			rl.Rectangle{
-				X:      item.Rectangle.X,
-				Y:      item.Rectangle.Y,
-				Width:  item.Rectangle.Width,
-				Height: item.Rectangle.Height,
+				X:      item.BasePositionRectangle.X * global.VariableSet.EntityScale,
+				Y:      item.BasePositionRectangle.Y * global.VariableSet.EntityScale,
+				Width:  item.BasePositionRectangle.Width * global.VariableSet.EntityScale,
+				Height: item.BasePositionRectangle.Height * global.VariableSet.EntityScale,
 			},
 			rl.Vector2{
 				X: 0,

@@ -9,10 +9,10 @@ type Scene struct {
 	Background         rl.Texture2D
 	ItemObjects        *Items
 	BaseCollisionBoxes []*rl.Rectangle
-	CollisionBoxes     []*rl.Rectangle
 	CollisionObjects   *CollisionItems
 	Doors              []*Door
 	Bloons             *Bloons
+	NPCs               []*NPC
 
 	Width  float32
 	Height float32

@@ -21,6 +21,7 @@ func LoadHandler(player *models.Player, camera *rl.Camera2D) (*models.Player, *r
 	camera = &saveState.Camera
 	scene.CurrentScene = saveState.CurrentScene
 	scene.AllScenes = saveState.Scenes
+	scene.Quests = saveState.Quests
 	global.VariableSet = saveState.GlobalVariables
 	global.LoadAllTextures()
 
@@ -49,6 +50,8 @@ func InitialLoader() (*models.Player, rl.Camera2D) {
 		player := scene.SetScene("main", 250, 250, nil)
 		movement.InitialiseCamera(player, &camera)
 
+		scene.CreateQuests()
+
 		return player, camera
 	}
 
@@ -67,14 +70,14 @@ func InitialLoader() (*models.Player, rl.Camera2D) {
 		}
 
 		scene.SetScene(sceneName, 250, 250, nil)
-		scene.CurrentScene.CollisionObjects.DrawDynamic = savedScene.CollisionObjects.DrawDynamic
-		scene.CurrentScene.CollisionObjects.DrawFirst = savedScene.CollisionObjects.DrawFirst
-		scene.CurrentScene.CollisionObjects.DrawLast = savedScene.CollisionObjects.DrawLast
-		scene.CurrentScene.BaseCollisionBoxes = savedScene.BaseCollisionBoxes
-		scene.CurrentScene.CollisionBoxes = savedScene.CollisionBoxes
-		scene.CurrentScene.Bloons.BloonObjects = savedScene.Bloons.BloonObjects
-		scene.CurrentScene.Doors = savedScene.Doors
-		scene.CurrentScene.ItemObjects.Objects = savedScene.ItemObjects.Objects
+		scene.AllScenes[sceneName].CollisionObjects.DrawDynamic = savedScene.CollisionObjects.DrawDynamic
+		scene.AllScenes[sceneName].CollisionObjects.DrawFirst = savedScene.CollisionObjects.DrawFirst
+		scene.AllScenes[sceneName].CollisionObjects.DrawLast = savedScene.CollisionObjects.DrawLast
+		scene.AllScenes[sceneName].BaseCollisionBoxes = savedScene.BaseCollisionBoxes
+		scene.AllScenes[sceneName].Bloons.BloonObjects = savedScene.Bloons.BloonObjects
+		scene.AllScenes[sceneName].Doors = savedScene.Doors
+		scene.AllScenes[sceneName].ItemObjects.Objects = savedScene.ItemObjects.Objects
+		scene.AllScenes[sceneName].NPCs = savedScene.NPCs
 	}
 
 	scene.SetScene(saveState.CurrentScene.Name, 250, 250, nil)
@@ -82,12 +85,13 @@ func InitialLoader() (*models.Player, rl.Camera2D) {
 	scene.CurrentScene.CollisionObjects.DrawFirst = saveState.CurrentScene.CollisionObjects.DrawFirst
 	scene.CurrentScene.CollisionObjects.DrawLast = saveState.CurrentScene.CollisionObjects.DrawLast
 	scene.CurrentScene.BaseCollisionBoxes = saveState.CurrentScene.BaseCollisionBoxes
-	scene.CurrentScene.CollisionBoxes = saveState.CurrentScene.CollisionBoxes
 	scene.CurrentScene.Bloons.BloonObjects = saveState.CurrentScene.Bloons.BloonObjects
 	scene.CurrentScene.Doors = saveState.CurrentScene.Doors
 	scene.CurrentScene.ItemObjects.Objects = saveState.CurrentScene.ItemObjects.Objects
+	scene.CurrentScene.NPCs = saveState.CurrentScene.NPCs
 
 	menus.AllMenus = saveState.AllMenus
+	scene.Quests = saveState.Quests
 
 	rl.SetWindowPosition(int(saveState.WindowPosition.X), int(saveState.WindowPosition.Y))
 	if saveState.IsMaximised {

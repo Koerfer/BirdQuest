@@ -20,8 +20,8 @@ func updateZoom(camera *rl.Camera2D, player *models.Player) {
 		}
 		global.Zoom(camera.Zoom, camera)
 
-		newX := player.Rectangle.X + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapWidth/2
-		newY := player.Rectangle.Y + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapHeight/2
+		newX := player.BasePositionRectangle.X*global.VariableSet.EntityScale + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapWidth/2
+		newY := player.BasePositionRectangle.Y*global.VariableSet.EntityScale + global.VariableSet.PlayerMiddleOffset - global.VariableSet.VisibleMapHeight/2
 
 		movement.CorrectForZoom(newX, newY, camera)
 	}

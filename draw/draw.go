@@ -20,7 +20,15 @@ func Draw(camera rl.Camera2D, player *models.Player) {
 	scene.CurrentScene.CollisionObjects.DrawDynamicLayer(player)
 	scene.CurrentScene.CollisionObjects.DrawLastLayer()
 
+	for _, npc := range scene.CurrentScene.NPCs {
+		npc.Draw()
+	}
+
 	//drawDebugInfo(camera, player)
+
+	if player.Talking {
+		player.CurrentQuest.Steps[player.CurrentQuest.CurrentStep].Dialogs[player.DialogStep].Draw(camera, player.DialogNPC, player)
+	}
 
 	if menus.ActiveMenu != nil {
 		menus.ActiveMenu.Draw(camera)

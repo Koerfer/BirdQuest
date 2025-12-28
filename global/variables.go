@@ -11,7 +11,6 @@ import (
 type Variables struct {
 	Fps      int32
 	FpsScale float32
-	Speed    float32
 
 	EntityScale            float32
 	EntitySize             float32
@@ -86,7 +85,6 @@ func SetFPS(fps int32) {
 
 	VariableSet.Fps = fps
 	VariableSet.FpsScale = 60 / float32(fps)
-	VariableSet.Speed = VariableSet.FpsScale * VariableSet.EntityScale
 }
 
 func Zoom(zoom float32, camera *rl.Camera2D) {
