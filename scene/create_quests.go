@@ -2,7 +2,6 @@ package scene
 
 import (
 	"BirdQuest/scene/models"
-	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 var Quests []*models.Quest
@@ -17,19 +16,8 @@ func CreateQuests() {
 		CurrentStep:  0,
 	}
 
-	blueTit := &models.NPC{
-		Name: "Blue Tit",
-		BaseRectangle: &rl.Rectangle{
-			X:      64,
-			Y:      32,
-			Width:  32,
-			Height: 32,
-		},
-	}
-
 	stepOne := &models.Step{
 		Type: models.QuestStepTalk,
-		NPC:  blueTit,
 		Dialogs: []*models.Dialog{
 			{
 				NPCTalking: false,
@@ -47,8 +35,12 @@ func CreateQuests() {
 		},
 	}
 
-	quest.Steps = append(quest.Steps, stepOne)
+	for _, npc := range AllScenes["main"].NPCs {
+		if npc.Name == "BlueTit" {
+			stepOne.NPC = npc
+		}
+	}
 
-	AllScenes["main"].NPCs = append(make([]*models.NPC, 0), blueTit)
+	quest.Steps = append(quest.Steps, stepOne)
 	Quests = append(Quests, quest)
 }

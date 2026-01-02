@@ -8,7 +8,8 @@ import (
 type NPC struct {
 	Name          string
 	StartedQuests []int
-	BaseRectangle *rl.Rectangle
+
+	Object
 }
 
 func (npc *NPC) Draw() {
@@ -16,13 +17,17 @@ func (npc *NPC) Draw() {
 		return
 	}
 
-	rl.DrawRectangleRec(
+	rl.DrawTexturePro(
+		global.VariableSet.Textures32x32,
+		*npc.BaseRectangle,
 		rl.Rectangle{
-			X:      npc.BaseRectangle.X * global.VariableSet.EntityScale,
-			Y:      npc.BaseRectangle.Y * global.VariableSet.EntityScale,
-			Width:  npc.BaseRectangle.Width * global.VariableSet.EntityScale,
-			Height: npc.BaseRectangle.Height * global.VariableSet.EntityScale,
+			X:      npc.BasePositionRectangle.X * global.VariableSet.EntityScale,
+			Y:      npc.BasePositionRectangle.Y * global.VariableSet.EntityScale,
+			Width:  npc.BasePositionRectangle.Width * global.VariableSet.EntityScale,
+			Height: npc.BasePositionRectangle.Height * global.VariableSet.EntityScale,
 		},
-		rl.Pink,
+		rl.Vector2{X: 0, Y: 0},
+		0,
+		rl.White,
 	)
 }

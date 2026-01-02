@@ -10,6 +10,15 @@
  "tileheight":32,
  "tiles":[
         {
+         "id":16,
+         "properties":[
+                {
+                 "name":"Name",
+                 "type":"string",
+                 "value":"BlueTit"
+                }]
+        }, 
+        {
          "id":40,
          "properties":[
                 {

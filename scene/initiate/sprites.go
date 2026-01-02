@@ -30,6 +30,8 @@ func prepareSprites(rawSprites rl.Texture2D, jsonObject *jsonSprites, startGid i
 				default:
 					prop.AlwaysRenderFirst = false
 				}
+			case "Name":
+				prop.Name = jProperty.Value.(string)
 			}
 		}
 		ss.Properties = append(ss.Properties, prop)

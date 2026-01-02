@@ -14,6 +14,7 @@ type Property struct {
 	Id                int
 	AlwaysRenderLast  bool
 	AlwaysRenderFirst bool
+	Name              string
 }
 
 func (s *Sprites) GetRectangleAreaInTexture(id int) *rl.Rectangle {

@@ -29,7 +29,7 @@ func AttemptQuestStep(player *models.Player) {
 				Width:  player.BasePositionRectangle.Width + 16,
 				Height: player.BasePositionRectangle.Height + 16,
 			}
-			if rl.CheckCollisionRecs(extendedPlayerRectangle, *quest.Steps[quest.CurrentStep].NPC.BaseRectangle) {
+			if rl.CheckCollisionRecs(extendedPlayerRectangle, *quest.Steps[quest.CurrentStep].NPC.BasePositionRectangle) {
 				quest.Started = true
 				player.Talking = true
 				player.DialogNPC = quest.Steps[quest.CurrentStep].NPC

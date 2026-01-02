@@ -68,7 +68,9 @@ func (dialog *Dialog) Draw(camera rl.Camera2D, npc *NPC, player *Player) {
 			rl.White,
 		)
 	} else {
-		rl.DrawRectanglePro(
+		rl.DrawTexturePro(
+			global.VariableSet.Textures32x32,
+			*npc.BaseRectangle,
 			rl.Rectangle{
 				X:      dialogBackground.X + 50*global.VariableSet.EntityScale/camera.Zoom,
 				Y:      dialogBackground.Y + 50*global.VariableSet.EntityScale/camera.Zoom,
@@ -80,7 +82,7 @@ func (dialog *Dialog) Draw(camera rl.Camera2D, npc *NPC, player *Player) {
 				Y: 50 * global.VariableSet.EntityScale / camera.Zoom,
 			},
 			0,
-			rl.Pink,
+			rl.White,
 		)
 	}
 
