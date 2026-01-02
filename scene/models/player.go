@@ -33,10 +33,10 @@ func (player *Player) Draw() {
 	}
 
 	rl.DrawTexturePro(
-		global.VariableSet.PlayerTexture,
+		global.VariableSet.Textures32x32,
 		rl.Rectangle{
 			X:      player.BaseRectangle.X,
-			Y:      player.BaseRectangle.Y + 96,
+			Y:      player.BaseRectangle.Y + 32,
 			Width:  player.BaseRectangle.Width,
 			Height: player.BaseRectangle.Height,
 		},
@@ -52,7 +52,7 @@ func (player *Player) Draw() {
 	)
 
 	rl.DrawTexturePro(
-		global.VariableSet.PlayerTexture,
+		global.VariableSet.Textures32x32,
 		*player.BaseRectangle,
 		rl.Rectangle{
 			X:      player.BasePositionRectangle.X*global.VariableSet.EntityScale + global.VariableSet.PlayerMiddleOffset,

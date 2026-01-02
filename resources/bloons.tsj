@@ -1,5 +1,5 @@
 { "columns":7,
- "image":"..\/bloons.png",
+ "image":"bloons.png",
  "imageheight":64,
  "imagewidth":224,
  "margin":0,
@@ -13,22 +13,22 @@
          "id":0,
          "properties":[
                 {
-                 "name":"RectangleHeight",
+                 "name":"HitBoxHeight",
                  "type":"int",
                  "value":32
                 }, 
                 {
-                 "name":"RectangleWidth",
+                 "name":"HitBoxWidth",
                  "type":"int",
                  "value":32
                 }, 
                 {
-                 "name":"RectangleX",
+                 "name":"HitBoxX",
                  "type":"int",
                  "value":0
                 }, 
                 {
-                 "name":"RectangleY",
+                 "name":"HitBoxY",
                  "type":"int",
                  "value":0
                 }]
@@ -37,22 +37,22 @@
          "id":1,
          "properties":[
                 {
-                 "name":"RectangleHeight",
+                 "name":"HitBoxHeight",
                  "type":"int",
                  "value":32
                 }, 
                 {
-                 "name":"RectangleWidth",
+                 "name":"HitBoxWidth",
                  "type":"int",
                  "value":32
                 }, 
                 {
-                 "name":"RectangleX",
+                 "name":"HitBoxX",
                  "type":"int",
                  "value":0
                 }, 
                 {
-                 "name":"RectangleY",
+                 "name":"HitBoxY",
                  "type":"int",
                  "value":0
                 }]
@@ -61,22 +61,22 @@
          "id":2,
          "properties":[
                 {
-                 "name":"RectangleHeight",
+                 "name":"HitBoxHeight",
                  "type":"int",
                  "value":32
                 }, 
                 {
-                 "name":"RectangleWidth",
+                 "name":"HitBoxWidth",
                  "type":"int",
                  "value":32
                 }, 
                 {
-                 "name":"RectangleX",
+                 "name":"HitBoxX",
                  "type":"int",
                  "value":0
                 }, 
                 {
-                 "name":"RectangleY",
+                 "name":"HitBoxY",
                  "type":"int",
                  "value":0
                 }]

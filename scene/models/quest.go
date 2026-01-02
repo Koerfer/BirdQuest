@@ -52,7 +52,7 @@ func (dialog *Dialog) Draw(camera rl.Camera2D, npc *NPC, player *Player) {
 
 	if !dialog.NPCTalking {
 		rl.DrawTexturePro(
-			global.VariableSet.PlayerTexture,
+			global.VariableSet.Textures32x32,
 			*player.BaseRectangle,
 			rl.Rectangle{
 				X:      dialogBackground.X + 50*global.VariableSet.EntityScale/camera.Zoom,

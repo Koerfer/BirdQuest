@@ -18,7 +18,6 @@ func AttemptQuestStep(player *models.Player) {
 		if quest.CurrentStep >= len(quest.Steps) {
 			continue
 		}
-		quest.Started = true
 
 		switch quest.Steps[quest.CurrentStep].Type {
 		case models.QuestStepInvalid:
@@ -31,6 +30,7 @@ func AttemptQuestStep(player *models.Player) {
 				Height: player.BasePositionRectangle.Height + 16,
 			}
 			if rl.CheckCollisionRecs(extendedPlayerRectangle, *quest.Steps[quest.CurrentStep].NPC.BaseRectangle) {
+				quest.Started = true
 				player.Talking = true
 				player.DialogNPC = quest.Steps[quest.CurrentStep].NPC
 				player.CurrentQuest = quest

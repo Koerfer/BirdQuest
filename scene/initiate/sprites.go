@@ -17,15 +17,15 @@ func prepareSprites(rawSprites rl.Texture2D, jsonObject *jsonSprites, startGid i
 		for _, jProperty := range tile.Properties {
 			switch jProperty.Name {
 			case "AlwaysAfter":
-				switch jProperty.Value.(float64) {
-				case 1:
+				switch jProperty.Value.(bool) {
+				case true:
 					prop.AlwaysRenderLast = true
 				default:
 					prop.AlwaysRenderLast = false
 				}
 			case "AlwaysFirst":
-				switch jProperty.Value.(float64) {
-				case 1:
+				switch jProperty.Value.(bool) {
+				case true:
 					prop.AlwaysRenderFirst = true
 				default:
 					prop.AlwaysRenderFirst = false

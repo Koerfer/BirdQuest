@@ -36,6 +36,10 @@ func updatePlayer(camera *rl.Camera2D, player *models.Player) {
 
 		if rl.IsKeyPressed(rl.KeyE) {
 			scene.AttemptQuestStep(player)
+			player.IsMoving = false
+			player.BaseRectangle = player.Animation.GetRectangleAreaInTexture(0)
+			player.AnimationStep = 0
+			player.Rotation = 0
 		}
 
 		if rl.IsKeyPressed(rl.KeySpace) &&

@@ -18,7 +18,7 @@ func (items *CollisionItems) DrawFirstLayer() {
 		}
 
 		rl.DrawTexturePro(
-			global.VariableSet.CollisionObjectsTexture,
+			global.VariableSet.Textures32x32,
 			*item.BaseRectangle,
 			rl.Rectangle{
 				X:      item.BasePositionRectangle.X * global.VariableSet.EntityScale,
@@ -54,7 +54,7 @@ func (items *CollisionItems) DrawDynamicLayer(player *Player) {
 		}
 
 		rl.DrawTexturePro(
-			global.VariableSet.CollisionObjectsTexture,
+			global.VariableSet.Textures32x32,
 			*item.BaseRectangle,
 			rl.Rectangle{
 				X:      item.BasePositionRectangle.X * global.VariableSet.EntityScale,
@@ -79,7 +79,7 @@ func (items *CollisionItems) DrawDynamicLayer(player *Player) {
 		}
 
 		rl.DrawTexturePro(
-			global.VariableSet.CollisionObjectsTexture,
+			global.VariableSet.Textures32x32,
 			*item.BaseRectangle,
 			rl.Rectangle{
 				X:      item.BasePositionRectangle.X * global.VariableSet.EntityScale,
@@ -104,7 +104,7 @@ func (items *CollisionItems) DrawLastLayer() {
 		}
 
 		rl.DrawTexturePro(
-			global.VariableSet.CollisionObjectsTexture,
+			global.VariableSet.Textures32x32,
 			*item.BaseRectangle,
 			rl.Rectangle{
 				X:      item.BasePositionRectangle.X * global.VariableSet.EntityScale,

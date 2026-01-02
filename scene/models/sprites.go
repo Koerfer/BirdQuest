@@ -12,10 +12,6 @@ type Sprites struct {
 
 type Property struct {
 	Id                int
-	RectangleX        int
-	RectangleY        int
-	RectangleWidth    int
-	RectangleHeight   int
 	AlwaysRenderLast  bool
 	AlwaysRenderFirst bool
 }

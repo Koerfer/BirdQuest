@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"time"
 )
 
 type Variables struct {
@@ -26,10 +25,8 @@ type Variables struct {
 	VisibleMapHeight float32
 	VisibleMapWidth  float32
 
-	ItemsTexture            rl.Texture2D
-	BloonsTexture           rl.Texture2D
-	CollisionObjectsTexture rl.Texture2D
-	PlayerTexture           rl.Texture2D
+	Textures32x32 rl.Texture2D
+	BloonsTexture rl.Texture2D
 }
 
 var VariableSet *Variables
@@ -41,24 +38,16 @@ func LoadAllTextures() {
 		log.Fatal(err)
 	}
 
-	if time.Now().Month() == 12 && time.Now().Day() > 23 && time.Now().Day() < 31 {
-		VariableSet.CollisionObjectsTexture = rl.LoadTexture(filepath.Join(cwd, "resources", "collision_sprites_winter.png"))
-	} else {
-		VariableSet.CollisionObjectsTexture = rl.LoadTexture(filepath.Join(cwd, "resources", "collision_sprites.png"))
-	}
 	VariableSet.BloonsTexture = rl.LoadTexture(filepath.Join(cwd, "resources", "bloons.png"))
-	VariableSet.ItemsTexture = rl.LoadTexture(filepath.Join(cwd, "resources", "item_sprites.png"))
-	VariableSet.PlayerTexture = rl.LoadTexture(filepath.Join(cwd, "resources", "chili.png"))
+	VariableSet.Textures32x32 = rl.LoadTexture(filepath.Join(cwd, "resources", "sprite_sheet_32x32.png"))
 
 	Font = rl.LoadFontEx(filepath.Join(cwd, "resources", "fonts", "font.ttf"), 512, nil, 150)
 
 }
 
 func UnloadAllTextures() {
-	rl.UnloadTexture(VariableSet.ItemsTexture)
-	rl.UnloadTexture(VariableSet.CollisionObjectsTexture)
+	rl.UnloadTexture(VariableSet.Textures32x32)
 	rl.UnloadTexture(VariableSet.BloonsTexture)
-	rl.UnloadTexture(VariableSet.PlayerTexture)
 
 	rl.UnloadFont(Font)
 }

@@ -3,11 +3,7 @@ package initiate
 import (
 	"BirdQuest/global"
 	"BirdQuest/scene/models"
-	"encoding/json"
 	rl "github.com/gen2brain/raylib-go/raylib"
-	"log"
-	"os"
-	"path/filepath"
 )
 
 func prepareCollisions(jsonMap *jsonMap, scene *models.Scene) {
@@ -31,17 +27,8 @@ func prepareCollisions(jsonMap *jsonMap, scene *models.Scene) {
 	scene.BaseCollisionBoxes = baseCollisionBoxes
 }
 
-func prepareCollisionObjects(jMap *jsonMap, layerName, path string, startId int, scene *models.Scene) {
-	jsonCollisionContents, err := os.ReadFile(filepath.Join(path, "collisions.tsj"))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var jsonCollisions jsonSprites
-	err = json.Unmarshal(jsonCollisionContents, &jsonCollisions)
-	if err != nil {
-		log.Fatal(err)
-	}
+func prepareCollisionObjects(jMap *jsonMap, layerName string, startId int, scene *models.Scene, jSprites *jsonSprites) {
+	collisionSprites := prepareSprites(global.VariableSet.Textures32x32, jSprites, startId)
 
 	scene.CollisionObjects = &models.CollisionItems{
 		DrawFirst:   make([]*models.Object, 0),
@@ -49,15 +36,13 @@ func prepareCollisionObjects(jMap *jsonMap, layerName, path string, startId int,
 		DrawLast:    make([]*models.Object, 0),
 	}
 
-	collisionSprites := prepareSprites(global.VariableSet.CollisionObjectsTexture, &jsonCollisions, startId)
-
 	for _, layer := range jMap.Layers {
 		if layer.Name != layerName {
 			continue
 		}
 
 		for i, val := range layer.Data {
-			prepareCollisionObject(i, val, startId, jsonCollisions.TileCount, collisionSprites, scene)
+			prepareCollisionObject(i, val, startId, jSprites.TileCount, collisionSprites, scene)
 		}
 	}
 }

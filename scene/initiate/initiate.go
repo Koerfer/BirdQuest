@@ -13,7 +13,7 @@ type jsonTiles struct {
 	Properties []*jsonProperty `json:"properties"`
 }
 
-func Objects(path string, scene *models.Scene) {
+func Objects(basePath, path string, scene *models.Scene) {
 	jsonMapContents, err := os.ReadFile(filepath.Join(path, "map.tmj"))
 	if err != nil {
 		log.Fatal(err)
@@ -25,23 +25,31 @@ func Objects(path string, scene *models.Scene) {
 		log.Fatal(err)
 	}
 
-	var jsonCollisionsGidStart int
-	var jsonItemsGidStart int
+	var startGid int
 	var jsonBloonsGidStart int
 	for _, tileSet := range jMap.TileSets {
 		switch tileSet.Source {
-		case "items.tsj":
-			jsonItemsGidStart = tileSet.FirstGid
-		case "bloons.tsj":
+		case "../32x32.tsj":
+			startGid = tileSet.FirstGid
+		case "../bloons.tsj":
 			jsonBloonsGidStart = tileSet.FirstGid
-		case "collisions.tsj":
-			jsonCollisionsGidStart = tileSet.FirstGid
 		}
 	}
 
-	prepareCollisionObjects(&jMap, "BackgroundCollisions", path, jsonCollisionsGidStart, scene)
-	prepareItems(&jMap, "Items", path, jsonItemsGidStart, scene)
-	prepareBloons(&jMap, "Items", path, jsonBloonsGidStart, scene)
+	jsonSpritesContents, err := os.ReadFile(filepath.Join(basePath, "32x32.tsj"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var jSprites jsonSprites
+	err = json.Unmarshal(jsonSpritesContents, &jSprites)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	prepareCollisionObjects(&jMap, "BackgroundCollisions", startGid, scene, &jSprites)
+	prepareItems(&jMap, "Items", startGid, scene, &jSprites)
+	prepareBloons(&jMap, "Items", basePath, jsonBloonsGidStart, scene)
 	prepareCollisions(&jMap, scene)
 	prepareDoors(&jMap, scene)
 }

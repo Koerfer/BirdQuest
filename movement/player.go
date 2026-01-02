@@ -34,7 +34,7 @@ func Dash(player *models.Player, camera *rl.Camera2D) {
 
 func ContinueDash(player *models.Player, camera *rl.Camera2D) *models.Door {
 	player.IsMoving = true
-	player.AnimationStep = 1
+	player.AnimationStep = 2
 	player.BaseRectangle = player.Animation.GetRectangleAreaInTexture(player.AnimationStep)
 
 	var goThroughDoor *models.Door
@@ -139,7 +139,7 @@ func Move(player *models.Player, camera *rl.Camera2D) *models.Door {
 	if player.IsMoving {
 		if frameCounter > int(8/global.VariableSet.FpsScale) {
 			frameCounter = 0
-			player.AnimationStep = (player.AnimationStep + 1) % 3
+			player.AnimationStep = (player.AnimationStep+1)%3 + 1
 			player.BaseRectangle = player.Animation.GetRectangleAreaInTexture(player.AnimationStep)
 		}
 
@@ -147,7 +147,7 @@ func Move(player *models.Player, camera *rl.Camera2D) *models.Door {
 	}
 
 	if !player.IsMoving {
-		player.BaseRectangle = player.Animation.GetRectangleAreaInTexture(7)
+		player.BaseRectangle = player.Animation.GetRectangleAreaInTexture(0)
 		player.AnimationStep = 0
 		player.Rotation = 0
 		player.IsMoving = false

@@ -9,10 +9,10 @@ import (
 
 func PreparePlayer() *models.Player {
 	chiliAnimations := &models.Sprites{
-		Texture:      global.VariableSet.PlayerTexture,
+		Texture:      global.VariableSet.Textures32x32,
 		TileWidth:    global.TileWidth,
 		TileHeight:   global.TileHeight,
-		WidthInTiles: int(global.VariableSet.PlayerTexture.Width) / global.TileWidth,
+		WidthInTiles: int(global.VariableSet.Textures32x32.Width) / global.TileWidth,
 	}
 
 	player := &models.Player{

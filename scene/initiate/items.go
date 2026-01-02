@@ -3,29 +3,15 @@ package initiate
 import (
 	"BirdQuest/global"
 	"BirdQuest/scene/models"
-	"encoding/json"
 	rl "github.com/gen2brain/raylib-go/raylib"
-	"log"
-	"os"
-	"path/filepath"
 )
 
-func prepareItems(jMap *jsonMap, layerName, path string, startId int, scene *models.Scene) {
-	jsonItemContents, err := os.ReadFile(filepath.Join(path, "items.tsj"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	var jsonItems jsonSprites
-	err = json.Unmarshal(jsonItemContents, &jsonItems)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+func prepareItems(jMap *jsonMap, layerName string, startId int, scene *models.Scene, jSprites *jsonSprites) {
 	scene.ItemObjects = &models.Items{
 		Objects: make([]*models.Object, 0),
 	}
 
-	itemSprites := prepareSprites(global.VariableSet.ItemsTexture, &jsonItems, startId)
+	itemSprites := prepareSprites(global.VariableSet.Textures32x32, jSprites, startId)
 
 	for _, layer := range jMap.Layers {
 		if layer.Name != layerName {
@@ -33,7 +19,7 @@ func prepareItems(jMap *jsonMap, layerName, path string, startId int, scene *mod
 		}
 
 		for i, val := range layer.Data {
-			prepareItem(i, val, startId, jsonItems.TileCount, itemSprites, scene)
+			prepareItem(i, val, startId, jSprites.TileCount, itemSprites, scene)
 		}
 	}
 }

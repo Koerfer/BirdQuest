@@ -16,7 +16,7 @@ func StartAttack(player *models.Player) {
 	player.AttackLastUse = time.Now()
 	player.AttackOngoing = true
 
-	player.AnimationStep = 3
+	player.AnimationStep = 4
 	player.BaseRectangle = player.Animation.GetRectangleAreaInTexture(player.AnimationStep)
 
 	var hit bool
@@ -64,7 +64,7 @@ func Attack(player *models.Player) {
 	if frameCounter >= int(4/global.VariableSet.FpsScale) {
 		frameCounter = 0
 		player.AnimationStep++
-		if player.AnimationStep == 7 {
+		if player.AnimationStep == 8 {
 			player.AttackOngoing = false
 			return
 		}

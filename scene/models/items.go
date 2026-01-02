@@ -16,7 +16,7 @@ func (items *Items) Draw() {
 		}
 
 		rl.DrawTexturePro(
-			global.VariableSet.ItemsTexture,
+			global.VariableSet.Textures32x32,
 			*item.BaseRectangle,
 			rl.Rectangle{
 				X:      item.BasePositionRectangle.X * global.VariableSet.EntityScale,

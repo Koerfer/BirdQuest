@@ -43,7 +43,8 @@ func SetScene(sceneName string, playerX, playerY float32, player *models.Player)
 	if err != nil {
 		log.Fatal(err)
 	}
-	scenePath := filepath.Join(cwd, "resources", sceneName)
+	basePath := filepath.Join(cwd, "resources")
+	scenePath := filepath.Join(basePath, sceneName)
 	background := rl.LoadTexture(filepath.Join(scenePath, "background.png"))
 	if background.Width == 0 {
 		return SetScene(sceneName, playerX, playerY, player)
@@ -70,7 +71,7 @@ func SetScene(sceneName string, playerX, playerY float32, player *models.Player)
 	global.VariableSet.PlayerMiddleOffset = global.TileWidth / 2 * global.VariableSet.EntityScale
 	global.VariableSet.EntitySize = global.TileWidth * global.VariableSet.EntityScale
 
-	initiate.Objects(scenePath, scene)
+	initiate.Objects(basePath, scenePath, scene)
 
 	if player == nil {
 		player = initiate.PreparePlayer()
