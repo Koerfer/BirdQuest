@@ -16,13 +16,18 @@ func Draw(camera rl.Camera2D, player *models.Player) {
 
 	scene.CurrentScene.ItemObjects.Draw()
 	scene.CurrentScene.Bloons.Draw()
-	scene.CurrentScene.CollisionObjects.DrawFirstLayer()
-	scene.CurrentScene.CollisionObjects.DrawDynamicLayer(player)
-	scene.CurrentScene.CollisionObjects.DrawLastLayer()
 
 	for _, npc := range scene.CurrentScene.NPCs {
 		npc.Draw()
 	}
+
+	for _, box := range scene.CurrentScene.SeedBoxes {
+		box.Draw()
+	}
+
+	scene.CurrentScene.CollisionObjects.DrawFirstLayer()
+	scene.CurrentScene.CollisionObjects.DrawDynamicLayer(player)
+	scene.CurrentScene.CollisionObjects.DrawLastLayer()
 
 	//drawDebugInfo(camera, player)
 

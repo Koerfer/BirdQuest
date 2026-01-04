@@ -23,13 +23,7 @@ func AttemptQuestStep(player *models.Player) {
 		case models.QuestStepInvalid:
 			continue
 		case models.QuestStepTalk:
-			extendedPlayerRectangle := rl.Rectangle{
-				X:      player.BasePositionRectangle.X - 16,
-				Y:      player.BasePositionRectangle.Y - 16,
-				Width:  player.BasePositionRectangle.Width + 16,
-				Height: player.BasePositionRectangle.Height + 16,
-			}
-			if rl.CheckCollisionRecs(extendedPlayerRectangle, *quest.Steps[quest.CurrentStep].NPC.BasePositionRectangle) {
+			if rl.CheckCollisionRecs(createExtendedPlayerRectangle(player), *quest.Steps[quest.CurrentStep].NPC.BasePositionRectangle) {
 				quest.Started = true
 				player.Talking = true
 				player.DialogNPC = quest.Steps[quest.CurrentStep].NPC
@@ -38,9 +32,40 @@ func AttemptQuestStep(player *models.Player) {
 		case models.QuestStepKill:
 
 		case models.QuestStepOpenBox:
+			if rl.CheckCollisionRecs(createExtendedPlayerRectangle(player), *quest.Steps[quest.CurrentStep].Box.BasePositionRectangle) {
+				quest.Started = true
+				player.CurrentQuest = quest
 
+				box := quest.Steps[quest.CurrentStep].Box
+				if box.OpeningStage < 2 {
+					box.BaseRectangle.X += box.BaseRectangle.Width
+					box.OpeningStage++
+				} else if box.OpeningStage == 2 {
+					box.BaseRectangle.X -= box.BaseRectangle.Width * 3
+					box.BaseRectangle.Y += box.BaseRectangle.Height
+					box.OpeningStage++
+				} else if box.OpeningStage < 4 {
+					box.BaseRectangle.X += box.BaseRectangle.Width
+					box.OpeningStage++
+				} else {
+					player.CurrentQuest.CurrentStep++
+					if player.CurrentQuest.CurrentStep >= len(player.CurrentQuest.Steps) {
+						player.CurrentQuest.Completed = true
+						player.CurrentQuest = nil
+					}
+				}
+			}
 		case models.QuestStepComplete:
 
 		}
+	}
+}
+
+func createExtendedPlayerRectangle(player *models.Player) rl.Rectangle {
+	return rl.Rectangle{
+		X:      player.BasePositionRectangle.X - 16,
+		Y:      player.BasePositionRectangle.Y - 16,
+		Width:  player.BasePositionRectangle.Width + 16,
+		Height: player.BasePositionRectangle.Height + 16,
 	}
 }

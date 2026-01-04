@@ -50,6 +50,7 @@ func Objects(basePath, path string, scene *models.Scene) {
 	prepareCollisionObjects(&jMap, "BackgroundCollisions", startGid, scene, &jSprites)
 	prepareItems(&jMap, "Items", startGid, scene, &jSprites)
 	prepareNPCs(&jMap, "NPC", startGid, scene, &jSprites)
+	prepareSeedBoxes(&jMap, "SeedBox", startGid, scene, &jSprites)
 	prepareBloons(&jMap, "Items", basePath, jsonBloonsGidStart, scene)
 	prepareCollisions(&jMap, scene)
 	prepareDoors(&jMap, scene)

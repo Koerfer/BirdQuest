@@ -18,6 +18,7 @@ type Quest struct {
 type Step struct {
 	Type    QuestStep
 	NPC     *NPC
+	Box     *SeedBox
 	Dialogs []*Dialog
 }
 

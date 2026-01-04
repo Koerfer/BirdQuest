@@ -13,6 +13,7 @@ type Scene struct {
 	Doors              []*Door
 	Bloons             *Bloons
 	NPCs               []*NPC
+	SeedBoxes          []*SeedBox
 
 	Width  float32
 	Height float32

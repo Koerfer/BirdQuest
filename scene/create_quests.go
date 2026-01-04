@@ -42,5 +42,12 @@ func CreateQuests() {
 	}
 
 	quest.Steps = append(quest.Steps, stepOne)
+
+	stepTwo := &models.Step{
+		Type: models.QuestStepOpenBox,
+		Box:  AllScenes["main"].SeedBoxes[0],
+	}
+
+	quest.Steps = append(quest.Steps, stepTwo)
 	Quests = append(Quests, quest)
 }
