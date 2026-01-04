@@ -21,13 +21,18 @@ func Draw(camera rl.Camera2D, player *models.Player) {
 		npc.Draw()
 	}
 
+	scene.CurrentScene.CollisionObjects.DrawFirstLayer()
+	scene.CurrentScene.CollisionObjects.DrawDynamicLayer(player)
+	scene.CurrentScene.CollisionObjects.DrawLastLayer()
+
 	for _, box := range scene.CurrentScene.SeedBoxes {
 		box.Draw()
 	}
 
-	scene.CurrentScene.CollisionObjects.DrawFirstLayer()
-	scene.CurrentScene.CollisionObjects.DrawDynamicLayer(player)
-	scene.CurrentScene.CollisionObjects.DrawLastLayer()
+	for _, quest := range scene.Quests {
+		// Draws markers for where quests are, and quest steps
+		quest.Draw()
+	}
 
 	//drawDebugInfo(camera, player)
 

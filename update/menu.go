@@ -29,13 +29,25 @@ func Menu(player *models.Player, camera rl.Camera2D) (bool, *models.Player, *rl.
 	}
 
 	if buttonIndex := checkMouseHover(camera); buttonIndex != nil {
-		menus.ActiveMenu.SelectedButton = *buttonIndex
+		if menus.ActiveMenu.Buttons[*buttonIndex].Name == "LOAD" && !menus.ActiveMenu.LoadAvailable {
+
+		} else {
+			menus.ActiveMenu.SelectedButton = *buttonIndex
+		}
 	}
 
 	if rl.IsKeyPressed(rl.KeyDown) || rl.IsKeyPressed(rl.KeyS) {
-		menus.ActiveMenu.SelectedButton = (menus.ActiveMenu.SelectedButton + 1) % len(menus.ActiveMenu.Buttons)
+		nextButton := (menus.ActiveMenu.SelectedButton + 1) % len(menus.ActiveMenu.Buttons)
+		if menus.ActiveMenu.Buttons[nextButton].Name == "LOAD" && !menus.ActiveMenu.LoadAvailable {
+			nextButton++
+		}
+		menus.ActiveMenu.SelectedButton = nextButton
 	} else if rl.IsKeyPressed(rl.KeyUp) || rl.IsKeyPressed(rl.KeyW) {
-		menus.ActiveMenu.SelectedButton = (menus.ActiveMenu.SelectedButton + len(menus.ActiveMenu.Buttons) - 1) % len(menus.ActiveMenu.Buttons)
+		nextButton := (menus.ActiveMenu.SelectedButton + len(menus.ActiveMenu.Buttons) - 1) % len(menus.ActiveMenu.Buttons)
+		if menus.ActiveMenu.Buttons[nextButton].Name == "LOAD" && !menus.ActiveMenu.LoadAvailable {
+			nextButton--
+		}
+		menus.ActiveMenu.SelectedButton = nextButton
 	} else if rl.IsKeyPressed(rl.KeySpace) || rl.IsKeyPressed(rl.KeyEnter) ||
 		(checkMouseHover(camera) != nil && rl.IsMouseButtonPressed(rl.MouseButtonLeft)) {
 		switch menus.ActiveMenu.Buttons[menus.ActiveMenu.SelectedButton].ActionToDo {

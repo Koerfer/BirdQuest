@@ -37,6 +37,66 @@ const (
 	QuestStepComplete
 )
 
+func (quest *Quest) Draw() {
+	if quest.Completed {
+		return
+	}
+
+	var questMarkerRectangle rl.Rectangle
+	if !quest.Started {
+		questMarkerRectangle = rl.Rectangle{
+			X:      608,
+			Y:      608,
+			Width:  32,
+			Height: 32,
+		}
+	} else {
+		questMarkerRectangle = rl.Rectangle{
+			X:      576,
+			Y:      608,
+			Width:  32,
+			Height: 32,
+		}
+	}
+
+	if quest.Steps[quest.CurrentStep].Box != nil {
+		rl.DrawTexturePro(
+			global.VariableSet.Textures32x32,
+			questMarkerRectangle,
+			rl.Rectangle{
+				X:      quest.Steps[quest.CurrentStep].Box.BasePositionRectangle.X * global.VariableSet.EntityScale,
+				Y:      (quest.Steps[quest.CurrentStep].Box.BasePositionRectangle.Y - 32) * global.VariableSet.EntityScale,
+				Width:  32 * global.VariableSet.EntityScale,
+				Height: 32 * global.VariableSet.EntityScale,
+			},
+			rl.Vector2{
+				X: 0,
+				Y: 0,
+			},
+			0,
+			rl.White,
+		)
+	}
+	if quest.Steps[quest.CurrentStep].NPC != nil {
+		rl.DrawTexturePro(
+			global.VariableSet.Textures32x32,
+			questMarkerRectangle,
+			rl.Rectangle{
+				X:      quest.Steps[quest.CurrentStep].NPC.BasePositionRectangle.X * global.VariableSet.EntityScale,
+				Y:      (quest.Steps[quest.CurrentStep].NPC.BasePositionRectangle.Y - 32) * global.VariableSet.EntityScale,
+				Width:  32 * global.VariableSet.EntityScale,
+				Height: 32 * global.VariableSet.EntityScale,
+			},
+			rl.Vector2{
+				X: 0,
+				Y: 0,
+			},
+			0,
+			rl.White,
+		)
+	}
+}
+
 func (dialog *Dialog) Draw(camera rl.Camera2D, npc *NPC, player *Player) {
 	dialogBackground := rl.Rectangle{
 		X:      0,
