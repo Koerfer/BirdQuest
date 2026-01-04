@@ -13,9 +13,11 @@ type Menu struct {
 	BaseFontSize  float32
 	FontSize      float32
 
-	BaseRectangle  *rl.Rectangle
-	Rectangle      *rl.Rectangle
+	BaseRectangle *rl.Rectangle
+	Rectangle     *rl.Rectangle
+
 	SelectedButton int
+	LoadAvailable  bool
 }
 
 type Button struct {
@@ -136,6 +138,10 @@ func (menu *Menu) Draw(camera rl.Camera2D) {
 		colour := button.DefaultColour
 		if i == menu.SelectedButton {
 			colour = button.SelectedColour
+		}
+
+		if button.Name == "LOAD" && !menu.LoadAvailable {
+			colour = rl.Gray
 		}
 
 		newRectangle := rl.Rectangle{

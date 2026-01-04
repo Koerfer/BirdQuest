@@ -29,6 +29,7 @@ type State struct {
 }
 
 func Save(player *models.Player, camera rl.Camera2D) {
+	menus.AllMenus["main"].LoadAvailable = true
 	state := &State{
 		Player:          player,
 		Camera:          camera,
