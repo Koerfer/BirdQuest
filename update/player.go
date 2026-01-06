@@ -18,19 +18,7 @@ func updatePlayer(camera *rl.Camera2D, player *models.Player) {
 	} else if time.Since(player.DashLastUse) < time.Millisecond*150 {
 		door = movement.ContinueDash(player, camera)
 	} else if player.Talking {
-		if rl.IsKeyPressed(rl.KeySpace) {
-			player.DialogStep++
-			if player.DialogStep >= len(player.CurrentQuest.Steps[player.CurrentQuest.CurrentStep].Dialogs) {
-				player.DialogStep = 0
-				player.Talking = false
-				player.DialogNPC = nil
-				player.CurrentQuest.CurrentStep++
-				if player.CurrentQuest.CurrentStep >= len(player.CurrentQuest.Steps) {
-					player.CurrentQuest.Completed = true
-					player.CurrentQuest = nil
-				}
-			}
-		}
+		performDialog(player)
 	} else {
 		door = movement.Move(player, camera)
 
@@ -66,5 +54,23 @@ func updatePlayer(camera *rl.Camera2D, player *models.Player) {
 		global.Zoom(zoom, camera)
 
 		movement.InitialiseCamera(player, camera)
+	}
+}
+
+func performDialog(player *models.Player) {
+	if !rl.IsKeyPressed(rl.KeySpace) {
+		return
+	}
+
+	player.DialogStep++
+	if player.DialogStep >= len(player.CurrentQuest.Steps[player.CurrentQuest.CurrentStep].Dialogs) {
+		player.DialogStep = 0
+		player.Talking = false
+		player.DialogNPC = nil
+		player.CurrentQuest.CurrentStep++
+		if player.CurrentQuest.CurrentStep >= len(player.CurrentQuest.Steps) {
+			player.CurrentQuest.Completed = true
+			player.CurrentQuest = nil
+		}
 	}
 }

@@ -21,7 +21,9 @@ func LoadHandler(player *models.Player, camera *rl.Camera2D) (*models.Player, *r
 	camera = &saveState.Camera
 	scene.CurrentScene = saveState.CurrentScene
 	scene.AllScenes = saveState.Scenes
+	scene.AllScenes[scene.CurrentScene.Name] = scene.CurrentScene
 	scene.Quests = saveState.Quests
+	scene.Quests[0].Steps[1].Box = scene.AllScenes["main"].SeedBoxes[0]
 	global.VariableSet = saveState.GlobalVariables
 	global.LoadAllTextures()
 
@@ -78,6 +80,7 @@ func InitialLoader() (*models.Player, rl.Camera2D) {
 		scene.AllScenes[sceneName].Doors = savedScene.Doors
 		scene.AllScenes[sceneName].ItemObjects.Objects = savedScene.ItemObjects.Objects
 		scene.AllScenes[sceneName].NPCs = savedScene.NPCs
+		scene.AllScenes[sceneName].SeedBoxes = savedScene.SeedBoxes
 	}
 
 	scene.SetScene(saveState.CurrentScene.Name, 250, 250, nil)
@@ -89,9 +92,11 @@ func InitialLoader() (*models.Player, rl.Camera2D) {
 	scene.CurrentScene.Doors = saveState.CurrentScene.Doors
 	scene.CurrentScene.ItemObjects.Objects = saveState.CurrentScene.ItemObjects.Objects
 	scene.CurrentScene.NPCs = saveState.CurrentScene.NPCs
+	scene.CurrentScene.SeedBoxes = saveState.CurrentScene.SeedBoxes
 
 	menus.AllMenus = saveState.AllMenus
 	scene.Quests = saveState.Quests
+	scene.Quests[0].Steps[1].Box = scene.AllScenes["main"].SeedBoxes[0]
 
 	rl.SetWindowPosition(int(saveState.WindowPosition.X), int(saveState.WindowPosition.Y))
 	if saveState.IsMaximised {

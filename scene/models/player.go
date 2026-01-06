@@ -36,7 +36,7 @@ func (player *Player) Draw() {
 		global.VariableSet.Textures32x32,
 		rl.Rectangle{
 			X:      player.BaseRectangle.X,
-			Y:      player.BaseRectangle.Y + 32,
+			Y:      player.BaseRectangle.Y + global.TileHeight,
 			Width:  player.BaseRectangle.Width,
 			Height: player.BaseRectangle.Height,
 		},

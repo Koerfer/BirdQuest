@@ -43,19 +43,19 @@ func (quest *Quest) Draw() {
 	}
 
 	var questMarkerRectangle rl.Rectangle
-	if !quest.Started {
+	if !quest.Started || quest.CurrentStep == 0 {
 		questMarkerRectangle = rl.Rectangle{
-			X:      608,
-			Y:      608,
-			Width:  32,
-			Height: 32,
+			X:      global.TileWidth * 19,
+			Y:      global.TileHeight * 19,
+			Width:  global.TileWidth,
+			Height: global.TileHeight,
 		}
 	} else {
 		questMarkerRectangle = rl.Rectangle{
-			X:      576,
-			Y:      608,
-			Width:  32,
-			Height: 32,
+			X:      global.TileWidth * 18,
+			Y:      global.TileHeight * 19,
+			Width:  global.TileWidth,
+			Height: global.TileHeight,
 		}
 	}
 
@@ -65,9 +65,9 @@ func (quest *Quest) Draw() {
 			questMarkerRectangle,
 			rl.Rectangle{
 				X:      quest.Steps[quest.CurrentStep].Box.BasePositionRectangle.X * global.VariableSet.EntityScale,
-				Y:      (quest.Steps[quest.CurrentStep].Box.BasePositionRectangle.Y - 32) * global.VariableSet.EntityScale,
-				Width:  32 * global.VariableSet.EntityScale,
-				Height: 32 * global.VariableSet.EntityScale,
+				Y:      (quest.Steps[quest.CurrentStep].Box.BasePositionRectangle.Y - global.TileHeight) * global.VariableSet.EntityScale,
+				Width:  global.TileWidth * global.VariableSet.EntityScale,
+				Height: global.TileHeight * global.VariableSet.EntityScale,
 			},
 			rl.Vector2{
 				X: 0,
@@ -83,9 +83,9 @@ func (quest *Quest) Draw() {
 			questMarkerRectangle,
 			rl.Rectangle{
 				X:      quest.Steps[quest.CurrentStep].NPC.BasePositionRectangle.X * global.VariableSet.EntityScale,
-				Y:      (quest.Steps[quest.CurrentStep].NPC.BasePositionRectangle.Y - 32) * global.VariableSet.EntityScale,
-				Width:  32 * global.VariableSet.EntityScale,
-				Height: 32 * global.VariableSet.EntityScale,
+				Y:      (quest.Steps[quest.CurrentStep].NPC.BasePositionRectangle.Y - global.TileHeight) * global.VariableSet.EntityScale,
+				Width:  global.TileWidth * global.VariableSet.EntityScale,
+				Height: global.TileHeight * global.VariableSet.EntityScale,
 			},
 			rl.Vector2{
 				X: 0,
